@@ -1,0 +1,159 @@
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-collapse {
+        justify-content: flex-start;
+    }
+}
+
+@media screen and (max-width: 767px) {
+
+    header,
+    #nav .navbar-collapse {
+        position: relative;
+        top: 0;
+        min-height: initial;
+    }
+
+    .header-left .navbar-toggler {
+        display: block;
+    }
+
+    #nav {
+        position: relative;
+        padding: 0px;
+    }
+
+    #nav .navbar-collapse {
+        top: 0;
+    }
+
+    #nav li a {
+        border-right: 0px solid #f2f2f2;
+    }
+
+    #nav li:first-child a {
+        border-left: 0px solid #f2f2f2;
+    }
+
+}
+
+
+
+/* Responsive CSS */
+
+
+/* Responsive styles for .btn.btn-danger, .btn-right-group, .excel-btn for mobile and tablet */
+
+/* --- Tablet (≤991px) --- */
+@media (max-width: 991.98px) {
+    .btn.btn-danger {
+        font-size: 0.80rem;
+        padding: 4px 8px;
+        min-width: 50px;
+        margin: 2px 3px 2px 0;
+        width: auto;
+    }
+    .btn.btn-warning{
+        font-size: 0.80rem;
+        padding: 4px 8px;
+        min-width: 50px;
+        margin: 2px 3px 2px 0;
+        width: auto;
+    }
+
+    .table th,
+    .table td {
+        font-size: 0.95rem;
+        padding: 0.4rem 0.3rem;
+    }
+}
+@media (max-width: 1300px) {
+    .btn.btn-warning {
+        font-size: 0.80rem;
+        padding: 4px 8px;
+        min-width: 50px;
+        margin: 2px 3px 2px 0;
+        width: auto;
+    }
+}
+
+/* --- Mobile (≤767px) --- */
+@media (max-width: 767.98px) {
+    .btn.btn-danger {
+        font-size: 0.50rem;
+        padding: 4px 5px;
+        min-width: 40px;
+        margin: 1px 1px 1px 0;
+        width: auto;
+        border-radius: 4px;
+    }
+    .btn.btn-warning{
+          font-size: 0.50rem;
+        padding: 4px 5px;
+        min-width: 40px;
+        margin: 1px 1px 1px 0;
+        width: auto;
+        border-radius: 4px; 
+    }
+
+
+    .table th,
+    .table td {
+        font-size: 0.85rem;
+        padding: 0.3rem 0.2rem;
+    }
+
+    /* Make table horizontally scrollable */
+    .table-responsive,
+    .table-scroll-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Ensure .btn-right-group stays inline and wraps if needed */
+    .btn-right-group {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        gap: 1px !important;
+    }
+}
+
+/* Responsive styles for file input (.file-large, .wid-250) on small mobile devices */
+
+@media (max-width: 430px) {
+    .btn.btn-danger {
+        font-size: 0.28rem;
+        padding: 3px 4px;
+        min-width: 30px;
+        margin: 0px 0px 0px 0;
+        width: auto;
+        border-radius: none;
+        border-radius: 2px;
+        border: 0.8px solid #a50034;
+        height: 15px;
+    }
+        .btn.btn-warning {
+        font-size: 0.28rem;
+        padding: 3px 4px;
+        min-width: 30px;
+        margin: 0px 0px 0px 0;
+        width: auto;
+        border-radius: none;
+        border-radius: 2px;
+        border: 0.8px solid #a50034;
+        height: 15px;
+    }
+
+   
+}
+
+
+
+
+
+
+
+
+@media screen and (max-width: 480px) {}
+
+@media screen and (max-width:320px) {}

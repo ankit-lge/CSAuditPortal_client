@@ -1,0 +1,51 @@
+/* LG Smart */
+@font-face{
+    font-family: "LG_UI";
+    src: url("../fonts/LG_UI_Light.eot");
+    src: url("../fonts/LG_UI_Light.eot?#iefix")format("embedded-opentype"),
+        url("../fonts/LG_UI_Light.woff")format("woff"),
+        url("../fonts/LG_UI_Light.woff2")format("woff2"),
+        url("../fonts/LG_UI_Light.ttf")format("truetype"),
+        url("../fonts/LG_UI_Light.svg#LG Smart Light")format("svg");
+    font-weight:300;
+    font-style:normal;
+    font-display:swap;
+}
+
+@font-face{
+    font-family: "LG_UI";
+    src: url("../fonts/LG_RegularUI.eot");
+    src: url("../fonts/LG_RegularUI.eot?#iefix")format("embedded-opentype"),
+        url("../fonts/LG_RegularUI.woff")format("woff"),
+        url("../fonts/LG_RegularUI.woff2")format("woff2"),
+        url("../fonts/LG_RegularUI.ttf")format("truetype"),
+        url("../fonts/LG_RegularUI.svg#LG Smart Regular")format("svg");
+    font-weight:400;
+    font-style:normal;
+    font-display:swap;
+}
+
+@font-face{
+    font-family: "LG_UI";
+    src: url("../fonts/LG_UI_SemiBold.eot");
+    src: url("../fonts/LG_UI_SemiBold.eot?#iefix")format("embedded-opentype"),
+        url("../fonts/LG_UI_SemiBold.woff")format("woff"),
+        url("../fonts/LG_UI_SemiBold.woff2")format("woff2"),
+        url("../fonts/LG_UI_SemiBold.ttf")format("truetype"),
+        url("../fonts/LG_UI_SemiBold.svg#LG Smart SemiBold")format("svg");
+    font-weight:500;
+    font-style:normal;
+    font-display:swap;
+}
+@font-face{
+    font-family: "LG_UI";
+    src: url("../fonts/LG_UI_Bold.eot");
+    src: url("../fonts/LG_UI_Bold.eot?#iefix")format("embedded-opentype"),
+        url("../fonts/LG_UI_Bold.woff")format("woff"),
+        url("../fonts/LG_UI_Bold.woff2")format("woff2"),
+        url("../fonts/LG_UI_Bold.ttf")format("truetype"),
+        url("../fonts/LG_UI_Bold.svg#LG Smart Bold")format("svg");
+    font-weight:600;
+    font-style:normal;
+    font-display:swap;
+}

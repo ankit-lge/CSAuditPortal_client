@@ -1,0 +1,169 @@
+<body>
+    <div class="d-flex">
+        <!-- <div class="sidebar">
+            <h4 class="logo">LG CSNET</h4>
+            <hr>
+            <ul class="menu">
+                <input type="checkbox" id="menu-toggle">
+                <label for="menu-toggle" class="menu-item">
+                    CS Audit Portal
+                    <span class="arrow">▼</span> </label>
+                <ul class="submenu">
+                    <li><a href="AuditClaimUpload.html">Audit Claim Upload</a></li>
+                    <li><a href="HOScreen.html">Audit Monitoring Dashboard</a></li>
+                    <li><a href="ClaimSearch.html">Audit Review Process</a></li>
+                    <li><a href="LoopUpTypeMaster.html">Audit Evaluation Process</a></li>
+                   
+                </ul>
+            </ul>
+        </div> -->
+
+        <!-- header -->
+        <div class="content w-100">
+            <!-- <header class="custom-header">
+                <div class="header-left">
+                    <img src="img/logo.png" class="logo-img" alt="LG Logo">
+                </div>
+
+                <div class="header-right">
+                    <div class="user-info">
+                        <i class="fa-regular fa-circle-user"></i>
+                        <span>USER <strong style="color: #a50034;">LG ADMIN - (LGADMIN)</strong></span>
+                    </div>
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <button class="logout-btn">Logout</button>
+                </div>
+            </header> -->
+
+            <!-- Page Title -->
+            <div class="container-fluid mt-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h6 class="text-dark">CS Audit Portal</h6>
+                    <div class="header-right">
+                        <div class="user-info">
+                            <span>USER <strong style="color: #a50034;">CS Audit Portal</strong>
+                                <strong style="color: gray;">/Claim Search</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="page-title">Audit Review Process</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="form-floating custom-floating">
+                                    <input type="text" class="form-control" id="claimId"
+                                        placeholder="Enter GSFS Receipt No">
+                                    <label for="claimId" class="mt-3">GSFS Receipt No</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="form-floating">
+                                    <select class="form-select table-header-fix " id="statesSelect">
+                                        <option>All</option>
+                                        <option>Fake</option>
+                                        <option>Not Fake</option>
+                                    </select>
+                                    <label for="statesSelect">Suspiciuos</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="form-floating mandatory">
+                                    <input type="date" class="form-control" id="auditDate">
+                                    <label for="auditDate">From Audit Date</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="form-floating mandatory">
+                                    <input type="date" class="form-control" id="auditDate">
+                                    <label for="auditDate">To Audit Date</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- for the buttons -->
+                        <div class="p-1 d-flex gap-2">
+                            <button class="btn btn-danger">Search</button>
+                            <button class="btn btn-success">Download</button>
+                            <button class="btn btn-secondary">Reset</button>
+                            <button class="btn btn-danger">Export to Excel</button>
+                        </div>
+
+                        <div class="row p-1">
+                            <!-- Left side: Show entries -->
+                            <div class="col-lg-6 col-md-6 col-sm-6 d-flex align-items-center gap-2">
+                                <strong>Show</strong>
+
+                                <select class="form-select form-select-sm w-auto">
+                                    <option selected>10</option>
+                                    <option>25</option>
+                                    <option>50</option>
+                                    <option>100</option>
+                                </select>
+
+                                <strong>entries</strong>
+                            </div>
+
+                            <!-- Right side: Search -->
+                            <div
+                                class="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-end align-items-center gap-2">
+                                <label class="mb-0">Search:</label>
+                                <input type="text" class="form-control form-control-sm w-auto"
+                                    placeholder="Search Records">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card card-grid">
+                    <div class="card-body">
+                        <div class="table-header-fix bank-tenure-rate-table">
+                            <div class="table-responsive table-scroll-wrapper equal-table">
+                                <table class="table table-bordered align-middle no-mb">
+                                    <thead>
+                                        <tr>
+                                            <th>GSFS Receipt No</th>
+                                            <th>Date Month</th>
+                                            <th>Feedback/No Feedback</th>
+                                            <th>Aging (Day)</th>
+                                            <th>Customer Feedback Date</th>
+                                            <th>Audit Date</th>
+                                            <th>Audit Type</th>
+                                            <th>ESC/LGC Date</th>
+                                            <th>Sale Name</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer justify-items-end">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <footer>
+        Copyright & copy; 2026 LG Electronics India Limited. All Rights Reserved
+    </footer>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-3.7.1.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/custom.js"></script>
+</body>

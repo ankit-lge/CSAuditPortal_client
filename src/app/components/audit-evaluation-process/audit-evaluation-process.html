@@ -1,0 +1,404 @@
+<body>
+    <!-- <div class="d-flex">
+        <div class="sidebar">
+            <h4 class="logo">LG CSNET</h4>
+            <hr>
+            <ul class="menu">
+                <li>
+                    <input type="checkbox" id="menu-toggle">
+                    <label for="menu-toggle" class="menu-item">
+                        CS Audit Portal <span class="arrow">▼</span>
+                    </label>
+
+                    <ul class="submenu">
+                        <li><a href="AuditClaimUpload.html">Audit Claim Upload</a></li>
+                        <li><a href="AuditMonitoring.html">Audit Monitoring Dashboard</a></li>
+                        <li><a href="AuditReviewProcess.html">Audit Review Process</a></li>
+                         <li><a href="BranchFeedback.html".html>Branch Feedback Details</a></li>
+                        <li><a href="LookUpMaster.html">LookUp Master</a></li>
+                        <li><a href="LoopUpTypeMaster.html">LookUp Type Master</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div> -->
+
+        <!-- header -->
+        <!-- <div class="content w-100">
+            <header class="custom-header">
+                <div class="header-left">
+                    <img src="img/logo.png" class="logo-img" alt="LG Logo">
+                </div>
+
+                <div class="header-right">
+                    <div class="user-info">
+                        <i class="fa-regular fa-circle-user"></i>
+                        <span>USER <strong style="color: #a50034;">LG ADMIN - (LGADMIN)</strong></span>
+                    </div>
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <button class="logout-btn">Logout</button>
+                </div>
+            </header> -->
+            
+
+            <!-- Page Title -->
+            <div class="container-fluid mt-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h6 class="text-dark">CS Audit Portal</h6>
+                    <div class="header-right">
+                        <div class="user-info">
+                            <span>USER <strong style="color: #a50034;">CS Audit Portal</strong>
+                                <strong style="color: gray;">/Claim Search</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="page-title">Audit Evaluation Process</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="form-floating custom-floating">
+                                    <input type="text" class="form-control" id="claimId"
+                                        placeholder="Enter GSFS Receipt No">
+                                    <label for="claimId" class="mt-3">GSFS Receipt No</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="form-floating custom-floating">
+                                    <input type="text" class="form-control" id="claimId" placeholder="End User Name">
+                                    <label for="claimId" class="mt-3">End User Name</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="form-floating custom-floating">
+                                    <input type="number" class="form-control" id="claimId"
+                                        placeholder="Cellular Number">
+                                    <label for="claimId" class="mt-3">Cellular Number</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="form-floating custom-floating">
+                                    <input type="number" class="form-control" id="claimId" placeholder="Phone Number">
+                                    <label for="claimId" class="mt-3">Phone Number</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6" style="margin-top: -5px">
+                                <div class="mb-3 m-1 disp-flex flex-align-center flex-justify-start form-floating">
+                                    <textarea class="form-control" placeholder="Address" id="schemeCode"
+                                        required></textarea>
+                                    <label for="schemeCode" class="form-label required">Address</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="form-floating custom-floating">
+                                    <input type="text" class="form-control" id="claimId" placeholder="Aging">
+                                    <label for="claimId" class="mt-3">Aging</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="form-floating custom-floating">
+                                    <input type="text" class="form-control" id="claimId"
+                                        placeholder="Product Cat Major">
+                                    <label for="claimId" class="mt-3">Product Category Major</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="form-floating custom-floating">
+                                    <input type="text" class="form-control" id="claimId" placeholder="Product3 Code">
+                                    <label for="claimId" class="mt-3">Product3 Code</label>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="form-floating custom-floating">
+                                    <input type="text" class="form-control" id="claimId"
+                                        placeholder="Name of ASM (Who Confirmed)">
+                                    <label for="claimId" class="mt-3">Name of ASM (Who Confirmed)</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="form-floating custom-floating">
+                                    <input type="text" class="form-control" id="claimId" placeholder="Product Code">
+                                    <label for="claimId" class="mt-3">Product Code</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="form-floating custom-floating">
+                                    <input type="text" class="form-control" id="claimId"
+                                        placeholder="Call Back Date/Time">
+                                    <label for="claimId" class="mt-3">Call Back Date/Time</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="form-floating custom-floating">
+                                    <input type="text" class="form-control" id="claimId" placeholder="CIC Disposition">
+                                    <label for="claimId" class="mt-3">CIC Disposition</label>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="form-floating custom-floating">
+                                    <input type="text" class="form-control" id="claimId" placeholder="Status">
+                                    <label for="claimId" class="mt-3">Status</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="form-floating custom-floating">
+                                    <input type="text" class="form-control" id="claimId"
+                                        placeholder="Final Feedback Status">
+                                    <label for="claimId" class="mt-3">Final Feedback Status</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6" style="margin-top: -5px">
+                                <div class="mb-3 m-1 disp-flex flex-align-center flex-justify-start form-floating">
+                                    <textarea class="form-control" placeholder="Branch Result" id="schemeCode"
+                                        required></textarea>
+                                    <label for="schemeCode" class="form-label required">Branch Result</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-6" style="margin-top: -5px">
+                                <div class="mb-3 m-1 disp-flex flex-align-center flex-justify-start form-floating">
+                                    <textarea class="form-control" placeholder="" id="schemeCode" required></textarea>
+                                    <label for="schemeCode" class="form-label required"></label>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-8 col-md-12 col-sm-">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h2 class="page-title">Feedback of ESC/LGC </h2>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <!-- <div class="col-lg-5 col-md-6 col-sm-6">
+                                                <div class="form-floating custom-floating">
+                                                    <input type="text" class="form-control" id="claimId"
+                                                        placeholder="Final Feedback Status">
+                                                    <label for="claimId" class="mt-3">Final Feedback Status</label>
+                                                </div>
+                                            </div> -->
+
+                                            <div class="col-lg-8 col-md-6 col-sm-6" style="margin-top: -5px">
+                                                <div
+                                                    class="mb-3 m-1 disp-flex flex-align-center flex-justify-start form-floating">
+                                                    <textarea class="form-control" placeholder="Remarks" id="schemeCode"
+                                                        required></textarea>
+                                                    <label for="schemeCode" class="form-label required">Remarks</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                                <div class="form-floating">
+                                                    <select class="form-select table-header-fix " id="statesSelect">
+                                                        <option>Select Received Feedback</option>
+                                                         <option>Accept</option>
+                                                          <option>Reject</option>
+                                                    </select>
+                                                    <label for="statesSelect">Received Feedback</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="p-1 mb-2">
+                                            <button class="btn btn-danger">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card card-grid">
+                    <div class="card-body">
+                        <div class="table-header-fix bank-tenure-rate-table">
+                            <div class="table-responsive table-scroll-wrapper equal-table">
+                                <table class="table table-bordered align-middle no-mb">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="7" class="th-1 text-center">ESC/LGC Claim Details</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Sr. No</th>
+                                            <th>GSFS Recipt No.</th>
+                                            <th>Feedback</th>
+                                            <th>Remarks</th>
+                                            <th>Attachments</th>
+                                            <th>Expected Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>GSFS001</td>
+                                            <td>Service delay</td>
+                                            <td>Pending review</td>
+                                            <td><a href="#">file1.pdf</a></td>
+                                            <td>2026-04-25</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>GSFS002</td>
+                                            <td>Incorrect billing</td>
+                                            <td>Resolved</td>
+                                            <td><a href="#">bill_issue.jpg</a></td>
+                                            <td>2026-04-26</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>GSFS003</td>
+                                            <td>Technical issue</td>
+                                            <td>In progress</td>
+                                            <td><a href="#">error_log.txt</a></td>
+                                            <td>2026-04-28</td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td>GSFS004</td>
+                                            <td>Late response</td>
+                                            <td>Escalated</td>
+                                            <td><a href="#">screenshot.png</a></td>
+                                            <td>2026-04-30</td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td>GSFS005</td>
+                                            <td>General inquiry</td>
+                                            <td>Closed</td>
+                                            <td><a href="#">query.docx</a></td>
+                                            <td>2026-05-01</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="card card-grid">
+                    <div class="card-body">
+                        <div class="table-header-fix bank-tenure-rate-table">
+                            <div class="table-responsive table-scroll-wrapper equal-table">
+                                <table class="table table-bordered align-middle no-mb">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="7" class="th-1 text-center">HO Feedbacks Details</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Sr. No</th>
+                                            <th>GSFS Recipt No.</th>
+                                            <th>Feedback</th>
+                                            <th>Remarks</th>
+                                            <th>Attachments</th>
+                                            <th>Expected Date</th>
+                                            <th>Edit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>GSFS001</td>
+                                            <td>Service delay</td>
+                                            <td>Pending review</td>
+                                            <td><a href="#">file1.pdf</a></td>
+                                            <td>2026-04-25</td>
+                                            <td>
+                                                <div class="btn-gridview">
+                                                    <button class="btn btn-danger">Edit</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>GSFS002</td>
+                                            <td>Incorrect billing</td>
+                                            <td>Resolved</td>
+                                            <td><a href="#">bill_issue.jpg</a></td>
+                                            <td>2026-04-26</td>
+                                            <td>
+                                                <div class="btn-gridview">
+                                                    <button class="btn btn-danger">Edit</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>GSFS003</td>
+                                            <td>Technical issue</td>
+                                            <td>In progress</td>
+                                            <td><a href="#">error_log.txt</a></td>
+                                            <td>2026-04-28</td>
+                                            <td>
+                                                <div class="btn-gridview">
+                                                    <button class="btn btn-danger">Edit</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td>GSFS004</td>
+                                            <td>Late response</td>
+                                            <td>Escalated</td>
+                                            <td><a href="#">screenshot.png</a></td>
+                                            <td>2026-04-30</td>
+                                            <td>
+                                                <div class="btn-gridview">
+                                                    <button class="btn btn-danger">Edit</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td>GSFS005</td>
+                                            <td>General inquiry</td>
+                                            <td>Closed</td>
+                                            <td><a href="#">query.docx</a></td>
+                                            <td>2026-05-01</td>
+                                            <td>
+                                                <div class="btn-gridview">
+                                                    <button class="btn btn-danger">Edit</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="p-1 m-1">
+                    <button class="btn btn-danger">Back</button>
+                </div>
+
+                </div>
+            </div>
+            <!-- </div> -->
+        <!-- </div> -->
+        <!-- <footer>
+            Copyright &copy; 2025 LG Electronics India Limited. All Rights Reserved
+        </footer>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery-3.7.1.js"></script>
+        <script src="js/jquery-ui.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/custom.js"></script> -->
+</body>

@@ -1,0 +1,13 @@
+<div class="modal-backdrop" *ngIf="showModal">
+  <div class="modal-box">
+
+    <h3 class="{{type}}">{{ title }}</h3>
+
+    <p>{{ message }}</p>
+
+    <button class="btn btn-primary" (click)="closeModal()">
+      OK
+    </button>
+
+  </div>
+</div>

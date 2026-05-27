@@ -1,0 +1,14 @@
+<div class="d-flex">
+    <app-nav-bar></app-nav-bar>
+
+    <div class="content w-100">
+        <app-header></app-header>
+
+        <!-- Routed pages will load here -->
+        <router-outlet></router-outlet>
+
+        <app-alert-modal [type]="modalType" [message]="modalMessage" [isOpen]="isModalOpen"
+            (close)="handleModalClose()">
+        </app-alert-modal>
+    </div>
+</div>
