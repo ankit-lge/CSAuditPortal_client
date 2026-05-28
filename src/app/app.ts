@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
 import { AlertService } from './services/alert-service';
 
 @Component({
@@ -21,8 +21,15 @@ export class App {
       this.modalMessage = res.message;
       this.isModalOpen = res.isOpen;
     });
+
+    this.checkScreenSize();
   }
 
+   @HostListener('window:resize')
+onResize() {
+
+  this.checkScreenSize();
+}
   
   handleSidebar(value: boolean){
     this.isCollapsed.set(value);
@@ -30,4 +37,28 @@ export class App {
   handleModalClose() {
     this.isModalOpen = false;
   }
+
+    checkScreenSize() {
+
+  const width = window.innerWidth;
+
+  // Mobile
+  if (width < 768) {
+    this.isCollapsed.set(true);
+
+  }
+
+  // Tablet
+  else if (width < 1200) {
+    this.isCollapsed.set(true);
+
+  }
+
+  // Desktop
+  else {
+    this.isCollapsed.set(false);
+
+  }
+
+}
 }

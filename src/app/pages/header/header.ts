@@ -15,4 +15,5 @@ export class Header {
 
   this.toggle.emit(this.isSidebarCollapsed);
   }
+  
 }

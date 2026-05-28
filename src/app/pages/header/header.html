@@ -1,14 +1,50 @@
 <header class="custom-header">
-  <div class="header-left">
-    <button class="sidebar-toggle-btn" (click)="toggleSideBar()"><i class="fa-solid fa-bars"></i></button>
-  <img src="/logo.png" class="logo-img" alt="LG Logo">
-</div>
-  <div class="header-right">
-    <div class="user-info">
-      <i class="fa-regular fa-circle-user"></i>
-      <span>USER <strong style="color: #a50034;">LG ADMIN - (LGADMIN)</strong></span>
+
+    <!-- Left -->
+    <div class="header-left">
+
+        <button class="sidebar-toggle-btn"
+                (click)="toggleSideBar()">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+        <img src="/logo.png"
+             class="logo-img"
+             alt="LG Logo">
+
     </div>
-    <i class="fa-solid fa-arrow-right-from-bracket"></i>
-    <button class="logout-btn">Logout</button>
-  </div>
+
+    <!-- Right -->
+    <div class="header-right">
+
+        <div class="user-info">
+
+            <i class="fa-regular fa-circle-user"></i>
+
+            <div class="user-text">
+
+                <span class="welcome-text">
+                    USER
+                </span>
+
+                <strong>
+                    LG ADMIN - (LGADMIN)
+                </strong>
+
+            </div>
+
+        </div>
+
+        <button class="logout-btn">
+
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+            <span>Logout</span>
+
+        </button>
+
+    </div>
+
 </header>
