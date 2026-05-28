@@ -13,6 +13,7 @@ export class App {
   modalMessage: string = '';
   isModalOpen: boolean = false;
   isCollapsed  = signal(false);
+  isMobile = signal(false);
   constructor(private alertService: AlertService) {}
 
   ngOnInit() {
@@ -44,18 +45,21 @@ onResize() {
 
   // Mobile
   if (width < 768) {
+     this.isMobile.set(true);
     this.isCollapsed.set(true);
 
   }
 
   // Tablet
   else if (width < 1200) {
+    this.isMobile.set(false)
     this.isCollapsed.set(true);
 
   }
 
   // Desktop
   else {
+    this.isMobile.set(false)
     this.isCollapsed.set(false);
 
   }

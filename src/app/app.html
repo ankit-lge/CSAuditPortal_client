@@ -1,8 +1,10 @@
-<div class="layout-wrapper">
+<div class="layout-wrapper"
+[class.mobile-layout]="isMobile()">
 
     <!-- Sidebar -->
     <app-nav-bar
-        [isCollapsed]="isCollapsed()">
+        [isCollapsed]="isCollapsed()"
+        [class.mobile-sidebar]="isMobile()">
     </app-nav-bar>
 
     <!-- Main Content Area -->
