@@ -12,7 +12,7 @@ export class App {
   modalType: any;
   modalMessage: string = '';
   isModalOpen: boolean = false;
-
+  isCollapsed  = signal(false);
   constructor(private alertService: AlertService) {}
 
   ngOnInit() {
@@ -23,6 +23,10 @@ export class App {
     });
   }
 
+  
+  handleSidebar(value: boolean){
+    this.isCollapsed.set(value);
+  }
   handleModalClose() {
     this.isModalOpen = false;
   }

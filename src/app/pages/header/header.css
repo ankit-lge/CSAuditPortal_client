@@ -1,0 +1,26 @@
+.sidebar-toggle-btn {
+    width: 42px;
+    height: 42px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    transition: all 0.3s ease;
+    background: none !important;
+}
+
+.sidebar-toggle-btn i {
+    font-size: 17px;
+    transition: transform 0.3s ease;
+}
+
+
+.sidebar-toggle-btn:hover {
+    color: #a50034;
+}
+
+.sidebar-toggle-btn:active {
+    transform: scale(0.95);
+}

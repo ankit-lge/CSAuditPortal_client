@@ -1,38 +1,82 @@
+<div class="sidebar" [class.sidebar-collapsed]="isCollapsed">
 
-    <div class="sidebar">
-        <h4 class="logo">LG CSNET</h4>
-        <hr>
-        <ul class="menu">
-            <input type="checkbox" id="menu-toggle">
-            <label for="menu-toggle" class="menu-item">
-                CS Audit Portal
-                <span class="arrow">▼</span> </label>
-            <ul class="submenu">
-               
-  <li>
-    <a routerLink="/audit-claim-upload" routerLinkActive="active">
-      Audit Claim Upload
-    </a>
-  </li>
+    <!-- Top -->
+    <div class="sidebar-top">
 
-  <li>
-    <a routerLink="/audit-monitoring-dashboard" routerLinkActive="active">
-      Audit Monitoring Dashboard
-    </a>
-  </li>
+        <div class="brand">
+            <div class="brand-info" *ngIf="!isCollapsed">
+                <h3>LG CSNET</h3>
+            </div>
 
-  <li>
-    <a routerLink="/review" routerLinkActive="active">
-      Audit Review Process
-    </a>
-  </li>
+        </div>
 
-  <li>
-    <a routerLink="/evaluation" routerLinkActive="active">
-      Audit Evaluation Process
-    </a>
-  </li>
-</ul>
-  </ul>
-        
     </div>
+
+    <!-- Menu -->
+    <div class="sidebar-menu">
+        <!-- Parent -->
+        <div class="menu-group">
+
+            <div class="menu-parent"
+                 (click)="auditOpen = !auditOpen">
+
+                <div class="menu-left">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <span *ngIf="!isCollapsed">
+                        CS Audit Portal
+                    </span>
+
+                </div>
+
+                <i class="fa-solid fa-chevron-down arrow"
+                   *ngIf="!isCollapsed"
+                   [class.rotate]="auditOpen">
+                </i>
+
+            </div>
+
+            <!-- Child -->
+            <div class="submenu"
+                 *ngIf="auditOpen && !isCollapsed">
+
+                <a routerLink="/audit-claim-upload"
+                   routerLinkActive="active-link">
+
+                    <i class="fa-regular fa-circle-dot"></i>
+                    <span>Audit Claim Upload</span>
+
+                </a>
+
+                <a routerLink="/audit-monitoring-dashboard"
+                   routerLinkActive="active-link">
+
+                    <i class="fa-regular fa-circle-dot"></i>
+                    <span>Monitoring Dashboard</span>
+
+                </a>
+
+                <a routerLink="/review"
+                   routerLinkActive="active-link">
+
+                    <i class="fa-regular fa-circle-dot"></i>
+                    <span>Review Process</span>
+
+                </a>
+
+                <a routerLink="/evaluation"
+                   routerLinkActive="active-link">
+
+                    <i class="fa-regular fa-circle-dot"></i>
+                    <span>Evaluation Process</span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
