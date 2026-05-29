@@ -1,18 +1,16 @@
-<div *ngIf="isOpen" class="modal-backdrop">
-  <div class="modal">
-    
-    <div class="modal-header" [ngClass]="type">
-      <span>{{ type | uppercase }}</span>
-      <span class="close-icon" (click)="close.emit()">×</span>
-    </div>
-
-    <div class="modal-body">
-      {{ message }}
-    </div>
-
-    <div class="modal-footer">
-      <button (click)="close.emit()">OK</button>
-    </div>
-
+<div *ngIf="isOpen" class="custom-toast" [ngClass]="type">
+  <div class="toast-icon">
+    <span *ngIf="type === 'success'">✓</span>
+    <span *ngIf="type === 'error'">✕</span>
+    <span *ngIf="type === 'warning'">⚠</span>
   </div>
+
+  <div class="toast-content">
+    <div class="toast-title">{{ headerText }}</div>
+    <div class="toast-message">{{ message }}</div>
+  </div>
+
+  <button class="toast-close" (click)="onClose()">
+    ×
+  </button>
 </div>

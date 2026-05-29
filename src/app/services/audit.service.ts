@@ -43,6 +43,20 @@ export class AuditService {
     );
   }
 
+  SaveStatus(status: string, selectedIds: number[]) {
+  return this.http.post(`${this.apiUrl}Audit/save-status`, {
+    status,
+    selectedIds
+  });
+}
+
+RejectStatus(reason: string, selectedIds: number[]){
+  return this.http.post(`${this.apiUrl}Audit/reject-status`, {
+    reason, 
+    selectedIds
+  })
+}
+
   private handleError(error: HttpErrorResponse) {
     let errMsg: string;
     if (error.status === 0 || error.status === 400) {

@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
-import * as FileSaver from 'file-saver';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuditService } from '../../services/audit.service';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { ViewChild, ElementRef } from '@angular/core';
+import { AlertService } from '../../services/alert-service';
 
 declare var bootstrap: any;
 
@@ -31,13 +30,16 @@ export class AuditClaimUpload implements OnInit {
   selectedFile: File | null = null;
   verifyExcelUpload: boolean = false;
   auditTypes: auditType[] = [];
-
+  status: string = '';
+  selectedIds: number[] = [];
+  rejectReason: string = '';
   auditTypes$!: Observable<auditType[]>;
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private auditService: AuditService,
+    private alertservice: AlertService
   ) {
     this.auditTypes$ = this.auditService.getAuditDropdown();
   }
@@ -290,7 +292,6 @@ export class AuditClaimUpload implements OnInit {
       )
       .subscribe({
         next: (res) => {
-          debugger;
           console.log('UploadProcess result', res);
           if (res.status == 'Success') {
             this.resetForm();
@@ -307,11 +308,53 @@ export class AuditClaimUpload implements OnInit {
       });
   }
 
+  saveStatus(){
+    if (!this.status) {
+      this.alertservice.show('warning', "Please select a status")
+    return;
+  }
+
+  if(this.selectedIds.length == 0){
+    this.alertservice.show('warning', "Please select atleast one data to start process.")
+    return;
+  }
+    this.auditService.SaveStatus(this.status, this.selectedIds).subscribe({
+      next: res =>{
+        console.log("Saved successfully", res);
+      },
+      error : err =>{
+        console.error("some error while saving data.", err);
+        
+      }
+    })
+  }
+
+  rejectStatus(){
+    if(!this.rejectReason){
+      this.alertservice.show('warning', "Reject reason is mandetory")
+      return;
+    }
+
+    if(this.selectedIds.length == 0){
+    this.alertservice.show('warning', "Please select atleast one data to start process.")
+    return;
+  }
+
+  this.auditService.RejectStatus(this.rejectReason, this.selectedIds).subscribe({
+    next: res =>{
+    },
+    error: err =>{
+      
+    }
+  })
+
+  }
+
   // =====================================
   // DATE FORMAT METHOD
   // =====================================
 
-  
+
   formatDate(date: any): string {
     if (!date) {
       return '';
