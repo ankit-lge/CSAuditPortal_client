@@ -10,29 +10,26 @@ import { ViewChild, ElementRef } from '@angular/core';
 
 declare var bootstrap: any;
 
-
 interface auditType {
-  ID: Number,
-  VALUE: string
+  ID: Number;
+  VALUE: string;
 }
 
 @Component({
   selector: 'app-audit-claim-upload',
   standalone: false,
   templateUrl: './audit-claim-upload.html',
-  styleUrls: ['./audit-claim-upload.css']
+  styleUrls: ['./audit-claim-upload.css'],
 })
-
 export class AuditClaimUpload implements OnInit {
-
   auditClaimUpload!: FormGroup;
   isFileUploaded: boolean = false;
   FileUploadedData: any[] = [];
   uploadedFileName: string = '';
   uploadFileFullPath: string = '';
-  selectedAuditTypeId: any;
+  selectedAuditTypeId: any = '';
   selectedFile: File | null = null;
-
+  verifyExcelUpload: boolean = false;
   auditTypes: auditType[] = [];
 
   auditTypes$!: Observable<auditType[]>;
@@ -41,18 +38,15 @@ export class AuditClaimUpload implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private auditService: AuditService,
-    private http: HttpClient
   ) {
     this.auditTypes$ = this.auditService.getAuditDropdown();
   }
 
-
   ngOnInit(): void {
-
     this.auditClaimUpload = this.fb.group({
       auditType: ['', Validators.required],
       fromDate: ['', Validators.required],
-      uploadedData: ['', Validators.required]
+      uploadedData: ['', Validators.required],
     });
   }
 
@@ -60,13 +54,8 @@ export class AuditClaimUpload implements OnInit {
   fileInput!: ElementRef;
 
   resetForm(): void {
-
     // RESET REACTIVE FORM
-    this.auditClaimUpload.patchValue({
-      auditType: null,
-      fromDate: null,
-      uploadedData: null
-    });
+    this.auditClaimUpload.reset();
 
     this.auditClaimUpload.markAsPristine();
 
@@ -81,11 +70,8 @@ export class AuditClaimUpload implements OnInit {
 
     // RESET FILE INPUT
     if (this.fileInput) {
-
       this.fileInput.nativeElement.value = '';
-
     }
-
   }
   onSearchByDate(event: any) {
     if (event.target.checked) {
@@ -98,7 +84,6 @@ export class AuditClaimUpload implements OnInit {
   modalType: string = '';
 
   openModal(title: string, message: string, type: string) {
-
     this.modalTitle = title;
     this.modalMessage = message;
     this.modalType = type;
@@ -106,7 +91,6 @@ export class AuditClaimUpload implements OnInit {
     const modalElement = document.getElementById('commonModal');
 
     if (modalElement) {
-
       const modal = new bootstrap.Modal(modalElement);
 
       modal.show();
@@ -114,33 +98,19 @@ export class AuditClaimUpload implements OnInit {
   }
 
   openUploadPopup() {
-
-    this.openModal(
-      'Success',
-      'File uploaded successfully',
-      'success'
-    );
+    this.openModal('Success', 'File uploaded successfully', 'success');
   }
 
- 
   downloadTemplate() {
-
-    const selectedAuditType =
-      this.auditClaimUpload.get('auditType')?.value;
+    const selectedAuditType = this.auditClaimUpload.get('auditType')?.value;
 
     if (!selectedAuditType) {
-
-      this.openModal(
-        'Error',
-        'Please select audit type',
-        'error'
-      );
+      this.openModal('Error', 'Please select audit type', 'error');
 
       return;
     }
 
     const templateFiles: any = {
-
       1: 'AMC_Incentive_Hold.xlsx',
       2: 'Beyond_AMC_Policy.xlsx',
       3: 'Claims_Self_Registration.xlsx',
@@ -161,30 +131,22 @@ export class AuditClaimUpload implements OnInit {
       18: 'LGC_Part_Rejection.xlsx',
       19: 'LGC_Non_Part_Rejection.xlsx',
       20: 'Cancellation_Claim_Recovery.xlsx',
-      21: 'Multiple_Bracket.xlsx'
+      21: 'Multiple_Bracket.xlsx',
     };
 
-    const fileName =
-      templateFiles[selectedAuditType];
+    const fileName = templateFiles[selectedAuditType];
 
     if (!fileName) {
-
-      this.openModal(
-        'Error',
-        'Template not found',
-        'error'
-      );
+      this.openModal('Error', 'Template not found', 'error');
 
       return;
     }
 
-    const filePath =
-      `assets/templates/${fileName}`;
+    const filePath = `assets/templates/${fileName}`;
 
     console.log(filePath);
 
-    const link =
-      document.createElement('a');
+    const link = document.createElement('a');
 
     link.href = filePath;
 
@@ -204,7 +166,6 @@ export class AuditClaimUpload implements OnInit {
   //     alert("Please select audit type");
   //     return;
   //   }
-
 
   // const res = [
   //   { claimId: 101, customerName: 'Alice', amount: 5000, status: 'Approved' },
@@ -262,16 +223,12 @@ export class AuditClaimUpload implements OnInit {
       // Convert sheet to JSON array
       const jsonDataF = XLSX.utils.sheet_to_json(sheet, {
         header: 1,
-        defval: ''
+        defval: '',
       }) as any[][];
 
-      console.log("Excel Raw Data", jsonDataF);
+      console.log('Excel Raw Data', jsonDataF);
       if (jsonDataF.length === 0) {
-        this.openModal(
-          'Error',
-          'Excel file is empty',
-          'error'
-        );
+        this.openModal('Error', 'Excel file is empty', 'error');
         return;
       }
       // Headers
@@ -288,14 +245,7 @@ export class AuditClaimUpload implements OnInit {
           return obj;
         })
         .filter((obj: any) => {
-
-          return Object.values(obj).some(
-            val =>
-              val !== null &&
-              val !== undefined &&
-              val !== ''
-          );
-
+          return Object.values(obj).some((val) => val !== null && val !== undefined && val !== '');
         });
       // this.openModal(
       //   'Success',
@@ -305,85 +255,64 @@ export class AuditClaimUpload implements OnInit {
     };
     reader.readAsArrayBuffer(file);
 
-    this.auditService.UploadAuditFile(file, this.auditClaimUpload.get('auditType')?.value)
+    this.auditService
+      .UploadAuditFile(file, this.auditClaimUpload.get('auditType')?.value)
       .subscribe({
         next: (res) => {
-          console.log("Upload File response", res);
+          console.log('Upload File response', res);
           this.uploadFileFullPath = res.fullPath;
         },
         error: (err) => {
           console.log(err);
-        }
+        },
       });
-
   }
 
   ProcessUploadData() {
-   
     if (!this.uploadFileFullPath || !this.auditClaimUpload.get('auditType')?.value) {
       this.openModal(
         'Validation',
         'Kindly select the audit type and upload the Excel file.',
-        'warning'
+        'warning',
       );
       return;
     }
-    if(!this.auditClaimUpload.get('fromDate')?.value){
-      this.openModal(
-        'Validation',
-        'Kindly select the audit date.',
-        'warning'
-      );
+    if (!this.auditClaimUpload.get('fromDate')?.value) {
+      this.openModal('Validation', 'Kindly select the audit date.', 'warning');
       return;
     }
-    const auditDate = this.formatDate(
-      this.auditClaimUpload.get('fromDate')?.value
-    );
-    this.auditService.ProcessUploadData(
-      this.uploadFileFullPath,
-      this.auditClaimUpload.get('auditType')?.value,
-      auditDate
-    ).subscribe({
-      next: (res) => {
-        debugger;
-        console.log("UploadProcess result", res);
-        if (res.status == "Success") {
-          this.resetForm();
-          this.openModal(
-            'Success',
-            res.data || 'Data uploaded successfully.',
-            'success'
-          );
-        }
-        else {
-          this.openModal(
-            'Success',
-            res.data || 'Data uploaded Failed.',
-            'success'
-          );
-        }
+    const auditDate = this.formatDate(this.auditClaimUpload.get('fromDate')?.value);
+    this.auditService
+      .ProcessUploadData(
+        this.uploadFileFullPath,
+        this.auditClaimUpload.get('auditType')?.value,
+        auditDate,
+      )
+      .subscribe({
+        next: (res) => {
+          debugger;
+          console.log('UploadProcess result', res);
+          if (res.status == 'Success') {
+            this.resetForm();
+            this.openModal('Success', res.data || 'Data uploaded successfully.', 'success');
+          } else {
+            this.openModal('Success', res.data || 'Data uploaded Failed.', 'success');
+          }
+        },
+        error: (err) => {
+          console.error('Upload Error', err);
 
-      },
-      error: (err) => {
-        console.error("Upload Error", err);
-
-        this.openModal(
-          'Error',
-          err?.error?.message || 'Failed to upload data.',
-          'error'
-        );
-      }
-
-    });
+          this.openModal('Error', err?.error?.message || 'Failed to upload data.', 'error');
+        },
+      });
   }
-
 
   // =====================================
   // DATE FORMAT METHOD
   // =====================================
 
+  
   formatDate(date: any): string {
-
     if (!date) {
       return '';
     }
@@ -392,13 +321,9 @@ export class AuditClaimUpload implements OnInit {
 
     const year = d.getFullYear();
 
-    const month = String(
-      d.getMonth() + 1
-    ).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
 
-    const day = String(
-      d.getDate()
-    ).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
 
     return `${year}-${month}-${day}`;
   }
@@ -406,5 +331,4 @@ export class AuditClaimUpload implements OnInit {
   trackById(index: number, item: auditType) {
     return item.ID;
   }
-
 }

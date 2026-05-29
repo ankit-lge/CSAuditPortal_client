@@ -5,66 +5,62 @@ import { Observable } from 'rxjs/internal/Observable';
 import { AuditService } from '../../services/audit.service';
 
 interface auditType {
-  ID: Number,
-  VALUE: string
+  ID: Number;
+  VALUE: string;
 }
 
 @Component({
   selector: 'app-audit-monitoring-dashboard',
-   standalone: false,
+  standalone: false,
   templateUrl: './audit-monitoring-dashboard.html',
-  styleUrls: ['./audit-monitoring-dashboard.css'] 
+  styleUrls: ['./audit-monitoring-dashboard.css'],
 })
-export class AuditMonitoringDashboard implements OnInit{
+export class AuditMonitoringDashboard implements OnInit {
+  selectedStatus: string = 'pending';
 
- selectedStatus: string = 'pending';
-
- monitoring!: FormGroup;
-  constructor(private router: Router,
+  monitoring!: FormGroup;
+  constructor(
+    private router: Router,
     private fb: FormBuilder,
-    private auditService: AuditService) {
+    private auditService: AuditService,
+  ) {
     this.auditTypes$ = this.auditService.getAuditDropdown();
   }
 
   ngOnInit(): void {
     this.monitoring = this.fb.group({
-      status: ['', Validators.required], 
-      auditType: ['', Validators.required], 
-      fromDate: ['', Validators.required], 
-      toDate: ['', Validators.required], 
-    })
+      status: ['', Validators.required],
+      auditType: ['', Validators.required],
+      fromDate: ['', Validators.required],
+      toDate: ['', Validators.required],
+    });
   }
 
-   auditTypes: auditType[] = [];
-  
-    auditTypes$!: Observable<auditType[]>;
+  auditTypes: auditType[] = [];
 
+  auditTypes$!: Observable<auditType[]>;
 
-  auditMonitoringForm(){
+  auditMonitoringForm() {
     // alert(1);
-    console.log("auditMonifitoringForm value", this.monitoring.value);
-    // api code 
-  
+    console.log('auditMonifitoringForm value', this.monitoring.value);
+    // api code
 
     // SEARCH / SUBMIT
-
 
     if (this.monitoring.invalid) {
       this.monitoring.markAllAsTouched();
       return;
     }
 
-    console.log("auditMonitoringForm value", this.monitoring.value);
+    console.log('auditMonitoringForm value', this.monitoring.value);
 
     // API CALL
     // this.auditService.searchData(this.monitoring.value).subscribe(...)
   }
-   downloadData() {
-  }
-   
-   // RESET FORM
-  resetForm() {
+  downloadData() {}
 
+  // RESET FORM
+  resetForm() {
     this.monitoring.reset();
 
     this.selectedStatus = 'pending';
@@ -74,17 +70,15 @@ export class AuditMonitoringDashboard implements OnInit{
       status: '',
       auditType: '',
       fromDate: '',
-      toDate: ''
+      toDate: '',
     });
 
     console.log('Form Reset Successfully');
   }
 
-   // REJECT REQUEST
+  // REJECT REQUEST
   rejectRequest() {
-
     if (confirm('Are you sure you want to reject this request?')) {
-
       console.log('Rejected Data:', this.monitoring.value);
 
       // API CALL
@@ -106,9 +100,7 @@ export class AuditMonitoringDashboard implements OnInit{
 
   // DELETE DATA
   deleteData() {
-
     if (confirm('Are you sure you want to delete this record?')) {
-
       console.log('Delete Data:', this.monitoring.value);
 
       // API CALL
@@ -126,12 +118,11 @@ export class AuditMonitoringDashboard implements OnInit{
 
       alert('Delete API Pending');
     }
+  }
 
-    
- 
-   
-}
-
-  
-
+  onSearchByDate(event: any) {
+    if (!event.target.checked) {
+      this.router.navigate(['/audit-claim-upload']);
+    }
+  }
 }
