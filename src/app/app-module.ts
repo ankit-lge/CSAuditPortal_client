@@ -15,6 +15,9 @@ import { AuditClaimUpload } from './components/audit-claim-upload/audit-claim-up
 import { CommonModule } from '@angular/common';
 import { Modalpopup } from './common/modalpopup/modalpopup';
 import { AlertModal } from './pages/alert-modal/alert-modal';
+import { RouteLoader } from "./core/loader/route-loader/route-loader";
+
+import { ApiLoader } from './core/loader/api-loader/api-loader';
 
 @NgModule({
   declarations: [
@@ -26,9 +29,11 @@ import { AlertModal } from './pages/alert-modal/alert-modal';
     AuditReviewProcess,
     AuditEvaluationProcess,
     Modalpopup,
-    AlertModal
+    ApiLoader,
+    AlertModal,
+    RouteLoader
   ],
-  imports: [BrowserModule, CommonModule, AppRoutingModule, ReactiveFormsModule, FormsModule],
+  imports: [BrowserModule, CommonModule, AppRoutingModule, ReactiveFormsModule, FormsModule,],
   providers: [provideBrowserGlobalErrorListeners(), provideHttpClient()],
   bootstrap: [App],
 })

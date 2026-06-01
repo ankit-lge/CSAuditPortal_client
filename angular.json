@@ -76,9 +76,9 @@
               "outputHashing": "all"
             },
             "development": {
-              "optimization": true,
-              "extractLicenses": true,
-              "sourceMap": false,
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -90,9 +90,6 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "options": {
-            "allowedHosts": ["nursing-outrage-ammonia.ngrok-free.dev"]
-          },
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
@@ -110,4 +107,4 @@
       }
     }
   }
-}
+} 
