@@ -10,7 +10,7 @@ import { AuditMonitoringDashboard } from './components/audit-monitoring-dashboar
 import { AuditReviewProcess } from './components/audit-review-process/audit-review-process';
 import { AuditEvaluationProcess } from './components/audit-evaluation-process/audit-evaluation-process';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { AuditClaimUpload } from './components/audit-claim-upload/audit-claim-upload';
 import { CommonModule } from '@angular/common';
 import { Modalpopup } from './common/modalpopup/modalpopup';
@@ -18,6 +18,7 @@ import { AlertModal } from './pages/alert-modal/alert-modal';
 import { RouteLoader } from "./core/loader/route-loader/route-loader";
 
 import { ApiLoader } from './core/loader/api-loader/api-loader';
+import { apiLoaderInterceptor } from './core/interceptor/api-loader-interceptor';
 
 @NgModule({
   declarations: [
@@ -33,8 +34,16 @@ import { ApiLoader } from './core/loader/api-loader/api-loader';
     AlertModal,
     RouteLoader
   ],
-  imports: [BrowserModule, CommonModule, AppRoutingModule, ReactiveFormsModule, FormsModule,],
-  providers: [provideBrowserGlobalErrorListeners(), provideHttpClient()],
+  imports: [BrowserModule, CommonModule, AppRoutingModule, ReactiveFormsModule, FormsModule, HttpClientModule],
+  providers: [
+    provideBrowserGlobalErrorListeners(), 
+    provideHttpClient(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: apiLoaderInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [App],
 })
 export class AppModule {}
