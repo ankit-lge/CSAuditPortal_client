@@ -39,25 +39,25 @@
                 "output": "assets"
               }
             ],
-           "styles": [
-  "src/styles.css",
-  "src/assets/css/bootstrap.min.css",
-  "src/assets/css/font.css",
-  "src/assets/css/all.min.css",
-  "src/assets/css/style-responsive.css",
-  "src/assets/css/styles.css",
-  "node_modules/jquery-ui-dist/jquery-ui.min.css",
-  "node_modules/owl.carousel/dist/assets/owl.carousel.css",
-  "node_modules/owl.carousel/dist/assets/owl.theme.default.css"
-],
+            "styles": [
+              "src/styles.css",
+              "public/assets/css/bootstrap.min.css",
+              "public/assets/css/font.css",
+              "public/assets/css/all.min.css",
+              "public/assets/css/style-responsive.css",
+              "public/assets/css/styles.css",
+              "node_modules/jquery-ui-dist/jquery-ui.min.css",
+              "node_modules/owl.carousel/dist/assets/owl.carousel.css",
+              "node_modules/owl.carousel/dist/assets/owl.theme.default.css"
+            ],
 
-"scripts": [
-  "node_modules/jquery/dist/jquery.min.js",
-  "node_modules/jquery-ui-dist/jquery-ui.min.js",
-  "src/assets/js/bootstrap.bundle.min.js",
-  "src/assets/js/custom.js",
-  "node_modules/owl.carousel/dist/owl.carousel.min.js"
-]
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/jquery-ui-dist/jquery-ui.min.js",
+              "public/assets/js/bootstrap.bundle.min.js",
+              "public/assets/js/custom.js",
+              "node_modules/owl.carousel/dist/owl.carousel.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -78,12 +78,21 @@
             "development": {
               "optimization": true,
               "extractLicenses": true,
-              "sourceMap": false
+              "sourceMap": false,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
+          "options": {
+            "allowedHosts": ["nursing-outrage-ammonia.ngrok-free.dev"]
+          },
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {

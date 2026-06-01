@@ -1,147 +1,176 @@
 <!-- Page Content -->
 <div class="container-fluid mt-3">
+  <div class="d-flex justify-content-between align-items-center mb-1">
+    <h6 class="text-dark">CS Audit Portal</h6>
 
-    <div class="d-flex justify-content-between align-items-center mb-1">
-        <h6 class="text-dark">CS Audit Portal</h6>
-
-        <div class="header-right">
-            <div class="user-info">
-                <span>
-                    USER
-                    <strong style="color: #a50034;">CS Audit Portal</strong>
-                    <strong style="color: gray;">/Claim Search</strong>
-                </span>
-            </div>
-        </div>
+    <div class="header-right">
+      <div class="user-info">
+        <span>
+          USER
+          <strong style="color: #a50034">CS Audit Portal</strong>
+          <strong style="color: gray">/Claim Search</strong>
+        </span>
+      </div>
+    </div>
+  </div>
+<ng-container *ngIf="!verifyExcelUpload; else verifyData">
+     <div class="card shadow-sm">
+    <div class="card-header">
+      <h2 class="page-title">Audit Claim Upload</h2>
     </div>
 
-    <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="search-date">
+        <input type="checkbox" class="checkbox" (change)="onSearchByDate($event)" />
 
-        <div class="card-header">
-            <h2 class="page-title">Audit Claim Upload</h2>
-        </div>
+        <h6 class="text-dark">Search By Date</h6>
+      </div>
 
-        <div class="card-body">
-
-            <div class="search-date">
-                <input type="checkbox" class="checkbox" (change)="onSearchByDate($event)">
-
-                <h6 class="text-dark">Search By Date</h6>
+      <form [formGroup]="auditClaimUpload">
+        <div class="row g-3">
+          <!-- Audit Type -->
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="form-floating">
+              <select
+                class="form-select table-header-fix"
+                id="statesSelect"
+                formControlName="auditType"
+                [(ngModel)]="selectedAuditTypeId"
+              >
+                <option value="" selected>Select Audit Type</option>
+                @for (item of auditTypes$ | async; track item.ID) {
+                  <option [value]="item.ID">
+                    {{ item.VALUE }}
+                  </option>
+                }
+              </select>
+              <label for="statesSelect"> Audit Type </label>
             </div>
+          </div>
+          <!-- Date -->
+          <div class="col-lg-2 col-md-6 col-sm-12">
+            <div class="form-floating">
+              <input type="date" class="form-control" id="auditDate" formControlName="fromDate" />
 
-             <form [formGroup]="auditClaimUpload">
+              <label for="auditDate"> From Audit Date </label>
+            </div>
+          </div>
 
-                <div class="row g-3">
+          <!-- File Upload -->
+          <div class="col-lg-3 col-md-6 col-sm-12">
+            <input
+              #fileInput
+              type="file"
+              class="form-control file-width"
+              formControlName="uploadedData"
+              (change)="UploadFile($event)"
+            />
+          </div>
 
-                    <!-- Audit Type -->
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-
-                        <div class="form-floating">
-                            <select
-                                class="form-select table-header-fix"
-                                id="statesSelect"
-                                formControlName="auditType" [(ngModel)]= "selectedAuditTypeId">
-                                <option value="">
-                                    Select Audit Type
-                                </option>
-                                @for (item of auditTypes$ | async; track item.ID) {
-                                    <option [value]="item.ID" >
-                                        {{ item.VALUE }}
-                                    </option>
-                                }
-                            </select>
-                            <label for="statesSelect">
-                                Audit Type
-                            </label>
-                        </div>
-                       
-                    </div>
-                    <!-- Date -->
-                    <div class="col-lg-2 col-md-6 col-sm-12">
-                        <div class="form-floating">
-                            <input
-                                type="date"
-                                class="form-control"
-                                id="auditDate"
-                                formControlName="fromDate">
-
-                            <label for="auditDate">
-                                From Audit Date
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- File Upload -->
-                    <div class="col-lg-3 col-md-6 col-sm-12 ">
-                        <input
-                          #fileInput
-                            type="file"
-                            class="form-control file-width"
-                            formControlName="uploadedData"
-                            (change)="UploadFile($event)">
-
-                    </div>
-
-                    <!-- Download Button -->
-                    <div class="col-lg-4 col-md-6 col-sm-12">
-
-                        <button
-                            type="button"
-                            class="btn btn-warning"
-                            (click)="downloadTemplate()">
-
-                            Download Template for Claim Upload (.xls)
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <!-- Buttons -->
-                <div class="p-1 d-flex gap-2 mt-4">
-
-                    <button type="button" class="btn btn-danger" (click)="resetForm()"> Reset</button>
-                    <button type="button" class="btn btn-success" (click)="ProcessUploadData()"> Upload </button>
-                </div>
-            </form>
+          <!-- Download Button -->
+          <div class="col-lg-4 col-md-6 col-sm-12">
+            <button type="button" class="btn btn-warning" (click)="downloadTemplate()">
+              Download Template for Claim Upload (.xls)
+            </button>
+          </div>
         </div>
+
+        <!-- Buttons -->
+        <div class="p-1 d-flex gap-2 mt-4">
+          <button type="button" class="btn btn-danger" (click)="resetForm()">Reset</button>
+          <button type="button" class="btn btn-success" (click)="ProcessUploadData()">
+            Upload
+          </button>
+        </div>
+        <button type="button" class="btn btn-danger m-1" (click)="verifyExcelUpload=true">
+          Verify Uploaded Excel Data
+        </button>
+      </form>
     </div>
+  </div>
+</ng-container>
+
+<ng-template #verifyData>
+    <div class="card card-grid">
+                    <div class="card-body">
+                        <div class="table-header-fix bank-tenure-rate-table">
+                            <div class="table-responsive table-scroll-wrapper equal-table">
+                                <table class="table table-bordered align-middle no-mb">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" name="" id=""> Select All</th>
+                                            <th>Date Month</th>
+                                            <th>Feedback/No Feedback</th>
+                                            <th>Aging (Day)</th>
+                                            <th>Customer Feedback Date</th>
+                                            <th>Audit Date</th>
+                                            <th>Audit Type</th>
+                                            <th>ESC/LGC Date</th>
+                                            <th>Sale Name</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="9"><p class="text-center">No Data Found</p></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="w-25">
+                        <div class="form-group">
+                            <label for="status">Status <sup class="text-danger"><small>*</small></sup></label>
+                            <div class="d-flex justify-content-between">
+                                <select class="form-select" [(ngModel)]="status" name="status">
+            <option value="">Select Status</option>
+            <option value="Pending Data">Pending Data</option>
+            <option value="Processing">Processing</option>
+        </select>
+                                <button class="btn btn-danger" (click)="saveStatus()">Save</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status">Reason For Reject</label>
+                            <div class="d-flex justify-content-between">
+                                <input type="text" class="form-control">
+                                <button class="btn btn-danger" (click)="rejectStatus()">Reject</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    
+                </div>
+</ng-template>
+ 
+
+
 </div>
 
 <!-- Modal -->
-<div
-    class="modal fade"
-    id="commonModal"
-    tabindex="-1"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5
-                    class="modal-title"
-                    [class.text-success]="modalType == 'success'"
-                    [class.text-danger]="modalType == 'error'"
-                    [class.text-warning]="modalType == 'warning'">
-                    {{ modalTitle }}
-                </h5>
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal">
-                </button>
-            </div>
-            <div class="modal-body">
-                {{ modalMessage }}
-            </div>
-            <div class="modal-footer">
-                <button
-                    type="button"
-                    class="btn btn-danger"
-                    data-bs-dismiss="modal">
-                    OK
-                </button>
-            </div>
-        </div>
+<div class="modal fade" id="commonModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-title"
+          [class.text-success]="modalType == 'success'"
+          [class.text-danger]="modalType == 'error'"
+          [class.text-warning]="modalType == 'warning'"
+        >
+          {{ modalTitle }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        {{ modalMessage }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">OK</button>
+      </div>
     </div>
+  </div>
 </div>

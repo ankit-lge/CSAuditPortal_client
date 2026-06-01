@@ -19,7 +19,7 @@
             <div class="card-body">
                 <form [formGroup]="monitoring" (ngSubmit)="auditMonitoringForm()">
                     <div class="search-date">
-                        <input type="checkbox" class="checkbox">
+                        <input type="checkbox" class="checkbox" (change)="onSearchByDate($event)" checked>
                         <h6 class="text-dark">Search By Date</h6>
                     </div>
                    
@@ -81,12 +81,15 @@
                          <button type="button" class="btn btn-danger" (click)="resetForm()"> Reset</button>
                          <button type="submit" class="btn btn-danger">Search</button>
                          <button type="button" class="btn btn-success" (click)="downloadData()"> Download</button>
+                         <button type="button" class="btn btn-success"> Submit To Branch</button>
                         <button class="btn btn-success" (click)="rejectRequest()">Reject</button>
 
                         }
                         @else{
-                        <button type="submit" class="btn btn-success">Submit To Branch</button>
-                        <button type="button" class="btn btn-danger" (click)="deleteData()">Delete </button>
+                            <button type="button" class="btn btn-danger" (click)="resetForm()"> Reset</button>
+                            <button type="submit" class="btn btn-danger">Search</button>
+                            <button type="submit" class="btn btn-success">Submit To Branch</button>
+                            <button type="button" class="btn btn-danger" (click)="deleteData()">Delete </button>
 
                         }
 

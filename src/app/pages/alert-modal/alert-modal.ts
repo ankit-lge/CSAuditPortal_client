@@ -13,6 +13,14 @@ export class AlertModal {
 
   @Output() close = new EventEmitter<void>();
 
+  ngOnChanges() {
+  if (this.isOpen) {
+    setTimeout(() => {
+      this.onClose();
+    }, 3000);
+  }
+}
+
   get headerText(): string {
     switch (this.type) {
       case 'success': return 'Success';
