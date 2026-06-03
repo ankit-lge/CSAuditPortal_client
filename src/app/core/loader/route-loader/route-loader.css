@@ -1,0 +1,79 @@
+.route-loader-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(255,255,255,.15);
+
+  backdrop-filter: blur(2px);
+
+  z-index: 99999;
+
+  pointer-events: none;
+}
+
+
+.route-loader-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(165, 0, 52, 0.03);
+
+  backdrop-filter: blur(2px);
+
+  z-index: 99999;
+
+  pointer-events: none;
+}
+
+.route-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  height: 3px;
+
+  background: linear-gradient(
+    90deg,
+    #a50034,
+    #d60045,
+    #a50034
+  );
+
+  box-shadow:
+    0 0 8px rgba(165, 0, 52, 0.4),
+    0 0 16px rgba(165, 0, 52, 0.2);
+
+  transition: width .25s ease;
+
+  z-index: 100000;
+}
+
+.route-progress::after {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  width: 80px;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.5),
+    transparent
+  );
+
+  animation: shimmer 1.2s linear infinite;
+}
+
+@keyframes shimmer {
+  from {
+    transform: translateX(-100px);
+  }
+
+  to {
+    transform: translateX(100px);
+  }
+}

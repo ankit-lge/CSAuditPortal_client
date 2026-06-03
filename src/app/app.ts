@@ -1,6 +1,13 @@
 import { Component, HostListener, signal } from '@angular/core';
 import { AlertService } from './services/alert-service';
-
+import {
+  NavigationStart,
+  NavigationEnd,
+  NavigationCancel,
+  NavigationError,
+  Router
+} from '@angular/router';
+import { RouteLoaderService } from './core/services/routeLoader/route-loader';
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
@@ -14,9 +21,30 @@ export class App {
   isModalOpen: boolean = false;
   isCollapsed  = signal(false);
   isMobile = signal(false);
-  constructor(private alertService: AlertService) {}
+  constructor(private alertService: AlertService,
+    private router: Router,
+    private routeLoader: RouteLoaderService
+  ) {
+
+  }
 
   ngOnInit() {
+this.router.events.subscribe(event => {
+  if (event instanceof NavigationStart) {
+
+    console.log("loader called.");
+      
+      this.routeLoader.show();
+  }
+
+  if (
+    event instanceof NavigationEnd ||
+    event instanceof NavigationCancel ||
+    event instanceof NavigationError
+  ) {
+ this.routeLoader.hide();
+  }
+});
     this.alertService.alertState$.subscribe(res => {
       this.modalType = res.type;
       this.modalMessage = res.message;

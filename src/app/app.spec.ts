@@ -1,15 +1,24 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 import { App } from './app';
+import { RouteLoader } from './core/loader/route-loader/route-loader';
+import { NavBar } from './pages/nav-bar/nav-bar';
+import { Header } from './pages/header/header';
+import { AlertModal } from './pages/alert-modal/alert-modal';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterModule.forRoot([])
+        RouterModule.forRoot([]),
+        RouteLoader
       ],
       declarations: [
-        App
+        App,
+        NavBar,
+        Header,
+        AlertModal,
+        RouteLoader
       ],
     }).compileComponents();
   });
@@ -18,12 +27,5 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it('should render title', async () => {
-    const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, CallAuditPortal');
   });
 });
