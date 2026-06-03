@@ -6,6 +6,7 @@ import { AuditService } from '../../services/audit.service';
 import { Observable } from 'rxjs';
 import { ViewChild, ElementRef } from '@angular/core';
 import { AlertService } from '../../services/alert-service';
+declare var $: any;
 
 declare var bootstrap: any;
 
@@ -373,5 +374,22 @@ export class AuditClaimUpload implements OnInit {
 
   trackById(index: number, item: auditType) {
     return item.ID;
+  }
+
+   ngAfterViewInit(): void {
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear - 10;
+    $('.datepicker').datepicker({
+      dateFormat: 'yy/mm/dd',
+      changeMonth: true,
+      changeYear: true,
+      yearRange: startYear + ':' + currentYear,
+      maxDate: 0
+    });
+    $('.calendar-icon').on('click', (event: any) => {
+      $(event.currentTarget)
+        .siblings('input.datepicker')
+        .datepicker('show');
+    });
   }
 }

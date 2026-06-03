@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { AuditService } from '../../services/audit.service';
+declare var $: any;
 
 interface auditType {
   ID: Number;
@@ -124,5 +125,22 @@ export class AuditMonitoringDashboard implements OnInit {
     if (!event.target.checked) {
       this.router.navigate(['/audit-claim-upload']);
     }
+  }
+
+    ngAfterViewInit(): void {
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear - 10;
+    $('.datepicker').datepicker({
+      dateFormat: 'yy/mm/dd',
+      changeMonth: true,
+      changeYear: true,
+      yearRange: startYear + ':' + currentYear,
+      maxDate: 0
+    });
+    $('.calendar-icon').on('click', (event: any) => {
+      $(event.currentTarget)
+        .siblings('input.datepicker')
+        .datepicker('show');
+    });
   }
 }

@@ -60,19 +60,33 @@
                     </div> 
                        
                        
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="form-floating mandatory">
-                                <input formControlName="fromDate" type="date" class="form-control" id="auditDate">
-                                <label for="auditDate">From Audit Date</label>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="form-floating mandatory">
-                                <input formControlName="toDate" type="date" class="form-control" id="auditDate">
-                                <label for="auditDate">To Audit Date</label>
-                            </div>
+                          <div class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="form-floating input-group mb-3 mandatory">
+                            <input type="text" class="form-control datepicker"
+                                id="fromAuditDate" placeholder="From Audit Date">
+                            <label for="fromAuditDate" class="z-index-10">
+                                From Audit Date
+                            </label>
+                            <span class="input-group-text calendar-icon">
+                                <i class="fa-solid fa-calendar-days"></i>
+                            </span>
                         </div>
                     </div>
+
+                      <div class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="form-floating input-group mb-3 mandatory">
+                            <input type="text" class="form-control datepicker"
+                                id="toAuditDate" placeholder="To Audit Date">
+                            <label for="toAuditDate" class="z-index-10">
+                                To Audit Date
+                            </label>
+                            <span class="input-group-text calendar-icon">
+                                <i class="fa-solid fa-calendar-days"></i>
+                            </span>
+                        </div>
+                    </div>
+                    </div>
+                    
                     
 
                     <div class="p-1 d-flex gap-2">
