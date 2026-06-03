@@ -2,7 +2,8 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": false
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -48,12 +49,13 @@
               "public/assets/css/styles.css",
               "node_modules/jquery-ui-dist/jquery-ui.min.css",
               "node_modules/owl.carousel/dist/assets/owl.carousel.css",
-              "node_modules/owl.carousel/dist/assets/owl.theme.default.css"
+              "node_modules/owl.carousel/dist/assets/owl.theme.default.css",
+              "node_modules/jquery-ui-dist/jquery-ui.css"
             ],
 
             "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/jquery-ui-dist/jquery-ui.min.js",
+               "node_modules/jquery/dist/jquery.min.js",
+  "node_modules/jquery-ui-dist/jquery-ui.min.js",
               "public/assets/js/bootstrap.bundle.min.js",
               "public/assets/js/custom.js",
               "node_modules/owl.carousel/dist/owl.carousel.min.js"

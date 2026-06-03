@@ -48,13 +48,18 @@
               </div>
             </div>
             <!-- Date -->
-            <div class="col-lg-2 col-md-6 col-sm-12">
-              <div class="form-floating">
-                <input type="date" class="form-control" id="auditDate" formControlName="fromDate" />
-
-                <label for="auditDate"> From Audit Date </label>
-              </div>
-            </div>
+             <div class="col-lg-2 col-md-3 col-sm-6">
+                            <div class="form-floating input-group mb-3 mandatory">
+                                <input type="text" class="form-control datepicker" id="floatingToDate"
+                                    placeholder="To Date">
+                                <label for="floatingToDate" class="z-index-10">
+                                    From Audit Date
+                                </label>
+                                <span class="input-group-text calendar-icon">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                </span>
+                            </div>
+                        </div>
 
             <!-- File Upload -->
             <div class="col-lg-3 col-md-6 col-sm-12">
