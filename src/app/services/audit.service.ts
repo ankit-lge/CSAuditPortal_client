@@ -44,8 +44,8 @@ export class AuditService {
   }
 
 
-  verifyUploadedExcelData(sessionId: string, templateId: string) {
-    return this.http.get<any>(`${this.apiUrl}Audit/verify-upload?sessionId=${sessionId}&templateId=${templateId}`)
+  searchAuditData(payload: any) {
+    return this.http.post<any>(`${this.apiUrl}Audit/search-audit`,payload)
   }
 
   SaveStatus(payload: any) {
@@ -58,9 +58,6 @@ export class AuditService {
 
   // Audit moniter
 
-  SearchAuditMoniter(payload: any){
-    return this.http.post(`${this.apiUrl}AuditMonitoring/SearchAuditData`, payload);
-  }
 
   private handleError(error: HttpErrorResponse) {
     let errMsg: string;

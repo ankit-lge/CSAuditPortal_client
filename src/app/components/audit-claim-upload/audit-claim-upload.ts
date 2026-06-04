@@ -302,9 +302,13 @@ export class AuditClaimUpload implements OnInit {
 
   getUpdatedData() {
     this.verifyExcelUpload = true;
-    this.auditService.verifyUploadedExcelData(this.sessionId, "1").subscribe({
-      next: (res: any) => {
-        if (res.success) {
+    const payload = {
+      sessionId : this.sessionId,
+      auditTypeId: 1
+    };
+    this.auditService.searchAuditData(payload).subscribe({
+      next: (res:any) =>{
+        if(res.success){
           this.verifyAuditData = res.data;
         }
       },

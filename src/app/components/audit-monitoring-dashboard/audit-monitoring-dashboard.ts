@@ -50,8 +50,14 @@ export class AuditMonitoringDashboard implements OnInit {
       this.monitoring.markAllAsTouched();
       return;
     }
-
-    this.auditService.SearchAuditMoniter(this.monitoring.value).subscribe({
+    var data = this.monitoring.value;
+    const payload = {
+    auditStatus: data.status,
+    auditTypeId: data.auditType,
+    fromDate: data.fromDate,
+    toDate: data.toDate
+    }
+    this.auditService.searchAuditData(payload).subscribe({
       next: res =>{
         this.alertService.show("success", "Data fetched successfully !");
       },
