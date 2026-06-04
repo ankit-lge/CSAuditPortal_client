@@ -6,6 +6,7 @@ import { AuditService } from '../../services/audit.service';
 import { Observable } from 'rxjs';
 import { ViewChild, ElementRef } from '@angular/core';
 import { AlertService } from '../../services/alert-service';
+import { VerifyAuditData } from '../../core/interfaces/verify-audit-data';
 declare var $: any;
 
 declare var bootstrap: any;
@@ -35,7 +36,10 @@ export class AuditClaimUpload implements OnInit {
   selectedIds: number[] = [];
   rejectReason: string = '';
   auditTypes$!: Observable<auditType[]>;
-
+  selectAll: boolean = false;
+  sessionId: string = "270156";
+  auditTypeId: number = 0;
+  verifyAuditData: VerifyAuditData[] = [];
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -161,51 +165,7 @@ export class AuditClaimUpload implements OnInit {
 
     document.body.removeChild(link);
   }
-  // downloadClaimUplaodExcel() {
-  //   console.log(this.auditClaimUpload.get('auditType')?.value);
-
-  //   if (this.auditClaimUpload.get('auditType')?.invalid) {
-  //     this.auditClaimUpload.get('auditType')?.markAsTouched();
-  //     alert("Please select audit type");
-  //     return;
-  //   }
-
-  // const res = [
-  //   { claimId: 101, customerName: 'Alice', amount: 5000, status: 'Approved' },
-  //   { claimId: 102, customerName: 'Bob', amount: 3000, status: 'Pending' },
-  //   { claimId: 103, customerName: 'Charlie', amount: 4500, status: 'Rejected' }
-  // ];
-
-  // const transformedData = res.map((item: any) => {
-
-  //   const newItem: any = {};
-
-  //   Object.keys(item).forEach(key => {
-
-  //     newItem[key.toUpperCase()] = item[key];
-
-  //   });
-
-  //   return newItem;
-
-  // });
-
-  // // Build CSV content
-  // const headers = Object.keys(transformedData[0]).join(",");
-
-  // const rows = transformedData.map((row: any) =>
-  //   Object.values(row).join(",")
-  // );
-
-  // const csvContent = [headers, ...rows].join("\n");
-
-  // // Create Blob and download file
-  // const blob = new Blob(
-  //   [csvContent],
-  //   { type: 'text/csv;charset=utf-8;' }
-  // );
-
-  // FileSaver.saveAs(blob, 'DownloadClaimUploadExcel.csv');
+  
 
   UploadFile(event: any) {
     this.isFileUploaded = false;
@@ -309,17 +269,55 @@ export class AuditClaimUpload implements OnInit {
       });
   }
 
+  getUpdatedData(){
+    this.verifyExcelUpload = true;
+    this.auditService.verifyUploadedExcelData(this.sessionId, "1").subscribe({
+      next: (res:any) =>{
+        if(res.success){
+          this.verifyAuditData = res.data;
+        }
+      },
+      error : err =>{
+        this.alertservice.show("success", "Error Occured while fetching data");
+      }
+    }
+    )
+  }
+
+  toggleAllSelection(): void {
+  this.verifyAuditData.forEach((item:any) => {
+    item.selected = this.selectAll;
+  });
+}
+
+updateSelectAllState(): void {
+  this.selectAll =
+    this.verifyAuditData.length > 0 &&
+    this.verifyAuditData.every((item:any) => item.selected);
+}
+
   saveStatus(){
     if (!this.status) {
       this.alertservice.show('warning', "Please select a status")
     return;
   }
 
-  if(this.selectedIds.length == 0){
+   const selectedIds = this.verifyAuditData
+    .filter((x:any) => x.selected)
+    .map((x:any) => x.id);
+
+  if (selectedIds.length === 0) {
     this.alertservice.show('warning', "Please select atleast one data to start process.")
     return;
   }
-    this.auditService.SaveStatus(this.status, this.selectedIds).subscribe({
+  const payload = {
+    sessionId: this.sessionId,
+    auditTypeId: this.auditTypeId,
+    status: status,
+    reason: status === 'REJECT' ? this.rejectReason : '',
+    selectedIds: selectedIds
+  };
+    this.auditService.SaveStatus(payload).subscribe({
       next: res =>{
         console.log("Saved successfully", res);
       },
@@ -341,13 +339,13 @@ export class AuditClaimUpload implements OnInit {
     return;
   }
 
-  this.auditService.RejectStatus(this.rejectReason, this.selectedIds).subscribe({
-    next: res =>{
-    },
-    error: err =>{
+  // this.auditService.RejectStatus(this.rejectReason, this.selectedIds).subscribe({
+  //   next: res =>{
+  //   },
+  //   error: err =>{
       
-    }
-  })
+  //   }
+  // })
 
   }
 

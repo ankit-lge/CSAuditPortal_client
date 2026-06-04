@@ -341,9 +341,9 @@ body {
 .table-header-fix {
     max-height: 400px;
     /* Set a max height for scrolling */
-    overflow-y: auto;
+    overflow-y: scroll;
     /* Enable vertical scrolling */
-    overflow-x: auto;
+    overflow-x: scroll;
 }
 
 

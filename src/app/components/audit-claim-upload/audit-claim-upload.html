@@ -48,18 +48,20 @@
               </div>
             </div>
             <!-- Date -->
-             <div class="col-lg-2 col-md-3 col-sm-6">
-                            <div class="form-floating input-group mb-3 mandatory">
-                                <input type="text" class="form-control datepicker" id="floatingToDate"
-                                    placeholder="To Date">
-                                <label for="floatingToDate" class="z-index-10">
-                                    From Audit Date
-                                </label>
-                                <span class="input-group-text calendar-icon">
-                                    <i class="fa-solid fa-calendar-days"></i>
-                                </span>
-                            </div>
-                        </div>
+            <div class="col-lg-2 col-md-3 col-sm-6">
+              <div class="form-floating input-group mb-3 mandatory">
+                <input
+                  type="text"
+                  class="form-control datepicker"
+                  id="floatingToDate"
+                  placeholder="To Date"
+                />
+                <label for="floatingToDate" class="z-index-10"> From Audit Date </label>
+                <span class="input-group-text calendar-icon">
+                  <i class="fa-solid fa-calendar-days"></i>
+                </span>
+              </div>
+            </div>
 
             <!-- File Upload -->
             <div class="col-lg-3 col-md-6 col-sm-12">
@@ -87,7 +89,7 @@
               Upload
             </button>
           </div>
-          <button type="button" class="btn btn-danger m-1" (click)="verifyExcelUpload = true">
+          <button type="button" class="btn btn-danger m-1" (click)="getUpdatedData()">
             Verify Uploaded Excel Data
           </button>
         </form>
@@ -99,24 +101,48 @@
     <div class="card card-grid">
       <div class="card-body">
         <div class="table-header-fix bank-tenure-rate-table">
-          <div class="table-responsive table-scroll-wrapper equal-table">
+          <div class="table-scroll-wrapper equal-table">
             <table class="table table-bordered align-middle no-mb">
               <thead>
                 <tr>
-                  <th><input type="checkbox" name="" id="" /> Select All</th>
-                  <th>Date Month</th>
-                  <th>Feedback/No Feedback</th>
-                  <th>Aging (Day)</th>
-                  <th>Customer Feedback Date</th>
-                  <th>Audit Date</th>
+                  <th>
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="selectAll"
+                      (change)="toggleAllSelection()"
+                    />
+                    Select All
+                  </th>
                   <th>Audit Type</th>
-                  <th>ESC/LGC Date</th>
-                  <th>Sale Name</th>
+                  <th>CH_CS_CODE</th>
+                  <th>RSM</th>
+                  <th>Evaluation Group</th>
+                  <th>SVC Data From Code</th>
+                  <th>CAPTIVE CHANNEL MAPPING ORIG</th>
+                  <th>SHIP TO CODE</th>
+                  <th>SVC Department Name</th>
+                  <th>Receipt User ID</th>
                 </tr>
               </thead>
+
               <tbody>
-                <tr>
-                  <td colspan="9"><p class="text-center">No Data Found</p></td>
+                <tr *ngFor="let item of verifyAuditData">
+                  <td>
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="item.selected"
+                      (change)="updateSelectAllState()"
+                    />
+                  </td>
+                  <td>{{ item?.['AUDIT TYPE'] }}</td>
+                  <td>{{ item.CH_CS_CODE }}</td>
+                  <td>{{ item.RSM }}</td>
+                  <td>{{ item.EVALUATION_GROUP }}</td>
+                  <td>{{ item.SVC_DATA_FROM_CODE }}</td>
+                  <td>{{ item.CAPTIVE_CHANNEL_MAPPING_ORIG }}</td>
+                  <td>{{ item.SHIP_TO_CODE }}</td>
+                  <td>{{ item.SVC_DEPARTMENT_NAME }}</td>
+                  <td>{{ item.RECIEPT_USER_ID }}</td>
                 </tr>
               </tbody>
             </table>

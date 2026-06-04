@@ -48,18 +48,12 @@ export class AuditService {
     return this.http.get<any>(`${this.apiUrl}Audit/verify-upload?sessionId=${sessionId}&templateId=${templateId}`)
   }
 
-  SaveStatus(status: string, selectedIds: number[]) {
-    return this.http.post(`${this.apiUrl}Audit/save-status`, {
-      status,
-      selectedIds
-    });
+  SaveStatus(payload: any) {
+    return this.http.post(`${this.apiUrl}Audit/save-status`, payload);
   }
 
-  RejectStatus(reason: string, selectedIds: number[]) {
-    return this.http.post(`${this.apiUrl}Audit/reject-status`, {
-      reason,
-      selectedIds
-    })
+  RejectStatus(payload: any) {
+    return this.http.post(`${this.apiUrl}Audit/reject-status`, payload)
   }
 
   private handleError(error: HttpErrorResponse) {
