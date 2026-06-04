@@ -56,6 +56,12 @@ export class AuditService {
     return this.http.post(`${this.apiUrl}Audit/reject-status`, payload)
   }
 
+  // Audit moniter
+
+  SearchAuditMoniter(payload: any){
+    return this.http.post(`${this.apiUrl}AuditMonitoring/SearchAuditData`, payload);
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errMsg: string;
     if (error.status === 0 || error.status === 400) {

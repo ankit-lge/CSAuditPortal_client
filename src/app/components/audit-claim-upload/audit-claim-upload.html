@@ -149,7 +149,7 @@
           </div>
         </div>
 
-        <div class="w-25">
+        <div class="w-25 pb-3">
           <div class="form-group">
             <label for="status"
               >Status <sup class="text-danger"><small>*</small></sup></label
@@ -167,7 +167,7 @@
           <div class="form-group">
             <label for="status">Reason For Reject</label>
             <div class="d-flex justify-content-between">
-              <input type="text" class="form-control" />
+              <input type="text" [(ngModel)]="rejectReason" class="form-control" placeholder="Reject reason" />
               <button class="btn btn-danger" (click)="rejectStatus()">Reject</button>
             </div>
           </div>

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { AuditService } from '../../services/audit.service';
+import { AlertService } from '../../services/alert-service';
 declare var $: any;
 
 interface auditType {
@@ -24,6 +25,7 @@ export class AuditMonitoringDashboard implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private auditService: AuditService,
+    private alertService: AlertService
   ) {
     this.auditTypes$ = this.auditService.getAuditDropdown();
   }
@@ -42,21 +44,21 @@ export class AuditMonitoringDashboard implements OnInit {
   auditTypes$!: Observable<auditType[]>;
 
   auditMonitoringForm() {
-    // alert(1);
-    console.log('auditMonifitoringForm value', this.monitoring.value);
-    // api code
-
-    // SEARCH / SUBMIT
-
     if (this.monitoring.invalid) {
+      console.log("searching params :", this.monitoring.value);
+      
       this.monitoring.markAllAsTouched();
       return;
     }
 
-    console.log('auditMonitoringForm value', this.monitoring.value);
-
-    // API CALL
-    // this.auditService.searchData(this.monitoring.value).subscribe(...)
+    this.auditService.SearchAuditMoniter(this.monitoring.value).subscribe({
+      next: res =>{
+        this.alertService.show("success", "Data fetched successfully !");
+      },
+      error: err => {
+        this.alertService.show("error", "No data found.");
+      }
+    })
   }
   downloadData() {}
 
@@ -128,19 +130,29 @@ export class AuditMonitoringDashboard implements OnInit {
   }
 
     ngAfterViewInit(): void {
-    const currentYear = new Date().getFullYear();
-    const startYear = currentYear - 10;
-    $('.datepicker').datepicker({
-      dateFormat: 'yy/mm/dd',
-      changeMonth: true,
-      changeYear: true,
-      yearRange: startYear + ':' + currentYear,
-      maxDate: 0
-    });
-    $('.calendar-icon').on('click', (event: any) => {
-      $(event.currentTarget)
-        .siblings('input.datepicker')
-        .datepicker('show');
-    });
-  }
+  const currentYear = new Date().getFullYear();
+  const startYear = currentYear - 10;
+
+  $('.datepicker').datepicker({
+    dateFormat: 'yy/mm/dd',
+    changeMonth: true,
+    changeYear: true,
+    yearRange: startYear + ':' + currentYear,
+    maxDate: 0,
+
+    onSelect: (dateText: string, inst: any) => {
+      const controlName = $(inst.input).attr('formControlName');
+
+      if (controlName) {
+        this.monitoring.get(controlName)?.setValue(dateText);
+      }
+    }
+  });
+
+  $('.calendar-icon').on('click', (event: any) => {
+    $(event.currentTarget)
+      .siblings('input.datepicker')
+      .datepicker('show');
+  });
+}
 }

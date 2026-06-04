@@ -278,7 +278,7 @@ export class AuditClaimUpload implements OnInit {
         }
       },
       error : err =>{
-        this.alertservice.show("success", "Error Occured while fetching data");
+        this.alertservice.show("error", "Error Occured while fetching data");
       }
     }
     )
@@ -313,13 +313,13 @@ updateSelectAllState(): void {
   const payload = {
     sessionId: this.sessionId,
     auditTypeId: this.auditTypeId,
-    status: status,
+    status: this.status,
     reason: status === 'REJECT' ? this.rejectReason : '',
     selectedIds: selectedIds
   };
     this.auditService.SaveStatus(payload).subscribe({
       next: res =>{
-        console.log("Saved successfully", res);
+        this.alertservice.show("success", "Successfully saved");
       },
       error : err =>{
         console.error("some error while saving data.", err);
@@ -338,14 +338,28 @@ updateSelectAllState(): void {
     this.alertservice.show('warning', "Please select atleast one data to start process.")
     return;
   }
+const selectedIds = this.verifyAuditData
+    .filter((x:any) => x.selected)
+    .map((x:any) => x.id);
+  const payload = {
+    sessionId: this.sessionId,
+    auditTypeId: this.auditTypeId,
+    status: this.status,
+    reason: status === 'REJECT' ? this.rejectReason : '',
+    selectedIds: selectedIds
+  };
 
-  // this.auditService.RejectStatus(this.rejectReason, this.selectedIds).subscribe({
-  //   next: res =>{
-  //   },
-  //   error: err =>{
+
+
+  this.auditService.RejectStatus(payload).subscribe({
+    next: res =>{
+      this.alertservice.show("success", "Rejected successfully !")
+    },
+    error: err =>{
+      console.error("Errro while rejecting", err);
       
-  //   }
-  // })
+    }
+  })
 
   }
 

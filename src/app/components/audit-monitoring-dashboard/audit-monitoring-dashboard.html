@@ -17,7 +17,7 @@
                 <h2 class="page-title">Audit Monitoring Dashboard</h2>
             </div>
             <div class="card-body">
-                <form [formGroup]="monitoring" (ngSubmit)="auditMonitoringForm()">
+                <form [formGroup]="monitoring">
                     <div class="search-date">
                         <input type="checkbox" class="checkbox" (change)="onSearchByDate($event)" checked>
                         <h6 class="text-dark">Search By Date</h6>
@@ -63,7 +63,7 @@
                           <div class="col-lg-3 col-md-3 col-sm-6">
                         <div class="form-floating input-group mb-3 mandatory">
                             <input type="text" class="form-control datepicker"
-                                id="fromAuditDate" placeholder="From Audit Date">
+                                id="fromAuditDate" formControlName="fromDate" placeholder="From Audit Date">
                             <label for="fromAuditDate" class="z-index-10">
                                 From Audit Date
                             </label>
@@ -76,7 +76,7 @@
                       <div class="col-lg-3 col-md-3 col-sm-6">
                         <div class="form-floating input-group mb-3 mandatory">
                             <input type="text" class="form-control datepicker"
-                                id="toAuditDate" placeholder="To Audit Date">
+                                id="toAuditDate" formControlName="toDate" placeholder="To Audit Date">
                             <label for="toAuditDate" class="z-index-10">
                                 To Audit Date
                             </label>
@@ -93,16 +93,16 @@
 
                         @if(selectedStatus === 'pending'){
                          <button type="button" class="btn btn-danger" (click)="resetForm()"> Reset</button>
-                         <button type="submit" class="btn btn-danger">Search</button>
+                         <button type="button" class="btn btn-danger" (click)="auditMonitoringForm()">Search</button>
                          <button type="button" class="btn btn-success" (click)="downloadData()"> Download</button>
                          <button type="button" class="btn btn-success"> Submit To Branch</button>
-                        <button class="btn btn-success" (click)="rejectRequest()">Reject</button>
+                         <button type="button" class="btn btn-success" (click)="rejectRequest()">Reject</button>
 
                         }
                         @else{
                             <button type="button" class="btn btn-danger" (click)="resetForm()"> Reset</button>
-                            <button type="submit" class="btn btn-danger">Search</button>
-                            <button type="submit" class="btn btn-success">Submit To Branch</button>
+                            <button type="button" class="btn btn-danger" (click)="auditMonitoringForm()">Search</button>
+                            <button type="button" class="btn btn-success">Submit To Branch</button>
                             <button type="button" class="btn btn-danger" (click)="deleteData()">Delete </button>
 
                         }
