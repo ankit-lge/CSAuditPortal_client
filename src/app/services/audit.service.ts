@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
 export class AuditService {
   private readonly apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAuditDropdown(): Observable<any[]> {
     // return this.http.get<any[]>(this.apiUrl);
@@ -43,19 +43,24 @@ export class AuditService {
     );
   }
 
-  SaveStatus(status: string, selectedIds: number[]) {
-  return this.http.post(`${this.apiUrl}Audit/save-status`, {
-    status,
-    selectedIds
-  });
-}
 
-RejectStatus(reason: string, selectedIds: number[]){
-  return this.http.post(`${this.apiUrl}Audit/reject-status`, {
-    reason, 
-    selectedIds
-  })
-}
+  verifyUploadedExcelData(sessionId: string, templateId: string) {
+    return this.http.get<any>(`${this.apiUrl}Audit/verify-upload?sessionId=${sessionId}&templateId=${templateId}`)
+  }
+
+  SaveStatus(status: string, selectedIds: number[]) {
+    return this.http.post(`${this.apiUrl}Audit/save-status`, {
+      status,
+      selectedIds
+    });
+  }
+
+  RejectStatus(reason: string, selectedIds: number[]) {
+    return this.http.post(`${this.apiUrl}Audit/reject-status`, {
+      reason,
+      selectedIds
+    })
+  }
 
   private handleError(error: HttpErrorResponse) {
     let errMsg: string;
