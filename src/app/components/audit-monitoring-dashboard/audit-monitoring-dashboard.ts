@@ -4,7 +4,10 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { AuditService } from '../../services/audit.service';
 import { AlertService } from '../../services/alert-service';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 declare var $: any;
+
 
 interface auditType {
   ID: Number;
@@ -18,9 +21,23 @@ interface auditType {
   styleUrls: ['./audit-monitoring-dashboard.css'],
 })
 export class AuditMonitoringDashboard implements OnInit {
-  selectedStatus: string = 'pending';
+   selectAll: boolean = false;
 
+  verifyMoniotringData: any[] = [];
+  selectedStatus: string = '';
   monitoring!: FormGroup;
+  excelReport: any[] = [];
+pagedData: any[] = [];
+searchText: string = '';
+
+currentPage = 1;
+pageSize = 10;
+totalPages = 0;
+
+pageSizes = [10, 25, 50, 100];
+
+
+
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -44,10 +61,10 @@ export class AuditMonitoringDashboard implements OnInit {
   auditTypes$!: Observable<auditType[]>;
 
   auditMonitoringForm() {
-    if (this.monitoring.invalid) {
+     if (this.monitoring.invalid) {
       console.log("searching params :", this.monitoring.value);
       
-      this.monitoring.markAllAsTouched();
+       this.monitoring.markAllAsTouched();
       return;
     }
     var data = this.monitoring.value;
@@ -66,8 +83,71 @@ export class AuditMonitoringDashboard implements OnInit {
       }
     })
   }
-  downloadData() {}
+  updateAllMonitoringState(): void {
 
+  this.selectAll =
+    this.verifyMoniotringData.length > 0 &&
+    this.verifyMoniotringData.every(
+      (item: any) => item.selected
+    );
+}
+getEndRecord(): number {
+
+  return Math.min(
+    this.currentPage * this.pageSize,
+    this.verifyMoniotringData.length
+  );
+}
+
+   toggleAllSelection(): void {
+    this.verifyMoniotringData.forEach((item: any) => {
+      item.selected = this.selectAll;
+    });
+  }
+  calculatePagination(): void {
+
+  this.totalPages = Math.ceil(
+    this.verifyMoniotringData.length / this.pageSize
+  );
+
+  this.loadPage(1);
+}
+loadPage(page: number): void {
+
+  this.currentPage = page;
+
+  const start =
+    (page - 1) * this.pageSize;
+
+  const end =
+    start + this.pageSize;
+
+  this.pagedData =
+    this.verifyMoniotringData.slice(start, end);
+}
+onPageSizeChange(): void {
+
+  this.calculatePagination();
+}
+previousPage(): void {
+
+  if (this.currentPage > 1) {
+    this.loadPage(this.currentPage - 1);
+  }
+}
+nextPage(): void {
+
+  if (this.currentPage < this.totalPages) {
+    this.loadPage(this.currentPage + 1);
+  }
+}
+get pages(): number[] {
+
+  return Array(this.totalPages)
+    .fill(0)
+    .map((x, i) => i + 1);
+}
+ 
   // RESET FORM
   resetForm() {
     this.monitoring.reset();
@@ -84,6 +164,56 @@ export class AuditMonitoringDashboard implements OnInit {
 
     console.log('Form Reset Successfully');
   }
+ DownloadExcel(): void {
+
+  const payload = {
+    status: this.monitoring.value.status,
+    auditType: this.monitoring.value.auditType,
+    fromDate: this.monitoring.value.fromDate,
+    toDate: this.monitoring.value.toDate
+  };
+  console.log('Download Button Clicked');
+  console.log('Payload:', payload);
+  this.auditService.SearchAuditMoniter(payload)
+    .subscribe((res: any) => {
+       console.log('Download Response:', res);
+       alert('Response received successfully');
+
+    if (!Array.isArray(res) || res.length === 0){
+        this.alertService.show('warning', 'No data found');
+        return;
+      }
+
+      const worksheet = XLSX.utils.json_to_sheet(res);
+
+      const workbook = XLSX.utils.book_new();
+
+      XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        'AuditMonitoring'
+      );
+
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: 'xlsx',
+        type: 'array'
+      });
+
+      const blob = new Blob(
+        [excelBuffer],
+        {
+          type:
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        }
+      );
+
+      FileSaver.saveAs(
+        blob,
+        `Audit_${this.selectedStatus}.xlsx`
+      );
+    });
+}
+
 
   // REJECT REQUEST
   rejectRequest() {

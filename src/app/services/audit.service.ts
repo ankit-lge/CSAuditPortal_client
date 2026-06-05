@@ -63,7 +63,7 @@ export class AuditService {
     return this.http.post(`${this.apiUrl}Audit/reject-status`, payload)
   }
 
-  // Audit moniter
+  
 
 
   private handleError(error: HttpErrorResponse) {
