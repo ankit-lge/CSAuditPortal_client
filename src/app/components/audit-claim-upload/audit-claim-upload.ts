@@ -55,32 +55,6 @@ export class AuditClaimUpload implements OnInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    const currentYear = new Date().getFullYear();
-    const startYear = currentYear - 10;
-
-    $('.datepicker').datepicker({
-      dateFormat: 'yy/mm/dd',
-      changeMonth: true,
-      changeYear: true,
-      yearRange: `${startYear}:${currentYear}`,
-      maxDate: 0,
-
-      onSelect: (dateText: string) => {
-        console.log('Selected:', dateText);
-
-        this.auditClaimUpload.patchValue({
-          fromDate: dateText
-        });
-
-        this.auditClaimUpload.get('fromDate')?.updateValueAndValidity();
-        this.cdr.detectChanges();
-
-        console.log('Form Value:', this.auditClaimUpload.value);
-      }
-    });
-  }
-
   @ViewChild('fileInput')
   fileInput!: ElementRef;
 
@@ -325,17 +299,12 @@ export class AuditClaimUpload implements OnInit {
       item.selected = this.selectAll;
     });
   }
-    this.verifyAuditData.forEach((item: any) => {
-      item.selected = this.selectAll;
-    });
-  }
 
   updateSelectAllState(): void {
     this.selectAll =
       this.verifyAuditData.length > 0 && this.verifyAuditData.every((item: any) => item.selected);
   }
 
-  saveStatus() {
   saveStatus() {
     if (!this.status) {
       this.alertservice.show('warning', 'Please select a status');
