@@ -36,7 +36,7 @@
                                 <label for="statesSelect">Status</label>
                             </div>
                         </div>
-                             <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="col-lg-3 col-md-6 col-sm-12">
 
                         <div class="form-floating">
                             <select
@@ -88,30 +88,273 @@
                     </div>
                     
                     
+<div class="p-1 d-flex gap-2">
 
-                    <div class="p-1 d-flex gap-2">
+    <!-- Default: Select Status -->
+    @if(!selectedStatus){
 
-                        @if(selectedStatus === 'pending'){
-                         <button type="button" class="btn btn-danger" (click)="resetForm()"> Reset</button>
-                         <button type="button" class="btn btn-danger" (click)="auditMonitoringForm()">Search</button>
-                         <button type="button" class="btn btn-success" (click)="downloadData()"> Download</button>
-                         <button type="button" class="btn btn-success"> Submit To Branch</button>
-                         <button type="button" class="btn btn-success" (click)="rejectRequest()">Reject</button>
+        <button type="button"
+                class="btn btn-danger"
+                (click)="resetForm()">
+            Reset
+        </button>
 
-                        }
-                        @else{
-                            <button type="button" class="btn btn-danger" (click)="resetForm()"> Reset</button>
-                            <button type="button" class="btn btn-danger" (click)="auditMonitoringForm()">Search</button>
-                            <button type="button" class="btn btn-success">Submit To Branch</button>
-                            <button type="button" class="btn btn-danger" (click)="deleteData()">Delete </button>
+        <button type="button"
+                class="btn btn-danger"
+                (click)="auditMonitoringForm()">
+            Search
+        </button>
 
-                        }
+        <button type="button"
+                class="btn btn-success"
+                (click)="DownloadExcel()">
+            Download
+        </button>
+    }
 
-                    </div>
+    <!-- Pending -->
+    @else if(selectedStatus === 'pending'){
+
+        <button type="button"
+                class="btn btn-danger"
+                (click)="resetForm()">
+            Reset
+        </button>
+
+        <button type="button"
+                class="btn btn-danger"
+                (click)="auditMonitoringForm()">
+            Search
+        </button>
+
+        <button type="button"
+                class="btn btn-success"
+                (click)="DownloadExcel()">
+            Download
+        </button>
+
+        <button type="button"
+                class="btn btn-success">
+            Submit To Branch
+        </button>
+
+        <button type="button"
+                class="btn btn-success"
+                (click)="rejectRequest()">
+            Reject
+        </button>
+    }
+
+    <!-- Process -->
+    @else if(selectedStatus === 'process'){
+
+        <button type="button"
+                class="btn btn-danger"
+                (click)="resetForm()">
+            Reset
+        </button>
+
+        <button type="button"
+                class="btn btn-danger"
+                (click)="auditMonitoringForm()">
+            Search
+        </button>
+
+        <button type="button"
+                class="btn btn-success"
+                (click)="DownloadExcel()">
+            Download
+        </button>
+
+        <button type="button"
+                class="btn btn-success">
+            Submit To Branch
+        </button>
+    }
+
+                 </div>
                 </form>
             </div>
 
         </div>
     </div>
+      <div class="card card-grid">
+    <div class="card-body">
 
+        <!-- Show Entries + Search -->
+        <div class="row p-1">
+
+            <div class="col-lg-6 col-md-6 col-sm-12 d-flex align-items-center gap-2">
+                <strong>Show</strong>
+
+                <select
+                    class="form-select form-select-sm w-auto"
+                    [(ngModel)]="pageSize"
+                    (change)="onPageSizeChange()">
+
+                    <option [value]="10">10</option>
+                    <option [value]="25">25</option>
+                    <option [value]="50">50</option>
+                    <option [value]="100">100</option>
+
+                </select>
+
+                <strong>entries</strong>
+            </div>
+
+            <div
+                class="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-end align-items-center gap-2">
+
+                <label class="mb-0">Search:</label>
+
+                <input
+                    type="text"
+                    class="form-control form-control-sm w-auto"
+                    placeholder="Search Records"
+                    [(ngModel)]="searchText">
+
+            </div>
+
+        </div>
+
+        <!-- Table -->
+        <div class="table-header-fix bank-tenure-rate-table">
+
+            <div class="table-responsive table-scroll-wrapper equal-table">
+
+                <table class="table table-bordered align-middle no-mb">
+
+                    <thead>
+                        <tr>
+
+                            <th>
+                                <input
+                                    type="checkbox"
+                                    [(ngModel)]="selectAll"
+                                    (change)="toggleAllSelection()" />
+                                Select All
+                            </th>
+
+                            <th>Audit Type</th>
+                            <th>CH_CS_CODE</th>
+                            <th>RSM</th>
+                            <th>Evaluation Group</th>
+                            <th>SVC Data From Code</th>
+                            <th>CAPTIVE CHANNEL MAPPING ORIG</th>
+                            <th>SHIP TO CODE</th>
+                            <th>SVC Department Name</th>
+                            <th>Receipt User ID</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr *ngFor="let item of pagedData">
+
+                            <td>
+                                <input
+                                    type="checkbox"
+                                    [(ngModel)]="item.selected"
+                                    (change)="updateAllMonitoringState()" />
+                            </td>
+
+                            <td>{{ item.auditType }}</td>
+                            <td>{{ item.ch_cs_code }}</td>
+                            <td>{{ item.rsm }}</td>
+                            <td>{{ item.evaluationGroup }}</td>
+                            <td>{{ item.svcDataFromCode }}</td>
+                            <td>{{ item.captiveChannelMappingOrig }}</td>
+                            <td>{{ item.shipToCode }}</td>
+                            <td>{{ item.svcDepartmentName }}</td>
+                            <td>{{ item.receiptUserId }}</td>
+
+                        </tr>
+
+                        <tr *ngIf="pagedData.length === 0">
+                            <td colspan="10" class="text-center">
+                                No Records Found
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Pagination Footer -->
+    <div class="card-footer">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+                Showing
+                {{ (currentPage - 1) * pageSize + 1 }}
+                to
+               {{ getEndRecord() }}
+                of
+                {{ verifyMoniotringData.length }}
+                entries
+            </div>
+
+            <ul class="pagination mb-0">
+
+                <li
+                    class="page-item"
+                    [class.disabled]="currentPage === 1">
+
+                    <a
+                        class="page-link"
+                        href="javascript:void(0)"
+                        (click)="previousPage()">
+
+                        Previous
+
+                    </a>
+
+                </li>
+
+                <li
+                    *ngFor="let page of pages"
+                    class="page-item"
+                    [class.active]="page === currentPage">
+
+                    <a
+                        class="page-link"
+                        href="javascript:void(0)"
+                        (click)="loadPage(page)">
+
+                        {{ page }}
+
+                    </a>
+
+                </li>
+
+                <li
+                    class="page-item"
+                    [class.disabled]="currentPage === totalPages">
+
+                    <a
+                        class="page-link"
+                        href="javascript:void(0)"
+                        (click)="nextPage()">
+
+                        Next
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
 </div>
