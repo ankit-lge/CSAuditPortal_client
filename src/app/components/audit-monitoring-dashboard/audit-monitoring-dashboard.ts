@@ -55,7 +55,9 @@ export class AuditMonitoringDashboard implements OnInit {
     auditStatus: data.status,
     auditTypeId: data.auditType,
     fromDate: data.fromDate,
-    toDate: data.toDate
+    toDate: data.toDate,
+    page:1,
+    limit: 10
     }
     this.auditService.searchAuditData(payload).subscribe({
       next: res =>{
@@ -147,10 +149,11 @@ export class AuditMonitoringDashboard implements OnInit {
     maxDate: 0,
 
     onSelect: (dateText: string, inst: any) => {
+      const formattedDate = dateText.replace(/\//g, '');
       const controlName = $(inst.input).attr('formControlName');
 
       if (controlName) {
-        this.monitoring.get(controlName)?.setValue(dateText);
+        this.monitoring.get(controlName)?.setValue(formattedDate);
       }
     }
   });

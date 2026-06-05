@@ -33,18 +33,16 @@ export class AuditClaimUpload implements OnInit {
   verifyExcelUpload: boolean = false;
   auditTypes: auditType[] = [];
   status: string = '';
-  selectedIds: number[] = [];
   rejectReason: string = '';
   auditTypes$!: Observable<auditType[]>;
   selectAll: boolean = false;
-  sessionId: string = "270156";
-  auditTypeId: number = 0;
+  sessionId: string = '270156';
   verifyAuditData: VerifyAuditData[] = [];
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private auditService: AuditService,
-    private alertservice: AlertService
+    private alertservice: AlertService,
   ) {
     this.auditTypes$ = this.auditService.getAuditDropdown();
   }
@@ -165,7 +163,6 @@ export class AuditClaimUpload implements OnInit {
 
     document.body.removeChild(link);
   }
-  
 
   UploadFile(event: any) {
     this.isFileUploaded = false;
@@ -269,109 +266,128 @@ export class AuditClaimUpload implements OnInit {
       });
   }
 
-  getUpdatedData(){
-    this.verifyExcelUpload = true;
+  getUpdatedData() {
+    const auditTypeId = this.auditClaimUpload.value?.auditType;
+    if (!auditTypeId || auditTypeId == null || auditTypeId == '') {
+      this.alertservice.show('warning', 'Please select an valid Audit Type to process');
+      return;
+    }
     const payload = {
-      sessionId : this.sessionId,
-      auditTypeId: 1
+      sessionId: this.sessionId,
+      auditTypeId: auditTypeId,
     };
+
     this.auditService.searchAuditData(payload).subscribe({
-      next: (res:any) =>{
-        if(res.success){
+      next: (res: any) => {
+        if (res.success) {
           this.verifyAuditData = res.data;
+          this.verifyExcelUpload = true;
         }
       },
-      error : err =>{
-        this.alertservice.show("error", "Error Occured while fetching data");
-      }
-    }
-    )
+      error: (err) => {
+        this.alertservice.show('error', 'Error Occured while fetching data');
+      },
+    });
   }
 
   toggleAllSelection(): void {
-  this.verifyAuditData.forEach((item:any) => {
-    item.selected = this.selectAll;
-  });
-}
+    this.verifyAuditData.forEach((item: any) => {
+      item.selected = this.selectAll;
+    });
+  }
 
-updateSelectAllState(): void {
-  this.selectAll =
-    this.verifyAuditData.length > 0 &&
-    this.verifyAuditData.every((item:any) => item.selected);
-}
+  updateSelectAllState(): void {
+    this.selectAll =
+      this.verifyAuditData.length > 0 && this.verifyAuditData.every((item: any) => item.selected);
+  }
 
-  saveStatus(){
+  saveStatus() {
     if (!this.status) {
-      this.alertservice.show('warning', "Please select a status")
-    return;
-  }
-
-   const selectedIds = this.verifyAuditData
-    .filter((x:any) => x.selected)
-    .map((x:any) => x.id);
-
-  if (selectedIds.length === 0) {
-    this.alertservice.show('warning', "Please select atleast one data to start process.")
-    return;
-  }
-  const payload = {
-    sessionId: this.sessionId,
-    auditTypeId: this.auditTypeId,
-    status: this.status,
-    reason: status === 'REJECT' ? this.rejectReason : '',
-    selectedIds: selectedIds
-  };
-    this.auditService.SaveStatus(payload).subscribe({
-      next: res =>{
-        this.alertservice.show("success", "Successfully saved");
-      },
-      error : err =>{
-        console.error("some error while saving data.", err);
-        
-      }
-    })
-  }
-
-  rejectStatus(){
-    if(!this.rejectReason){
-      this.alertservice.show('warning', "Reject reason is mandetory")
+      this.alertservice.show('warning', 'Please select a status');
       return;
     }
 
-    if(this.selectedIds.length == 0){
-    this.alertservice.show('warning', "Please select atleast one data to start process.")
-    return;
-  }
-const selectedIds = this.verifyAuditData
-    .filter((x:any) => x.selected)
-    .map((x:any) => x.id);
-  const payload = {
-    sessionId: this.sessionId,
-    auditTypeId: this.auditTypeId,
-    status: this.status,
-    reason: status === 'REJECT' ? this.rejectReason : '',
-    selectedIds: selectedIds
-  };
+    let selectedIds: any[] = this.verifyAuditData
+      .filter((x: any) => x.selected)
+      .map((x: any) => x.GSFS_RECEIPT_NO);
 
-
-
-  this.auditService.RejectStatus(payload).subscribe({
-    next: res =>{
-      this.alertservice.show("success", "Rejected successfully !")
-    },
-    error: err =>{
-      console.error("Errro while rejecting", err);
-      
+    if (selectedIds.length === this.verifyAuditData.length) {
+      selectedIds = ['ALL'];
     }
-  })
-
+    if (selectedIds.length === 0) {
+      this.alertservice.show('warning', 'Please select atleast one data to start process.');
+      return;
+    }
+    const auditTypeId = this.auditClaimUpload.value?.auditType;
+    if (!auditTypeId || auditTypeId == null || auditTypeId == '') {
+      this.alertservice.show('warning', 'Please select an valid Audit Type to process');
+      return;
+    }
+    const payload = {
+      sessionId: this.sessionId,
+      auditTypeId: auditTypeId,
+      status: this.status,
+      selectedIds: selectedIds,
+    };
+    this.auditService.SaveStatus(payload).subscribe({
+      next: (res) => {
+        this.alertservice.show('success', 'Successfully saved');
+        this.verifyExcelUpload = false;
+        this.toggleAllSelection();
+      },
+      error: (err) => {
+        console.error('some error while saving data.', err);
+      },
+    });
   }
 
+  rejectStatus() {
+    if (!this.rejectReason) {
+      this.alertservice.show('warning', 'Reject reason is mandetory');
+      return;
+    }
+
+    let selectedIds: any[] = this.verifyAuditData
+      .filter((x: any) => x.selected)
+      .map((x: any) => x.GSFS_RECEIPT_NO);
+
+    if (selectedIds.length === this.verifyAuditData.length) {
+      selectedIds = ['ALL'];
+    }
+
+    if (selectedIds.length === 0) {
+      this.alertservice.show('warning', 'Please select atleast one data to start process.');
+      return;
+    }
+    const auditTypeId = this.auditClaimUpload.value?.auditType;
+    if (!auditTypeId || auditTypeId == null || auditTypeId == '') {
+      this.alertservice.show('warning', 'Please select an valid Audit Type to process');
+      return;
+    }
+    const payload = {
+      sessionId: this.sessionId,
+      auditTypeId: auditTypeId,
+      status: 'REJECT',
+      reason: this.rejectReason,
+      selectedIds: selectedIds,
+    };
+
+    this.auditService.RejectStatus(payload).subscribe({
+      next: (res) => {
+        this.alertservice.show('success', 'Rejected successfully !');
+        this.toggleAllSelection();
+        this.verifyExcelUpload = false;
+        this.rejectReason = '';
+      },
+      error: (err) => {
+        console.error('Errro while rejecting', err);
+      },
+    });
+  }
 
   // =====================================
   // DATE FORMAT METHOD
   // =====================================
-
 
   formatDate(date: any): string {
     if (!date) {
@@ -393,7 +409,7 @@ const selectedIds = this.verifyAuditData
     return item.ID;
   }
 
-   ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     const currentYear = new Date().getFullYear();
     const startYear = currentYear - 10;
     $('.datepicker').datepicker({
@@ -401,12 +417,10 @@ const selectedIds = this.verifyAuditData
       changeMonth: true,
       changeYear: true,
       yearRange: startYear + ':' + currentYear,
-      maxDate: 0
+      maxDate: 0,
     });
     $('.calendar-icon').on('click', (event: any) => {
-      $(event.currentTarget)
-        .siblings('input.datepicker')
-        .datepicker('show');
+      $(event.currentTarget).siblings('input.datepicker').datepicker('show');
     });
   }
 }
