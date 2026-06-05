@@ -43,9 +43,16 @@ export class AuditService {
     );
   }
 
+  verifyUploadedExcelData(sessionId: string, templateId: string) {
+    return this.http.get<any>(`${this.apiUrl}Audit/verify-upload?sessionId=${sessionId}&templateId=${templateId}`)
+  }
 
   searchAuditData(payload: any) {
-    return this.http.post<any>(`${this.apiUrl}Audit/search-audit`,payload)
+    return this.http.post<any>(`${this.apiUrl}Audit/search-audit`, payload)
+  }
+  
+   SearchAuditMoniter(payload: any){
+    return this.http.post(`${this.apiUrl}AuditMonitoring/SearchAuditData`, payload);
   }
 
   SaveStatus(payload: any) {

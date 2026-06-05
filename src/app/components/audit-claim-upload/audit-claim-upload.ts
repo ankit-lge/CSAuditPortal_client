@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -52,6 +52,32 @@ export class AuditClaimUpload implements OnInit {
       auditType: ['', Validators.required],
       fromDate: ['', Validators.required],
       uploadedData: ['', Validators.required],
+    });
+  }
+
+  ngAfterViewInit(): void {
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear - 10;
+
+    $('.datepicker').datepicker({
+      dateFormat: 'yy/mm/dd',
+      changeMonth: true,
+      changeYear: true,
+      yearRange: `${startYear}:${currentYear}`,
+      maxDate: 0,
+
+      onSelect: (dateText: string) => {
+        console.log('Selected:', dateText);
+
+        this.auditClaimUpload.patchValue({
+          fromDate: dateText
+        });
+
+        this.auditClaimUpload.get('fromDate')?.updateValueAndValidity();
+        this.cdr.detectChanges();
+
+        console.log('Form Value:', this.auditClaimUpload.value);
+      }
     });
   }
 
@@ -165,6 +191,9 @@ export class AuditClaimUpload implements OnInit {
   }
 
   UploadFile(event: any) {
+    console.log(this.auditClaimUpload.value);
+    console.log(this.auditClaimUpload.get('fromDate')?.value);
+
     this.isFileUploaded = false;
     this.FileUploadedData = [];
     const file = event.target.files[0];
@@ -229,6 +258,7 @@ export class AuditClaimUpload implements OnInit {
   }
 
   ProcessUploadData() {
+    debugger;
     if (!this.uploadFileFullPath || !this.auditClaimUpload.get('auditType')?.value) {
       this.openModal(
         'Validation',
@@ -295,12 +325,17 @@ export class AuditClaimUpload implements OnInit {
       item.selected = this.selectAll;
     });
   }
+    this.verifyAuditData.forEach((item: any) => {
+      item.selected = this.selectAll;
+    });
+  }
 
   updateSelectAllState(): void {
     this.selectAll =
       this.verifyAuditData.length > 0 && this.verifyAuditData.every((item: any) => item.selected);
   }
 
+  saveStatus() {
   saveStatus() {
     if (!this.status) {
       this.alertservice.show('warning', 'Please select a status');
