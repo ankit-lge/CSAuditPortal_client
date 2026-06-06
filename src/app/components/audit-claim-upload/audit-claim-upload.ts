@@ -246,6 +246,8 @@ export class AuditClaimUpload implements OnInit {
       return;
     }
     const auditDate = this.formatDate(this.auditClaimUpload.get('fromDate')?.value);
+    console.log('auditDate =', auditDate);
+console.log('auditType =', this.auditClaimUpload.get('auditType')?.value);
     this.auditService
       .ProcessUploadData(
         this.uploadFileFullPath,
@@ -413,18 +415,55 @@ export class AuditClaimUpload implements OnInit {
     return item.ID;
   }
 
+  // ngAfterViewInit(): void {
+  //   const currentYear = new Date().getFullYear();
+  //   const startYear = currentYear - 10;
+  //   $('.datepicker').datepicker({
+  //     dateFormat: 'yy/mm/dd',
+  //     changeMonth: true,
+  //     changeYear: true,
+  //     yearRange: startYear + ':' + currentYear,
+  //     maxDate: 0,
+  //   });
+  //   $('.calendar-icon').on('click', (event: any) => {
+  //     $(event.currentTarget).siblings('input.datepicker').datepicker('show');
+  //   });
+  // }
   ngAfterViewInit(): void {
-    const currentYear = new Date().getFullYear();
-    const startYear = currentYear - 10;
-    $('.datepicker').datepicker({
-      dateFormat: 'yy/mm/dd',
-      changeMonth: true,
-      changeYear: true,
-      yearRange: startYear + ':' + currentYear,
-      maxDate: 0,
-    });
-    $('.calendar-icon').on('click', (event: any) => {
-      $(event.currentTarget).siblings('input.datepicker').datepicker('show');
-    });
-  }
+
+  const currentYear = new Date().getFullYear();
+  const startYear = currentYear - 10;
+
+  $('.datepicker').datepicker({
+    dateFormat: 'yy/mm/dd',
+    changeMonth: true,
+    changeYear: true,
+    yearRange: startYear + ':' + currentYear,
+    maxDate: 0,
+
+    onSelect: (dateText: string, inst: any) => {
+
+      const controlName =
+        $(inst.input).attr('formControlName');
+
+      if (controlName) {
+
+        this.auditClaimUpload
+          .get(controlName)
+          ?.setValue(dateText);
+
+        this.auditClaimUpload
+          .get(controlName)
+          ?.updateValueAndValidity();
+      }
+    }
+  });
+
+  $('.calendar-icon').on('click', (event: any) => {
+
+    $(event.currentTarget)
+      .siblings('input.datepicker')
+      .datepicker('show');
+  });
+}
 }

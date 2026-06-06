@@ -21,10 +21,20 @@ interface auditType {
   styleUrls: ['./audit-monitoring-dashboard.css'],
 })
 export class AuditMonitoringDashboard implements OnInit {
-  selectedStatus: string = 'pending';
+  selectedStatus: string = '';
   auditTypes: auditType[] = [];
   auditTypes$!: Observable<auditType[]>;
   monitoring!: FormGroup;
+  selectAll: boolean = false;
+searchText: string = '';
+verifyMoniotringData: any[] = [];
+pagedData: any[] = [];
+currentPage: number = 1;
+pageSize: number = 10;
+totalPages: number = 0;
+pageSizes: number[] = [10, 25, 50, 100];
+
+
   constructor(
     private router: Router,
     private fb: FormBuilder,
