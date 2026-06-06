@@ -1,4 +1,5 @@
 export interface VerifyAuditData {
+  GSFS_RECEIPT_NO:string;
   "AUDIT TYPE": string;
   CH_CS_CODE: string;
   RSM: string;

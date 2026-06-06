@@ -21,28 +21,15 @@ interface auditType {
   styleUrls: ['./audit-monitoring-dashboard.css'],
 })
 export class AuditMonitoringDashboard implements OnInit {
-   selectAll: boolean = false;
-
-  verifyMoniotringData: any[] = [];
-  selectedStatus: string = '';
+  selectedStatus: string = 'pending';
+  auditTypes: auditType[] = [];
+  auditTypes$!: Observable<auditType[]>;
   monitoring!: FormGroup;
-  excelReport: any[] = [];
-pagedData: any[] = [];
-searchText: string = '';
-
-currentPage = 1;
-pageSize = 10;
-totalPages = 0;
-
-pageSizes = [10, 25, 50, 100];
-
-
-
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private auditService: AuditService,
-    private alertService: AlertService
+    private alertService: AlertService,
   ) {
     this.auditTypes$ = this.auditService.getAuditDropdown();
   }
@@ -56,32 +43,32 @@ pageSizes = [10, 25, 50, 100];
     });
   }
 
-  auditTypes: auditType[] = [];
-
-  auditTypes$!: Observable<auditType[]>;
-
   auditMonitoringForm() {
-     if (this.monitoring.invalid) {
+    if (this.monitoring.invalid) {
       console.log("searching params :", this.monitoring.value);
       
-       this.monitoring.markAllAsTouched();
+      this.monitoring.markAllAsTouched();
       return;
     }
     var data = this.monitoring.value;
     const payload = {
-    auditStatus: data.status,
-    auditTypeId: data.auditType,
-    fromDate: data.fromDate,
-    toDate: data.toDate
-    }
+      auditStatus: data.status,
+      auditTypeId: data.auditType,
+      fromDate: data.fromDate.replace(/\//g, ''),
+      toDate: data.toDate.replace(/\//g, ''),
+      page: 1,
+      limit: 10,
+    };
     this.auditService.searchAuditData(payload).subscribe({
-      next: res =>{
-        this.alertService.show("success", "Data fetched successfully !");
+      next: (res) => {
+        this.alertService.show('success', 'Data fetched successfully !');
       },
-      error: err => {
-        this.alertService.show("error", "No data found.");
-      }
-    })
+      error: (err) => {
+        console.error(err, "Error found.");
+        
+        this.alertService.show('error', 'No data found.');
+      },
+    });
   }
   updateAllMonitoringState(): void {
 
@@ -265,30 +252,28 @@ get pages(): number[] {
     }
   }
 
-    ngAfterViewInit(): void {
-  const currentYear = new Date().getFullYear();
-  const startYear = currentYear - 10;
+  ngAfterViewInit(): void {
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear - 10;
 
-  $('.datepicker').datepicker({
-    dateFormat: 'yy/mm/dd',
-    changeMonth: true,
-    changeYear: true,
-    yearRange: startYear + ':' + currentYear,
-    maxDate: 0,
+    $('.datepicker').datepicker({
+      dateFormat: 'yy/mm/dd',
+      changeMonth: true,
+      changeYear: true,
+      yearRange: startYear + ':' + currentYear,
+      maxDate: 0,
 
-    onSelect: (dateText: string, inst: any) => {
-      const controlName = $(inst.input).attr('formControlName');
+      onSelect: (dateText: string, inst: any) => {
+        const controlName = $(inst.input).attr('formControlName');
 
-      if (controlName) {
-        this.monitoring.get(controlName)?.setValue(dateText);
-      }
-    }
-  });
+        if (controlName) {
+          this.monitoring.get(controlName)?.setValue(dateText);
+        }
+      },
+    });
 
-  $('.calendar-icon').on('click', (event: any) => {
-    $(event.currentTarget)
-      .siblings('input.datepicker')
-      .datepicker('show');
-  });
-}
+    $('.calendar-icon').on('click', (event: any) => {
+      $(event.currentTarget).siblings('input.datepicker').datepicker('show');
+    });
+  }
 }

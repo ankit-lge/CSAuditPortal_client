@@ -33,19 +33,16 @@ export class AuditClaimUpload implements OnInit {
   verifyExcelUpload: boolean = false;
   auditTypes: auditType[] = [];
   status: string = '';
-  selectedIds: number[] = [];
   rejectReason: string = '';
   auditTypes$!: Observable<auditType[]>;
   selectAll: boolean = false;
-  sessionId: string = "270156";
-  auditTypeId: number = 0;
+  sessionId: string = '270156';
   verifyAuditData: VerifyAuditData[] = [];
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private auditService: AuditService,
     private alertservice: AlertService,
-    private cdr: ChangeDetectorRef
   ) {
     this.auditTypes$ = this.auditService.getAuditDropdown();
   }
@@ -55,32 +52,6 @@ export class AuditClaimUpload implements OnInit {
       auditType: ['', Validators.required],
       fromDate: ['', Validators.required],
       uploadedData: ['', Validators.required],
-    });
-  }
-
-  ngAfterViewInit(): void {
-    const currentYear = new Date().getFullYear();
-    const startYear = currentYear - 10;
-
-    $('.datepicker').datepicker({
-      dateFormat: 'yy/mm/dd',
-      changeMonth: true,
-      changeYear: true,
-      yearRange: `${startYear}:${currentYear}`,
-      maxDate: 0,
-
-      onSelect: (dateText: string) => {
-        console.log('Selected:', dateText);
-
-        this.auditClaimUpload.patchValue({
-          fromDate: dateText
-        });
-
-        this.auditClaimUpload.get('fromDate')?.updateValueAndValidity();
-        this.cdr.detectChanges();
-
-        console.log('Form Value:', this.auditClaimUpload.value);
-      }
     });
   }
 
@@ -193,7 +164,6 @@ export class AuditClaimUpload implements OnInit {
     document.body.removeChild(link);
   }
 
-
   UploadFile(event: any) {
     console.log(this.auditClaimUpload.value);
     console.log(this.auditClaimUpload.get('fromDate')?.value);
@@ -301,18 +271,27 @@ export class AuditClaimUpload implements OnInit {
   }
 
   getUpdatedData() {
-    this.verifyExcelUpload = true;
-    this.auditService.verifyUploadedExcelData(this.sessionId, "1").subscribe({
+    const auditTypeId = this.auditClaimUpload.value?.auditType;
+    if (!auditTypeId || auditTypeId == null || auditTypeId == '') {
+      this.alertservice.show('warning', 'Please select an valid Audit Type to process');
+      return;
+    }
+    const payload = {
+      sessionId: this.sessionId,
+      auditTypeId: auditTypeId,
+    };
+
+    this.auditService.searchAuditData(payload).subscribe({
       next: (res: any) => {
         if (res.success) {
           this.verifyAuditData = res.data;
+          this.verifyExcelUpload = true;
         }
       },
-      error: err => {
-        this.alertservice.show("error", "Error Occured while fetching data");
-      }
-    }
-    )
+      error: (err) => {
+        this.alertservice.show('error', 'Error Occured while fetching data');
+      },
+    });
   }
 
   toggleAllSelection(): void {
@@ -323,82 +302,96 @@ export class AuditClaimUpload implements OnInit {
 
   updateSelectAllState(): void {
     this.selectAll =
-      this.verifyAuditData.length > 0 &&
-      this.verifyAuditData.every((item: any) => item.selected);
+      this.verifyAuditData.length > 0 && this.verifyAuditData.every((item: any) => item.selected);
   }
 
   saveStatus() {
     if (!this.status) {
-      this.alertservice.show('warning', "Please select a status")
+      this.alertservice.show('warning', 'Please select a status');
       return;
     }
 
-    const selectedIds = this.verifyAuditData
+    let selectedIds: any[] = this.verifyAuditData
       .filter((x: any) => x.selected)
-      .map((x: any) => x.id);
+      .map((x: any) => x.GSFS_RECEIPT_NO);
 
+    if (selectedIds.length === this.verifyAuditData.length) {
+      selectedIds = ['ALL'];
+    }
     if (selectedIds.length === 0) {
-      this.alertservice.show('warning', "Please select atleast one data to start process.")
+      this.alertservice.show('warning', 'Please select atleast one data to start process.');
+      return;
+    }
+    const auditTypeId = this.auditClaimUpload.value?.auditType;
+    if (!auditTypeId || auditTypeId == null || auditTypeId == '') {
+      this.alertservice.show('warning', 'Please select an valid Audit Type to process');
       return;
     }
     const payload = {
       sessionId: this.sessionId,
-      auditTypeId: this.auditTypeId,
+      auditTypeId: auditTypeId,
       status: this.status,
-      reason: status === 'REJECT' ? this.rejectReason : '',
-      selectedIds: selectedIds
+      selectedIds: selectedIds,
     };
     this.auditService.SaveStatus(payload).subscribe({
-      next: res => {
-        this.alertservice.show("success", "Successfully saved");
+      next: (res) => {
+        this.alertservice.show('success', 'Successfully saved');
+        this.verifyExcelUpload = false;
+        this.toggleAllSelection();
       },
-      error: err => {
-        console.error("some error while saving data.", err);
-
-      }
-    })
+      error: (err) => {
+        console.error('some error while saving data.', err);
+      },
+    });
   }
 
   rejectStatus() {
     if (!this.rejectReason) {
-      this.alertservice.show('warning', "Reject reason is mandetory")
+      this.alertservice.show('warning', 'Reject reason is mandetory');
       return;
     }
 
-    if (this.selectedIds.length == 0) {
-      this.alertservice.show('warning', "Please select atleast one data to start process.")
+    let selectedIds: any[] = this.verifyAuditData
+      .filter((x: any) => x.selected)
+      .map((x: any) => x.GSFS_RECEIPT_NO);
+
+    if (selectedIds.length === this.verifyAuditData.length) {
+      selectedIds = ['ALL'];
+    }
+
+    if (selectedIds.length === 0) {
+      this.alertservice.show('warning', 'Please select atleast one data to start process.');
       return;
     }
-    const selectedIds = this.verifyAuditData
-      .filter((x: any) => x.selected)
-      .map((x: any) => x.id);
+    const auditTypeId = this.auditClaimUpload.value?.auditType;
+    if (!auditTypeId || auditTypeId == null || auditTypeId == '') {
+      this.alertservice.show('warning', 'Please select an valid Audit Type to process');
+      return;
+    }
     const payload = {
       sessionId: this.sessionId,
-      auditTypeId: this.auditTypeId,
-      status: this.status,
-      reason: status === 'REJECT' ? this.rejectReason : '',
-      selectedIds: selectedIds
+      auditTypeId: auditTypeId,
+      status: 'REJECT',
+      reason: this.rejectReason,
+      selectedIds: selectedIds,
     };
 
-
-
     this.auditService.RejectStatus(payload).subscribe({
-      next: res => {
-        this.alertservice.show("success", "Rejected successfully !")
+      next: (res) => {
+        this.alertservice.show('success', 'Rejected successfully !');
+        this.toggleAllSelection();
+        this.verifyExcelUpload = false;
+        this.rejectReason = '';
       },
-      error: err => {
-        console.error("Errro while rejecting", err);
-
-      }
-    })
-
+      error: (err) => {
+        console.error('Errro while rejecting', err);
+      },
+    });
   }
-
 
   // =====================================
   // DATE FORMAT METHOD
   // =====================================
-
 
   formatDate(date: any): string {
     if (!date) {
@@ -420,20 +413,18 @@ export class AuditClaimUpload implements OnInit {
     return item.ID;
   }
 
-  //  ngAfterViewInit(): void {
-  //   const currentYear = new Date().getFullYear();
-  //   const startYear = currentYear - 10;
-  //   $('.datepicker').datepicker({
-  //     dateFormat: 'yy/mm/dd',
-  //     changeMonth: true,
-  //     changeYear: true,
-  //     yearRange: startYear + ':' + currentYear,
-  //     maxDate: 0
-  //   });
-  //   $('.calendar-icon').on('click', (event: any) => {
-  //     $(event.currentTarget)
-  //       .siblings('input.datepicker')
-  //       .datepicker('show');
-  //   });
-  // }
+  ngAfterViewInit(): void {
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear - 10;
+    $('.datepicker').datepicker({
+      dateFormat: 'yy/mm/dd',
+      changeMonth: true,
+      changeYear: true,
+      yearRange: startYear + ':' + currentYear,
+      maxDate: 0,
+    });
+    $('.calendar-icon').on('click', (event: any) => {
+      $(event.currentTarget).siblings('input.datepicker').datepicker('show');
+    });
+  }
 }
