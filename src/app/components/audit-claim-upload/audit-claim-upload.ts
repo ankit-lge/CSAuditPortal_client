@@ -36,7 +36,7 @@ export class AuditClaimUpload implements OnInit {
   rejectReason: string = '';
   auditTypes$!: Observable<auditType[]>;
   selectAll: boolean = false;
-  sessionId: string = '270156';
+  sessionId: string = '12';
   verifyAuditData: VerifyAuditData[] = [];
   constructor(
     private router: Router,
