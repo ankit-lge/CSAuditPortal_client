@@ -50,7 +50,8 @@
               "node_modules/jquery-ui-dist/jquery-ui.min.css",
               "node_modules/owl.carousel/dist/assets/owl.carousel.css",
               "node_modules/owl.carousel/dist/assets/owl.theme.default.css",
-              "node_modules/jquery-ui-dist/jquery-ui.css"
+              "node_modules/jquery-ui-dist/jquery-ui.css",
+              "node_modules/datatables.net-dt/css/dataTables.dataTables.min.css"
             ],
 
             "scripts": [
@@ -58,7 +59,8 @@
   "node_modules/jquery-ui-dist/jquery-ui.min.js",
               "public/assets/js/bootstrap.bundle.min.js",
               "public/assets/js/custom.js",
-              "node_modules/owl.carousel/dist/owl.carousel.min.js"
+              "node_modules/owl.carousel/dist/owl.carousel.min.js",
+              "node_modules/datatables.net/js/dataTables.min.js"
             ]
           },
           "configurations": {
@@ -92,6 +94,9 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+           "options": {
+      "allowedHosts": ["nursing-outrage-ammonia.ngrok-free.dev"]
+    },
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
