@@ -19,6 +19,7 @@ interface auditType {
   styleUrls: ['./audit-monitoring-dashboard.css'],
 })
 export class AuditMonitoringDashboard implements OnInit {
+  Math = Math;
   selectedStatus: string = '';
   auditTypes: auditType[] = [];
   auditTypes$!: Observable<auditType[]>;
@@ -26,9 +27,11 @@ export class AuditMonitoringDashboard implements OnInit {
   selectAll: boolean = false;
   searchText: string = '';
   verifyMoniotringData: VerifyAuditData[] = [];
+  filteredData: VerifyAuditData[] = []; 
   currentPage: number = 1;
   pageSize: number = 10;
   totalPages: number = 0;
+  totalRecords: number = 0;
   pageSizes: number[] = [10, 25, 50, 100];
   selectedRows: any[] = [];
   showTable: boolean = false;
@@ -58,49 +61,69 @@ export class AuditMonitoringDashboard implements OnInit {
       this.monitoring.markAllAsTouched();
       return;
     }
-    var data = this.monitoring.value;
-    const payload = {
-      auditStatus: data.status,
-      auditTypeId: data.auditType,
-      fromDate: data.fromDate.replace(/\//g, ''),
-      toDate: data.toDate.replace(/\//g, ''),
-      page: 0,
-      limit: 0,
-    };
-    this.auditService.searchAuditData(payload).subscribe({
-      next: (res) => {
-        this.alertService.show('success', 'Data fetched successfully !');
-        this.verifyMoniotringData = res.data;
-        this.showTable = true;
-        setTimeout(() =>{
-          if ($.fn.DataTable.isDataTable('table')) {
-              $('table').DataTable().destroy();
-          }
-         const table = $('table').DataTable({
-          columnDefs: [
-              {
-                targets: [0], // column indexes
-                orderable: false
-              }
-            ]
-         });
-          setTimeout(() => {
-            const wrapper = $(table.table().container());
-
-            $('#searchContainer').append(wrapper.find('.dataTables_filter, .dt-search'));
-            $('#paginationContainer').append(wrapper.find('.dataTables_paginate, .dt-paging'));
-            $('#lengthContainer').append(wrapper.find('.dataTables_length, .dt-length'));
-            $('#infoContainer').append(wrapper.find('.dataTables_info, .dt-info'));
-            }, 100);
-        }, 100)
-      },
-      error: (err) => {
-        console.error(err, 'Error found.');
-
-        this.alertService.show('error', 'No data found.');
-      },
-    });
+    this.loadData(1);
   }
+
+  loadData(page: number) {
+
+  const formData = this.monitoring.value;
+
+  const payload = {
+    auditStatus: formData.status,
+    auditTypeId: formData.auditType,
+    fromDate: formData.fromDate.replace(/\//g, ''),
+    toDate: formData.toDate.replace(/\//g, ''),
+    page: page,
+    limit: this.pageSize
+  };
+
+  this.auditService.searchAuditData(payload)
+    .subscribe(res => {
+
+      this.verifyMoniotringData = res.data;
+
+      this.filteredData = [...res.data];
+      this.totalRecords = res.totalRecords;
+
+      this.currentPage = page;
+      this.totalPages = Math.ceil(
+        this.totalRecords / this.pageSize
+      );
+
+      this.showTable = true;
+    });
+}
+onSearch(){
+  const search = this.searchText.trim().toLowerCase();
+  if (!search) {
+    this.filteredData = [...this.verifyMoniotringData];
+    return;
+  }
+
+  this.filteredData = this.verifyMoniotringData.filter(item =>
+    Object.values(item).some(value =>
+      String(value ?? '')
+        .toLowerCase()
+        .includes(search)
+    )
+  );
+}
+
+changePageSize() {
+  this.currentPage = 1;
+  this.loadData(this.currentPage);
+}
+nextPage() {
+  if (this.currentPage < this.totalPages) {
+    this.loadData(this.currentPage + 1);
+  }
+}
+
+previousPage() {
+  if (this.currentPage > 1) {
+    this.loadData(this.currentPage - 1);
+  }
+}
   updateAllMonitoringState(): void {
     this.selectAll =
       this.verifyMoniotringData.length > 0 &&
