@@ -59,14 +59,15 @@ export class AuditService {
 
 
   RejectStatus(
-  payload: any): Observable<any> {return this.http.post<any>( `${this.apiUrl}AuditMonitoring/Reject`, payload
+  payload: any): Observable<any> {
+    return this.http.post<any>( `${this.apiUrl}AuditMonitoring/Reject`, payload
   );
 }
 downloadExcel(request: any): Observable<Blob> {
 
   return this.http.post(
 
-    `${environment.apiUrl}/AuditMonitoring/DownloadExcel`,
+    `${environment.apiUrl}AuditMonitoring/Download`,
 
     request,
 

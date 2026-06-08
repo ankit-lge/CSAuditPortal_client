@@ -25,8 +25,7 @@ export class AuditMonitoringDashboard implements OnInit {
   monitoring!: FormGroup;
   selectAll: boolean = false;
   searchText: string = '';
-  verifyMoniotringData: any[] = [];
-  pagedData: VerifyAuditData[] = [];
+  verifyMoniotringData: VerifyAuditData[] = [];
   currentPage: number = 1;
   pageSize: number = 10;
   totalPages: number = 0;
@@ -71,13 +70,20 @@ export class AuditMonitoringDashboard implements OnInit {
     this.auditService.searchAuditData(payload).subscribe({
       next: (res) => {
         this.alertService.show('success', 'Data fetched successfully !');
-        this.pagedData = res.data;
+        this.verifyMoniotringData = res.data;
         this.showTable = true;
         setTimeout(() =>{
           if ($.fn.DataTable.isDataTable('table')) {
               $('table').DataTable().destroy();
           }
-         const table = $('table').DataTable();
+         const table = $('table').DataTable({
+          columnDefs: [
+              {
+                targets: [0], // column indexes
+                orderable: false
+              }
+            ]
+         });
           setTimeout(() => {
             const wrapper = $(table.table().container());
 
@@ -121,25 +127,22 @@ export class AuditMonitoringDashboard implements OnInit {
     this.monitoring.reset();
     this.selectedStatus = '';
     this.verifyMoniotringData = [];
-    this.pagedData  = [];
     this.showTable = false;
     this.selectAll = false;
     console.log('Form Reset Successfully');
   }
   DownloadExcel() {
-    const selectedRows = this.verifyMoniotringData.filter((x) => x.selected);
+    let selectedIds: any[] = this.verifyMoniotringData
+      .filter((x: any) => x.selected)
+      .map((x: any) => x.GSFS_RECEIPT_NO);
 
-    if (selectedRows.length === 0) {
-      this.alertService.show('Validation', 'Please select at least one record.');
-
+      if (selectedIds.length === 0) {
+      this.alertService.show('warning', 'Please select atleast one data to start process.');
       return;
     }
-
     const request = {
-      ids: selectedRows.map((x) => x.id),
-      claimNos: selectedRows.map((x) => x.claimNo),
-      auditType: this.monitoring.get('auditType')?.value,
-      shipToCodes: selectedRows.map((x) => x.shipToCode),
+      auditTypeId: this.monitoring.get('auditType')?.value,
+      GSFS_Receipt_Nos: selectedIds,
     };
     this.auditService.downloadExcel(request).subscribe({
       next: (response: Blob) => {
@@ -155,36 +158,35 @@ export class AuditMonitoringDashboard implements OnInit {
 
         window.URL.revokeObjectURL(url);
 
-        this.alertService.show('Success', 'Excel downloaded successfully.');
+        this.alertService.show('success', 'Excel downloaded successfully.');
       },
       error: () => {
-        this.alertService.show('Error', 'Failed to download excel.');
+        this.alertService.show('error', 'Failed to download excel.');
       },
     });
   }
 
   // REJECT REQUEST
   rejectRequest() {
-    const selectedRows = this.verifyMoniotringData.filter((x) => x.selected);
-    if (selectedRows.length === 0) {
-      this.alertService.show('error', 'Please select at least one record.');
+    let selectedIds: any[] = this.verifyMoniotringData
+      .filter((x: any) => x.selected)
+      .map((x: any) => x.GSFS_RECEIPT_NO);
+
+      if (selectedIds.length === 0) {
+      this.alertService.show('warning', 'Please select atleast one data to start process.');
       return;
     }
-
-    const reason = prompt('Enter rejection reason');
-    if (!reason) {
-      return;
-    }
-
     const request = {
-      ids: selectedRows.map((x) => x.id),
-      reason: reason,
+      auditTypeId: this.monitoring.get('auditType')?.value,
+      GSFS_Receipt_Nos: selectedIds,
     };
 
     this.auditService.RejectStatus(request).subscribe({
       next: (res: any) => {
         this.alertService.show('success', 'Rejected successfully.');
-        this.auditMonitoringForm();
+        setTimeout(() => {
+          this.auditMonitoringForm();
+        }, 100);
       },
       error: (err) => {
         this.alertService.show('error', err.error?.message || 'Reject failed.');
