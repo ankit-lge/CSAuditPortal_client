@@ -11,13 +11,10 @@ export class AuditService {
   constructor(private http: HttpClient) { }
 
   getAuditDropdown(): Observable<any[]> {
-    // return this.http.get<any[]>(this.apiUrl);
     return this.http.get<any[]>(`${this.apiUrl}Audit/GetAuditDropdownList`);
   }
 
   uploadData(data: any, templateId: any) {
-    // let tempUSer = JSON.stringify(localStorage.getItem("user"));
-    // let user = JSON.parse(JSON.parse(tempUSer));
     const payload = {
       records: data,
     };
@@ -51,6 +48,7 @@ export class AuditService {
     return this.http.post<any>(`${this.apiUrl}Audit/search-audit`, payload)
   }
   
+  
    SearchAuditMoniter(payload: any){
     return this.http.post(`${this.apiUrl}AuditMonitoring/SearchAuditData`, payload);
   }
@@ -59,10 +57,24 @@ export class AuditService {
     return this.http.post(`${this.apiUrl}Audit/save-status`, payload);
   }
 
-  RejectStatus(payload: any) {
-    return this.http.post(`${this.apiUrl}Audit/reject-status`, payload)
-  }
 
+  RejectStatus(
+  payload: any): Observable<any> {return this.http.post<any>( `${this.apiUrl}AuditMonitoring/Reject`, payload
+  );
+}
+downloadExcel(request: any): Observable<Blob> {
+
+  return this.http.post(
+
+    `${environment.apiUrl}/AuditMonitoring/DownloadExcel`,
+
+    request,
+
+    {
+      responseType: 'blob'
+    }
+  );
+}
   
 
 
