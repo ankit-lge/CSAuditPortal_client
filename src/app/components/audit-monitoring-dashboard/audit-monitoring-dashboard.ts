@@ -33,6 +33,8 @@ currentPage: number = 1;
 pageSize: number = 10;
 totalPages: number = 0;
 pageSizes: number[] = [10, 25, 50, 100];
+selectedRows: any[] = [];
+showTable: boolean = false; 
 
 
   constructor(
@@ -81,7 +83,6 @@ pageSizes: number[] = [10, 25, 50, 100];
     });
   }
   updateAllMonitoringState(): void {
-
   this.selectAll =
     this.verifyMoniotringData.length > 0 &&
     this.verifyMoniotringData.every(
@@ -89,7 +90,6 @@ pageSizes: number[] = [10, 25, 50, 100];
     );
 }
 getEndRecord(): number {
-
   return Math.min(
     this.currentPage * this.pageSize,
     this.verifyMoniotringData.length
@@ -102,32 +102,25 @@ getEndRecord(): number {
     });
   }
   calculatePagination(): void {
-
   this.totalPages = Math.ceil(
     this.verifyMoniotringData.length / this.pageSize
   );
-
   this.loadPage(1);
 }
+
 loadPage(page: number): void {
-
   this.currentPage = page;
-
   const start =
     (page - 1) * this.pageSize;
-
   const end =
     start + this.pageSize;
-
   this.pagedData =
     this.verifyMoniotringData.slice(start, end);
 }
 onPageSizeChange(): void {
-
   this.calculatePagination();
 }
 previousPage(): void {
-
   if (this.currentPage > 1) {
     this.loadPage(this.currentPage - 1);
   }
@@ -147,114 +140,104 @@ get pages(): number[] {
  
   // RESET FORM
   resetForm() {
-    this.monitoring.reset();
-
-    this.selectedStatus = 'pending';
-
-    // Optional default values
-    this.monitoring.patchValue({
-      status: '',
-      auditType: '',
-      fromDate: '',
-      toDate: '',
-    });
-
-    console.log('Form Reset Successfully');
-  }
- DownloadExcel(): void {
-
-  const payload = {
-    status: this.monitoring.value.status,
-    auditType: this.monitoring.value.auditType,
-    fromDate: this.monitoring.value.fromDate,
-    toDate: this.monitoring.value.toDate
-  };
-  console.log('Download Button Clicked');
-  console.log('Payload:', payload);
-  this.auditService.SearchAuditMoniter(payload)
-    .subscribe((res: any) => {
-       console.log('Download Response:', res);
-       alert('Response received successfully');
-
-    if (!Array.isArray(res) || res.length === 0){
-        this.alertService.show('warning', 'No data found');
-        return;
-      }
-
-      const worksheet = XLSX.utils.json_to_sheet(res);
-
-      const workbook = XLSX.utils.book_new();
-
-      XLSX.utils.book_append_sheet(
-        workbook,
-        worksheet,
-        'AuditMonitoring'
-      );
-
-      const excelBuffer = XLSX.write(workbook, {
-        bookType: 'xlsx',
-        type: 'array'
-      });
-
-      const blob = new Blob(
-        [excelBuffer],
-        {
-          type:
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
-        }
-      );
-
-      FileSaver.saveAs(
-        blob,
-        `Audit_${this.selectedStatus}.xlsx`
-      );
-    });
+  this.monitoring.reset();
+  this.selectedStatus = '';
+  this.verifyMoniotringData = [];
+  this.pagedData = [];
+  this.showTable = false;
+  this.selectAll = false;
+  console.log('Form Reset Successfully');
 }
+DownloadExcel() {
 
+  const selectedRows =
+    this.verifyMoniotringData
+        .filter(x => x.selected);
+
+  if (selectedRows.length === 0) {
+
+    this.alertService.show(
+      'Validation',
+      'Please select at least one record.',
+     );
+
+    return;
+  }
+
+ const request = {
+  ids: selectedRows.map(x => x.id),
+  claimNos: selectedRows.map(x => x.claimNo),
+  auditType: this.monitoring.get('auditType')?.value,
+  shipToCodes: selectedRows.map(x => x.shipToCode)
+};
+  this.auditService .downloadExcel(request)  .subscribe({
+        next: (response: Blob) => {
+          const blob =  new Blob( [response],
+              {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+              });
+
+          const url = window.URL .createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download =  `AuditReport_${new Date().getTime()}.xlsx`;
+          link.click();
+
+          window.URL.revokeObjectURL(url);
+
+           this.alertService.show(
+            'Success',
+            'Excel downloaded successfully.',
+           );
+        },
+        error: () => {
+
+           this.alertService.show(
+            'Error',
+            'Failed to download excel.',
+            );
+        }
+      });
+}
 
   // REJECT REQUEST
   rejectRequest() {
-    if (confirm('Are you sure you want to reject this request?')) {
-      console.log('Rejected Data:', this.monitoring.value);
-
-      // API CALL
-      /*
-      this.auditService.rejectRequest(this.monitoring.value)
-        .subscribe({
-          next: (res) => {
-            alert('Request Rejected Successfully');
-          },
-          error: (err) => {
-            console.log(err);
-          }
-        });
-      */
-
-      alert('Reject API Pending');
-    }
+  const selectedRows =
+    this.verifyMoniotringData
+        .filter(x => x.selected);
+  if (selectedRows.length === 0) {
+    this.alertService.show(
+      'error',
+      'Please select at least one record.');
+    return;
   }
 
-  // DELETE DATA
-  deleteData() {
-    if (confirm('Are you sure you want to delete this record?')) {
-      console.log('Delete Data:', this.monitoring.value);
-
-      // API CALL
-      /*
-      this.auditService.deleteData(this.monitoring.value)
-        .subscribe({
-          next: (res) => {
-            alert('Deleted Successfully');
-          },
-          error: (err) => {
-            console.log(err);
-          }
-        });
-      */
-
-      alert('Delete API Pending');
-    }
+  const reason =
+    prompt(
+      'Enter rejection reason');
+  if (!reason) {
+    return;
   }
+
+  const request = {
+    ids:  selectedRows .map(x => x.id),reason: reason
+  };
+
+  this.auditService .RejectStatus(request)
+      .subscribe({ next: (res: any) => {
+          this.alertService.show(
+            'success',
+            'Rejected successfully.');
+          this.auditMonitoringForm();
+        },
+        error: (err) => {
+          this.alertService.show(
+            'error',
+            err.error?.message ||
+            'Reject failed.');
+        }
+      });
+}
 
   onSearchByDate(event: any) {
     if (!event.target.checked) {
@@ -275,13 +258,11 @@ get pages(): number[] {
 
       onSelect: (dateText: string, inst: any) => {
         const controlName = $(inst.input).attr('formControlName');
-
         if (controlName) {
           this.monitoring.get(controlName)?.setValue(dateText);
         }
       },
     });
-
     $('.calendar-icon').on('click', (event: any) => {
       $(event.currentTarget).siblings('input.datepicker').datepicker('show');
     });
