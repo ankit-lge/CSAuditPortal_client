@@ -64,13 +64,9 @@ export class AuditService {
   );
 }
 downloadExcel(request: any): Observable<Blob> {
-
   return this.http.post(
-
-    `${environment.apiUrl}AuditMonitoring/Download`,
-
+    `${this.apiUrl}AuditMonitoring/Download`,
     request,
-
     {
       responseType: 'blob'
     }
