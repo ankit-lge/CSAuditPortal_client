@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReviewProcessService } from '../../services/review-process.service';
+import { Observable } from 'rxjs';
+import { AuditService } from '../../services/audit.service';
 declare var $: any;
 
 @Component({
@@ -8,6 +12,113 @@ declare var $: any;
   styleUrl: './audit-review-process.css',
 })
 export class AuditReviewProcess {
+
+  private readonly fb = inject(FormBuilder);
+  private readonly reviewSearvice = inject(ReviewProcessService);
+  private readonly auditService = inject(AuditService);
+  Math = Math;
+  searchedData: any[] = [];
+  filteredData: any[] = [];
+  auditTypes$!: AuditType[];
+  searchingForm!: FormGroup;
+  pageNumber: number = 1;
+  pageSize: number = 10;
+  totalRecords: number = 0;
+  currentPage: number = 1;
+  totalPages: number = 0;
+  searchText: string = '';
+  ngOnInit(){
+    this.searchingForm = this.fb.group({
+      receiptNo : ['', Validators.required],
+      suspicious : ['', Validators.required],
+      auditType: ['', Validators.required],
+      fromAuditDate: ['', Validators.required],
+      toAuditDate: ['', Validators.required]
+    });
+
+    this.auditService.getAuditDropdown().subscribe({
+      next: (res:any) =>{
+        this.auditTypes$ = res;
+      }
+    });
+  }
+
+  searchReviewProcess(){
+    if(this.searchingForm.invalid){
+      this.searchingForm.markAllAsTouched();
+      return;
+    }
+
+    this.loadData(1);
+  }
+
+  loadData(pageNumber: number){
+    const data = this.searchingForm.value;
+    const payload = {
+      receiptNo : data.receiptNo,
+      suspicious: data.suspicious,
+      fromAuditDate: data.fromAuditDate.replace(/\//g, ''),
+      toAuditDate: data.toAuditDate.replace(/\//g, ''),
+      pageNumber : pageNumber,
+      pageSize : this.pageSize
+    }
+
+    this.reviewSearvice.searchReviewProces(payload).subscribe({
+      next: (res:any) =>{
+        if(res.success){
+          this.filteredData = [...res.data]
+          this.searchedData = res.data;
+          this.totalRecords = res.totalRecords;
+
+          this.currentPage = pageNumber;
+          this.totalPages = Math.ceil(
+            this.totalRecords / this.pageSize
+          );
+        }
+      }
+    });
+  }
+
+  onSearch(){
+  const search = this.searchText.trim().toLowerCase();
+  if (!search) {
+    this.filteredData = [...this.searchedData];
+    return;
+  }
+
+  this.filteredData = this.searchedData.filter(item =>
+    Object.values(item).some(value =>
+      String(value ?? '')
+        .toLowerCase()
+        .includes(search)
+    )
+  );
+}
+
+  onDownload(){
+
+  }
+
+  onReset(){
+    this.searchingForm.reset();
+  }
+
+
+  changePageSize() {
+  this.currentPage = 1;
+  this.loadData(this.currentPage);
+}
+nextPage() {
+  if (this.currentPage < this.totalPages) {
+    this.loadData(this.currentPage + 1);
+  }
+}
+
+previousPage() {
+  if (this.currentPage > 1) {
+    this.loadData(this.currentPage - 1);
+  }
+}
    ngAfterViewInit(): void {
     const currentYear = new Date().getFullYear();
     const startYear = currentYear - 10;
@@ -16,12 +127,17 @@ export class AuditReviewProcess {
       changeMonth: true,
       changeYear: true,
       yearRange: startYear + ':' + currentYear,
-      maxDate: 0
+      maxDate: 0,
+
+      onSelect: (dateText: string, inst: any) => {
+        const controlName = $(inst.input).attr('formControlName');
+        if (controlName) {
+          this.searchingForm.get(controlName)?.setValue(dateText);
+        }
+      },
     });
     $('.calendar-icon').on('click', (event: any) => {
-      $(event.currentTarget)
-        .siblings('input.datepicker')
-        .datepicker('show');
+      $(event.currentTarget).siblings('input.datepicker').datepicker('show');
     });
   }
 }

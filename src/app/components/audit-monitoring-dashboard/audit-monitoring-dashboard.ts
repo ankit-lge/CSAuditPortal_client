@@ -6,11 +6,6 @@ import { AuditService } from '../../services/audit.service';
 import { AlertService } from '../../services/alert-service';
 import {VerifyAuditData} from '../../core/interfaces/verify-audit-data';
 declare var $: any;
-import 'datatables.net';
-interface auditType {
-  ID: Number;
-  VALUE: string;
-}
 
 @Component({
   selector: 'app-audit-monitoring-dashboard',
@@ -21,8 +16,7 @@ interface auditType {
 export class AuditMonitoringDashboard implements OnInit {
   Math = Math;
   selectedStatus: string = '';
-  auditTypes: auditType[] = [];
-  auditTypes$!: Observable<auditType[]>;
+  auditTypes$!: Observable<AuditType[]>;
   monitoring!: FormGroup;
   selectAll: boolean = false;
   searchText: string = '';
@@ -79,10 +73,10 @@ export class AuditMonitoringDashboard implements OnInit {
 
   this.auditService.searchAuditData(payload)
     .subscribe(res => {
-
+      this.filteredData = [...res.data];
       this.verifyMoniotringData = res.data;
 
-      this.filteredData = [...res.data];
+      
       this.totalRecords = res.totalRecords;
 
       this.currentPage = page;
@@ -129,22 +123,11 @@ previousPage() {
       this.verifyMoniotringData.length > 0 &&
       this.verifyMoniotringData.every((item: any) => item.selected);
   }
-  getEndRecord(): number {
-    return Math.min(this.currentPage * this.pageSize, this.verifyMoniotringData.length);
-  }
-
   toggleAllSelection(): void {
     this.verifyMoniotringData.forEach((item: any) => {
       item.selected = this.selectAll;
     });
   }
-
-  get pages(): number[] {
-    return Array(this.totalPages)
-      .fill(0)
-      .map((x, i) => i + 1);
-  }
-
   // RESET FORM
   resetForm() {
     this.monitoring.reset();
