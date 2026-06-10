@@ -15,10 +15,12 @@ import { AuditClaimUpload } from './components/audit-claim-upload/audit-claim-up
 import { CommonModule } from '@angular/common';
 import { Modalpopup } from './common/modalpopup/modalpopup';
 import { AlertModal } from './pages/alert-modal/alert-modal';
-import { RouteLoader } from "./core/loader/route-loader/route-loader";
+import { RouteLoader } from './core/loader/route-loader/route-loader';
 
 import { ApiLoader } from './core/loader/api-loader/api-loader';
 import { apiLoaderInterceptor } from './core/interceptor/api-loader-interceptor';
+import { FeedbackStatus } from './components/feedback-status/feedback-status';
+import { AuditSummaryReport } from './components/audit-summary-report/audit-summary-report';
 
 @NgModule({
   declarations: [
@@ -32,17 +34,27 @@ import { apiLoaderInterceptor } from './core/interceptor/api-loader-interceptor'
     Modalpopup,
     ApiLoader,
     AlertModal,
-    RouteLoader
+    RouteLoader,
+    FeedbackStatus,
+    AuditSummaryReport,
   ],
-  imports: [BrowserModule, CommonModule, AppRoutingModule, ReactiveFormsModule, FormsModule, HttpClientModule],
+
+  imports: [
+    BrowserModule,
+    CommonModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule,
+  ],
   providers: [
-    provideBrowserGlobalErrorListeners(), 
+    provideBrowserGlobalErrorListeners(),
     provideHttpClient(),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: apiLoaderInterceptor,
-      multi: true
-    }
+      multi: true,
+    },
   ],
   bootstrap: [App],
 })

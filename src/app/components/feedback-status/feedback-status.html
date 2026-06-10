@@ -1,0 +1,127 @@
+<!-- Page Content -->
+<div class="container-fluid mt-3">
+
+    <div class="d-flex justify-content-between align-items-center mb-1">
+        <h6 class="text-dark">CS Audit Portal</h6>
+
+        <div class="header-right">
+            <div class="user-info">
+                <span>
+                    USER
+                    <strong style="color:#a50034">CS Audit Portal</strong>
+                    <strong style="color:gray">/Feedback Search</strong>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audit Claim Upload -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h2 class="page-title">Feedback Status</h2>
+        </div>
+
+        <div class="card-body">
+            <form>
+                <div class="row g-3">
+
+                    <!-- Audit Type -->
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="form-floating">
+                            <select class="form-select" id="auditType">
+                                <option selected>Select Branch</option>
+                             
+                            </select>
+                            <label for="auditType">Branch</label>
+                        </div>
+                    </div>
+
+                    <!-- Date -->
+                      <div class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="form-floating input-group mb-3 mandatory">
+                            <input type="text" class="form-control datepicker"
+                                id="fromAuditDate" placeholder="From Audit Date">
+                            <label for="fromAuditDate" class="z-index-10">
+                                From Date
+                            </label>
+                            <span class="input-group-text calendar-icon">
+                                <i class="fa-solid fa-calendar-days"></i>
+                            </span>
+                        </div>
+                    </div>
+
+
+                       <div class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="form-floating input-group mb-3 mandatory">
+                            <input type="text" class="form-control datepicker"
+                                id="toAuditDate" placeholder="To Audit Date">
+                            <label for="toAuditDate" class="z-index-10">
+                                To Date
+                            </label>
+                            <span class="input-group-text calendar-icon">
+                                <i class="fa-solid fa-calendar-days"></i>
+                            </span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-2">
+                    <button type="reset"
+                            class="btn btn-danger mb-2">
+                        Find
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-danger mb-2">
+                        Export to Excel
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-danger mb-2">
+                        Reset
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Verify Data Table -->
+    <div class="card card-grid mt-3">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Total Count</th>
+                            <th>Feedback Recived</th>
+                            <th>Accepted</th>
+                            <th>Rejected</th>
+                            <th>In Process at HO</th> 
+                            <th>Pending</th>
+                            <th>% Feedback Awaited</th>
+                            <th>Grand Total</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                No Data Found
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
