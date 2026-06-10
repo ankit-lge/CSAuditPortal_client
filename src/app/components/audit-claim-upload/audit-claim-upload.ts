@@ -378,7 +378,7 @@ console.log('auditType =', this.auditClaimUpload.get('auditType')?.value);
       selectedIds: selectedIds,
     };
 
-    this.auditService.RejectStatus(payload).subscribe({
+    this.auditService.DeleteUploadedData(payload).subscribe({
       next: (res) => {
         this.alertservice.show('success', 'Rejected successfully !');
         this.toggleAllSelection();

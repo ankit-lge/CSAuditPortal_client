@@ -200,6 +200,33 @@ previousPage() {
     });
   }
 
+  // Submit To Branch
+  submitToBranch(){
+    let selectedIds: any[] = this.verifyMoniotringData
+      .filter((x: any) => x.selected)
+      .map((x: any) => x.GSFS_RECEIPT_NO);
+
+      if (selectedIds.length === 0) {
+      this.alertService.show('warning', 'Please select atleast one data to start process.');
+      return;
+    }
+    const request = {
+      auditTypeId: this.monitoring.get('auditType')?.value,
+      GSFS_Receipt_Nos: selectedIds,
+    };
+
+    this.auditService.submitToBranch(request).subscribe({
+      next: (res: any) => {
+        this.alertService.show('success', 'Rejected successfully.');
+        setTimeout(() => {
+          this.auditMonitoringForm();
+        }, 100);
+      },
+      error: (err) => {
+        this.alertService.show('error', err.error?.message || 'Reject failed.');
+      },
+    });
+  }
   onSearchByDate(event: any) {
     if (!event.target.checked) {
       this.router.navigate(['/audit-claim-upload']);

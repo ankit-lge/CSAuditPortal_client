@@ -58,11 +58,22 @@ export class AuditService {
   }
 
 
+  DeleteUploadedData(payload: any){
+    return this.http.post(`${this.apiUrl}Audit/reject-status`, payload);
+  }
+
+  // Audit Monitoring Dashboard.
   RejectStatus(
   payload: any): Observable<any> {
     return this.http.post<any>( `${this.apiUrl}AuditMonitoring/Reject`, payload
   );
 }
+
+submitToBranch(payload: any){
+  return this.http.post(`${this.apiUrl}AuditMonitoring/SubmitToBranch`, payload);
+}
+
+
 downloadExcel(request: any): Observable<Blob> {
   return this.http.post(
     `${this.apiUrl}AuditMonitoring/Download`,
