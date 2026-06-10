@@ -57,6 +57,7 @@ export class AuditReviewProcess {
     const payload = {
       receiptNo : data.receiptNo,
       suspicious: data.suspicious,
+      auditTypeId: data.auditType,
       fromAuditDate: data.fromAuditDate.replace(/\//g, ''),
       toAuditDate: data.toAuditDate.replace(/\//g, ''),
       pageNumber : pageNumber,
