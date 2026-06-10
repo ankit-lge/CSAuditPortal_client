@@ -4,6 +4,7 @@ import { ReviewProcessService } from '../../services/review-process.service';
 import { Observable } from 'rxjs';
 import { AuditService } from '../../services/audit.service';
 import { AlertService } from '../../services/alert-service';
+import { ReviewProcessData } from '../../core/interfaces/review-process-data';
 declare var $: any;
 
 @Component({
@@ -19,8 +20,8 @@ export class AuditReviewProcess {
   private readonly auditService = inject(AuditService);
   private readonly alertService = inject(AlertService);
   Math = Math;
-  searchedData: any[] = [];
-  filteredData: any[] = [];
+  searchedData: ReviewProcessData[] = [];
+  filteredData: ReviewProcessData[] = [];
   auditTypes$!: AuditType[];
   searchingForm!: FormGroup;
   pageNumber: number = 1;
@@ -69,10 +70,9 @@ export class AuditReviewProcess {
     this.reviewSearvice.searchReviewProces(payload).subscribe({
       next: (res:any) =>{
         if(res.success){
-          this.filteredData = [...res.data]
           this.searchedData = res.data;
-          this.totalRecords = res.totalRecords;
-
+          this.filteredData = [...res.data]
+          this.totalRecords = res.totalData;
           this.currentPage = pageNumber;
           this.totalPages = Math.ceil(
             this.totalRecords / this.pageSize
