@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReviewProcessService } from '../../services/review-process.service';
 import { Observable } from 'rxjs';
 import { AuditService } from '../../services/audit.service';
+import { AlertService } from '../../services/alert-service';
 declare var $: any;
 
 @Component({
@@ -16,6 +17,7 @@ export class AuditReviewProcess {
   private readonly fb = inject(FormBuilder);
   private readonly reviewSearvice = inject(ReviewProcessService);
   private readonly auditService = inject(AuditService);
+  private readonly alertService = inject(AlertService);
   Math = Math;
   searchedData: any[] = [];
   filteredData: any[] = [];
@@ -97,7 +99,32 @@ export class AuditReviewProcess {
 }
 
   onDownload(){
+    const data = this.searchingForm.value;
+    const payload = {
+      receiptNo : data.receiptNo,
+      suspicious: data.suspicious,
+      auditTypeId: data.auditType,
+      fromAuditDate: data.fromAuditDate.replace(/\//g, ''),
+      toAuditDate: data.toAuditDate.replace(/\//g, '')
+    }
 
+    this.reviewSearvice.downloadData(payload).subscribe({
+      next : (res : Blob)=>{
+        const blob = new Blob([res], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        });
+
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `AuditReport_${new Date().getTime()}.xlsx`;
+        link.click();
+
+        window.URL.revokeObjectURL(url);
+
+        this.alertService.show('success', 'Excel downloaded successfully.');
+      }
+    });
   }
 
   onReset(){
