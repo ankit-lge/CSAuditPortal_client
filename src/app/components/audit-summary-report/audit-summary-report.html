@@ -1,0 +1,162 @@
+<!-- Page Content -->
+<div class="container-fluid mt-3">
+
+    <div class="d-flex justify-content-between align-items-center mb-1">
+        <h6 class="text-dark">CS Audit Portal</h6>
+
+        <div class="header-right">
+            <div class="user-info">
+                <span>
+                    USER
+                    <strong style="color:#a50034">CS Audit Portal</strong>
+                    <strong style="color:gray">/Audit Summary Report</strong>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audit Claim Upload -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h2 class="page-title">Audit Summary Report</h2>
+        </div>
+
+        <div class="card-body">
+            <form>
+                <div class="row g-3">
+
+                    <!-- Audit Type -->
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="form-floating">
+                            <select class="form-select" id="auditType">
+                                <option selected>Select Branch</option>
+
+                            </select>
+                            <label for="auditType">Branch</label>
+                        </div>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="position-relative" #pickerContainer>
+
+                            <!-- Input field -->
+                            <div class="form-floating input-group mb-3 mandatory">
+                                <input type="text" class="form-control" id="floatingFromDate"
+                                    placeholder="From Audit Date" [value]="displayValue" readonly
+                                    style="cursor: pointer;" (click)="togglePicker()" />
+                                <label for="floatingFromDate" class="z-index-10">From Audit Date</label>
+                                <span class="input-group-text calendar-icon" (click)="togglePicker()"
+                                    style="cursor:pointer;">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                </span>
+                            </div>
+
+                            <!-- Hidden native value for form submission -->
+                            <input type="hidden" [value]="nativeValue" name="fromAuditDate" />
+
+                            <!-- Month-Year Popup -->
+                            <div *ngIf="isPickerOpen" class="border rounded bg-white p-3 shadow-sm"
+                                style="position:absolute; top:calc(100% - 8px); left:0; z-index:1055; min-width:230px;">
+                                <!-- Year Navigation -->
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        [disabled]="pickerYear <= startYear" (click)="changeYear(-1)">
+                                        &#8249;
+                                    </button>
+                                    <span style="font-weight:500; font-size:15px;">{{ pickerYear }}</span>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        [disabled]="pickerYear >= currentYear" (click)="changeYear(1)">
+                                        &#8250;
+                                    </button>
+                                </div>
+
+                                <!-- Month Grid -->
+                                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:6px;">
+                                    <button *ngFor="let m of months; let i = index" type="button" class="btn btn-sm"
+                                        [ngClass]="isSelected(i) ? 'btn-primary' : 'btn-light'"
+                                        [disabled]="isFutureMonth(i)" (click)="selectMonth(i)">
+                                        {{ m }}
+                                    </button>
+                                </div>
+
+                                <!-- Clear -->
+                                <div class="mt-2 text-end">
+                                    <button type="button" class="btn btn-sm btn-link text-muted p-0"
+                                        (click)="resetForm()">
+                                        Clear
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-2">
+                    <button type="reset" class="btn btn-danger mb-2">
+                        Find
+                    </button>
+
+                    <button type="submit" class="btn btn-danger mb-2">
+                        Export to Excel
+                    </button>
+
+                    <button type="button" class="btn btn-danger mb-2">
+                        Reset
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Verify Data Table -->
+    <div class="card card-grid mt-3">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle auto-width-table">
+                    <thead>
+                        <tr>
+                            <th>AMC Incentive Hold</th>
+                            <th>Beyond AMC Policy</th>
+                            <th>Claim Self Registration</th>
+                            <th>Data Audit</th>
+                            <th>Data Audit (Gas Overcharging)</th>
+                            <th>Duplicate Data</th>
+                            <th>Estimate OOW (AMC)</th>
+                            <th>Extra Filter AMC</th>
+                            <th>Inside Filters IW Warranty</th>
+                            <th>Model Charge</th>
+                            <th>OOW Claims</th>
+                            <th>Part in Labor</th>
+                            <th>Post AMC 30 Days</th>
+                            <th>RF Special Model (Non-PCB)</th>
+                            <th>Suspicious AMC</th>
+                            <th>Wrong Part Consumption</th>
+                            <th>Multiple Closures Same Day</th>
+                            <th>LGC Part Rejection</th>
+                            <th>LGC Non-Part Rejection</th>
+                            <th>Cancellation Claim Recovery</th>
+                            <th>Multiple Brackets</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td colspan="21" class="text-center">
+                                No Data Found
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
