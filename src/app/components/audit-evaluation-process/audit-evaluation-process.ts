@@ -4,6 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-audit-evaluation-process',
   standalone: false,
   templateUrl: './audit-evaluation-process.html',
-  styleUrl: './audit-evaluation-process.css',
+  styleUrls: ['./audit-evaluation-process.css']
 })
-export class AuditEvaluationProcess {}
+export class AuditEvaluationProcess {
+
+}
