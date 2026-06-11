@@ -19,7 +19,7 @@ import { RouteLoader } from './core/loader/route-loader/route-loader';
 
 import { ApiLoader } from './core/loader/api-loader/api-loader';
 import { apiLoaderInterceptor } from './core/interceptor/api-loader-interceptor';
-import { FeedbackStatus } from './components/feedback-status/feedback-status';
+import { FeedbackStatusReport } from './components/feedback-status-report/feedback-status-report';
 import { AuditSummaryReport } from './components/audit-summary-report/audit-summary-report';
 
 @NgModule({
@@ -35,10 +35,9 @@ import { AuditSummaryReport } from './components/audit-summary-report/audit-summ
     ApiLoader,
     AlertModal,
     RouteLoader,
-    FeedbackStatus,
-    AuditSummaryReport,
+    FeedbackStatusReport,
+    AuditSummaryReport
   ],
-
   imports: [
     BrowserModule,
     CommonModule,

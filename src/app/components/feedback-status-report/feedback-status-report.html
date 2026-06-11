@@ -1,3 +1,4 @@
+
 <!-- Page Content -->
 <div class="container-fluid mt-3">
 
@@ -9,7 +10,7 @@
                 <span>
                     USER
                     <strong style="color:#a50034">CS Audit Portal</strong>
-                    <strong style="color:gray">/Audit Summary Report</strong>
+                    <strong style="color:gray">/Feedback Status</strong>
                 </span>
             </div>
         </div>
@@ -18,7 +19,7 @@
     <!-- Audit Claim Upload -->
     <div class="card shadow-sm">
         <div class="card-header">
-            <h2 class="page-title">Audit Summary Report</h2>
+            <h2 class="page-title">Feedback Status</h2>
         </div>
 
         <div class="card-body">
@@ -71,14 +72,15 @@
                                     </button>
                                 </div>
 
-                                <!-- Month Grid -->
-                                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:6px;">
-                                    <button *ngFor="let m of months; let i = index" type="button" class="btn btn-sm"
-                                        [ngClass]="isSelected(i) ? 'btn-primary' : 'btn-light'"
-                                        [disabled]="isFutureMonth(i)" (click)="selectMonth(i)">
-                                        {{ m }}
-                                    </button>
-                                </div>
+                               <button *ngFor="let m of months; let i = index"
+        type="button"
+        class="btn btn-sm"
+        [class.btn-primary]="isSelected(i)"
+        [class.btn-light]="!isSelected(i)"
+        [disabled]="isFutureMonth(i)"
+        (click)="selectMonth(i)">
+    {{ m }}
+</button>
 
                                 <!-- Clear -->
                                 <div class="mt-2 text-end">
@@ -91,6 +93,7 @@
 
                         </div>
                     </div>
+
 
 
                 </div>
@@ -117,40 +120,28 @@
 
     <!-- Verify Data Table -->
     <div class="card card-grid mt-3">
+
         <div class="card-body">
+
             <div class="table-responsive">
-                <table class="table table-bordered align-middle auto-width-table">
+                <table class="table table-bordered align-middle">
+
                     <thead>
                         <tr>
-                            <th>AMC Incentive Hold</th>
-                            <th>Beyond AMC Policy</th>
-                            <th>Claim Self Registration</th>
-                            <th>Data Audit</th>
-                            <th>Data Audit (Gas Overcharging)</th>
-                            <th>Duplicate Data</th>
-                            <th>Estimate OOW (AMC)</th>
-                            <th>Extra Filter AMC</th>
-                            <th>Inside Filters IW Warranty</th>
-                            <th>Model Charge</th>
-                            <th>OOW Claims</th>
-                            <th>Part in Labor</th>
-                            <th>Post AMC 30 Days</th>
-                            <th>RF Special Model (Non-PCB)</th>
-                            <th>Suspicious AMC</th>
-                            <th>Wrong Part Consumption</th>
-                            <th>Multiple Closures Same Day</th>
-                            <th>LGC Part Rejection</th>
-                            <th>LGC Non-Part Rejection</th>
-                            <th>Cancellation Claim Recovery</th>
-                            <th>Multiple Brackets</th>
-                             <th>Grand Total</th>
+                            <th>Total Count</th>
+                            <th>Feedback Recived</th>
+                            <th>Accepted</th>
+                            <th>Rejected</th>
+                            <th>In Process at HO</th>
+                            <th>Pending</th>
+                            <th>% Feedback Awaited</th>
+                            <th>Grand Total</th>
                         </tr>
-                      
                     </thead>
 
                     <tbody>
                         <tr>
-                            <td colspan="21" class="text-center">
+                            <td colspan="9" class="text-center">
                                 No Data Found
                             </td>
                         </tr>

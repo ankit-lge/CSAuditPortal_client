@@ -51,7 +51,7 @@
              <div class="col-lg-2 col-md-3 col-sm-6">
                             <div class="form-floating input-group mb-3 mandatory">
                                 <input type="text" class="form-control datepicker" id="floatingToDate"
-                                    placeholder="To Date">
+                                    placeholder="To Date"   formControlName="fromDate">
                                 <label for="floatingToDate" class="z-index-10">
                                     From Audit Date
                                 </label>
@@ -83,7 +83,7 @@
           <!-- Buttons -->
           <div class="p-1 d-flex gap-2 mt-4">
             <button type="button" class="btn btn-danger" (click)="resetForm()">Reset</button>
-            <button type="button" class="btn btn-success" (click)="ProcessUploadData()">
+            <button type="button" class="btn btn-success" (click)="ProcessUploadData()" >
               Upload
             </button>
           </div>
@@ -104,14 +104,17 @@
               <thead>
                 <tr>
                   <th><input type="checkbox" name="" id="" /> Select All</th>
-                  <th>Date Month</th>
-                  <th>Feedback/No Feedback</th>
-                  <th>Aging (Day)</th>
-                  <th>Customer Feedback Date</th>
+                  <th>Process MSG</th>
                   <th>Audit Date</th>
                   <th>Audit Type</th>
-                  <th>ESC/LGC Date</th>
-                  <th>Sale Name</th>
+                  <th>RSM</th>
+                  <th>CS CH Code</th>
+                  <th>Ship To Code</th>
+                  <th>GSFS Receipt No.</th>
+                  <th>Evaluation Group</th>
+                  <th>SVC Data From Code</th>
+                  <th>Captive Channel Mapping</th>
+                  <th>SVC Department Name</th>
                 </tr>
               </thead>
               <tbody>
