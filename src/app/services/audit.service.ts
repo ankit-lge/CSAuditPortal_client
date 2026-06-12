@@ -25,19 +25,19 @@ export class AuditService {
       .pipe(catchError(this.handleError));
   }
 
-  UploadAuditFile(file: File, auditType: any) {
-    let formData = new FormData();
-    formData.append('file', file, file.name);
-    formData.append('auditType', auditType);
-    return this.http
-      .post<any>(`${this.apiUrl}FileUpload/UploadAudittemplate`, formData)
-      .pipe(catchError(this.handleError));
-  }
+  // UploadAuditFile(file: File, auditType: any) {
+  //   let formData = new FormData();
+  //   formData.append('file', file, file.name);
+  //   formData.append('auditType', auditType);
+  //   return this.http
+  //     .post<any>(`${this.apiUrl}FileUpload/UploadAudittemplate`, formData)
+  //     .pipe(catchError(this.handleError));
+  // }
 
-  ProcessUploadData(filePath: any, audityType: any, auditDate: any) {
+  ProcessUploadData(payload: any) {
     return this.http.post<any>(
-      `${this.apiUrl}Audit/ProcessUploadData?fullPath=${encodeURIComponent(filePath)}&auditType=${audityType}&auditDate=${auditDate}`,
-      {},
+      `${this.apiUrl}Audit/ProcessUploadData`,
+      payload
     );
   }
 

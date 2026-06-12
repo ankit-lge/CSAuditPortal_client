@@ -45,12 +45,23 @@
                   }
                 </select>
                 <label for="statesSelect"> Audit Type </label>
+
+                <small
+                  class="text-danger"
+                  *ngIf="
+                    auditClaimUpload.get('auditType')?.touched &&
+                    auditClaimUpload.get('auditType')?.hasError('required')
+                  "
+                >
+                  Audit Type is required.
+                </small>
               </div>
             </div>
             <!-- Date -->
             <div class="col-lg-2 col-md-3 col-sm-6">
               <div class="form-floating input-group mb-3 mandatory">
-                <input formControlName="fromDate"
+                <input
+                  formControlName="fromDate"
                   type="text"
                   class="form-control datepicker"
                   id="floatingToDate"
@@ -60,18 +71,36 @@
                 <span class="input-group-text calendar-icon">
                   <i class="fa-solid fa-calendar-days"></i>
                 </span>
+
+                <small
+                  class="text-danger"
+                  *ngIf="
+                    auditClaimUpload.get('fromDate')?.touched &&
+                    auditClaimUpload.get('fromDate')?.hasError('required')
+                  "
+                >
+                  Audit Date is required.
+                </small>
               </div>
             </div>
 
             <!-- File Upload -->
             <div class="col-lg-3 col-md-6 col-sm-12">
               <input
-                #fileInput
                 type="file"
                 class="form-control file-width"
                 formControlName="uploadedData"
                 (change)="UploadFile($event)"
               />
+              <small
+                class="text-danger"
+                *ngIf="
+                  auditClaimUpload.get('uploadedData')?.touched &&
+                  auditClaimUpload.get('uploadedData')?.hasError('required')
+                "
+              >
+                Please upload an Excel file.
+              </small>
             </div>
 
             <!-- Download Button -->
@@ -89,7 +118,12 @@
               Upload
             </button>
           </div>
-          <button type="button" class="btn btn-danger m-1" (click)="getUpdatedData()">
+          <button
+            type="button"
+            class="btn btn-danger m-1"
+            (click)="getUpdatedData()"
+            *ngIf="sessionId && sessionId !== null && sessionId !== ''"
+          >
             Verify Uploaded Excel Data
           </button>
         </form>
@@ -158,7 +192,6 @@
               <select class="form-select" [(ngModel)]="status" name="status">
                 <option value="">Select Status</option>
                 <option value="Pending Data">Pending Data</option>
-               
               </select>
               <button class="btn btn-danger" (click)="saveStatus()">Save</button>
             </div>
@@ -167,7 +200,12 @@
           <div class="form-group">
             <label for="status">Reason For Reject</label>
             <div class="d-flex justify-content-between">
-              <input type="text" [(ngModel)]="rejectReason" class="form-control" placeholder="Reject reason" />
+              <input
+                type="text"
+                [(ngModel)]="rejectReason"
+                class="form-control"
+                placeholder="Reject reason"
+              />
               <button class="btn btn-danger" (click)="rejectStatus()">Reject</button>
             </div>
           </div>

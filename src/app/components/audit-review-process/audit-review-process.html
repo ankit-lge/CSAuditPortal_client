@@ -204,7 +204,17 @@
                     </tr>
                   </thead>
                   <tbody>
-                    
+                    <tr *ngFor="let item of filteredData">
+                      <td>{{item.GSFS_RECEIPT_NO}}</td>
+                      <td>{{item.DATE_MONTH}}</td>
+                      <td>{{item.FINAL_FEEDBACK_STATUS }}</td>
+                      <td>{{item.AGING }}</td>
+                      <td>{{item.CUSTOMER_FEEDBACK_DATE }}</td>
+                      <td>{{item.AUDIT_DATE }}</td>
+                      <td></td>
+                      <td>{{item.ESC_LGC_DATE}}</td>
+                      <td>{{item.SALE_NAME}}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
