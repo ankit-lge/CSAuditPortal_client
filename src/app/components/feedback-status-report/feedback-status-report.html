@@ -23,19 +23,20 @@
         </div>
 
         <div class="card-body">
-            <form>
+            <form [formGroup]="feedbackForm">
                 <div class="row g-3">
 
-                    <!-- Audit Type -->
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-                        <div class="form-floating">
-                            <select class="form-select" id="auditType">
-                                <option selected>Select Branch</option>
-
+                   <div class="col-lg-3 col-md-6 col-sm-12">
+                           <div class="form-floating">
+                          <select class="form-select"   id="branchCode" formControlName="branchCode">
+                          <option value="">Select Branch</option>
+                          <option   *ngFor="let branch of branches"  [value]="branch.branchCode">
+                             {{ branch.branchName }}
+                            </option>
                             </select>
-                            <label for="auditType">Branch</label>
-                        </div>
+                           <label for="branchCode">Branch</label>
                     </div>
+                </div>
 
                     <!-- Date -->
                     <div class="col-lg-3 col-md-6 col-sm-6">
@@ -72,15 +73,14 @@
                                     </button>
                                 </div>
 
-                               <button *ngFor="let m of months; let i = index"
-        type="button"
-        class="btn btn-sm"
-        [class.btn-primary]="isSelected(i)"
-        [class.btn-light]="!isSelected(i)"
-        [disabled]="isFutureMonth(i)"
-        (click)="selectMonth(i)">
-    {{ m }}
-</button>
+                                <!-- Month Grid -->
+                                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:6px;">
+                                    <button *ngFor="let m of months; let i = index" type="button" class="btn btn-sm"
+                                        [ngClass]="isSelected(i) ? 'btn-primary' : 'btn-light'"
+                                        [disabled]="isFutureMonth(i)" (click)="selectMonth(i)">
+                                        {{ m }}
+                                    </button>
+                                </div>
 
                                 <!-- Clear -->
                                 <div class="mt-2 text-end">
@@ -95,20 +95,19 @@
                     </div>
 
 
-
                 </div>
 
                 <!-- Buttons -->
                 <div class="d-flex gap-2">
-                    <button type="reset" class="btn btn-danger mb-2">
+                    <button type="reset" class="btn btn-danger mb-2"(click)="searchfeedbackreport()">
                         Find
                     </button>
 
-                    <button type="submit" class="btn btn-danger mb-2">
+                    <button type="submit" class="btn btn-danger mb-2" (click)="onDownload()">
                         Export to Excel
                     </button>
 
-                    <button type="button" class="btn btn-danger mb-2">
+                    <button type="button" class="btn btn-danger mb-2"(click)="onReset()">
                         Reset
                     </button>
                 </div>

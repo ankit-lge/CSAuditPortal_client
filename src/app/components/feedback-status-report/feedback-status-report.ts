@@ -1,5 +1,11 @@
 
-import {Component, OnInit, OnDestroy,ViewChild, ElementRef,Renderer2} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs/internal/Observable';
+import { ReportService } from '../../services/report-service';
+import { AlertService } from '../../services/alert-service';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-feedback-status-report',
@@ -10,20 +16,23 @@ import {Component, OnInit, OnDestroy,ViewChild, ElementRef,Renderer2} from '@ang
 export class FeedbackStatusReport implements OnInit, OnDestroy {
 
   @ViewChild('pickerContainer') pickerContainer!: ElementRef;
-
+   private reportService = inject(ReportService);
+   private alertService = inject(AlertService);
+  branches: any[] = [];
   displayValue: string = '';
   nativeValue: string = '';
-  
+  feedbackData: any[] = [];
+  totalCount: number = 0;
   selectedMonth: number | null = null;
   selectedYear: number | null = null;
   pickerYear: number = new Date().getFullYear();
   isPickerOpen: boolean = false;
-
+  feedbackForm!: FormGroup;
   readonly months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   readonly today = new Date();
   readonly currentYear = this.today.getFullYear();
   readonly startYear = this.currentYear - 10;
-
+  private fb = inject(FormBuilder);
   private clickListener!: () => void;
 
   constructor(
@@ -31,21 +40,58 @@ export class FeedbackStatusReport implements OnInit, OnDestroy {
     private el: ElementRef
   ) {}
 
-  ngOnInit(): void {
-    this.clickListener = this.renderer.listen('document', 'click', (event: Event) => {
+ ngOnInit(): void {
+
+  // Initialize form
+  this.feedbackForm = this.fb.group({
+    branchCode: [''],
+    month: [''],
+    year: [''],
+    userRole: [''],
+    loggedInBranch: ['']
+  });
+
+  // Load branches for dropdown
+  this.loadBranches();
+
+  // Close picker on outside click
+  this.clickListener = this.renderer.listen(
+    'document',
+    'click',
+    (event: Event) => {
+
       const container = this.pickerContainer?.nativeElement;
-      if (container && !container.contains(event.target as Node)) {
+
+      if (
+        container &&
+        !container.contains(event.target as Node)
+      ) {
         this.isPickerOpen = false;
       }
-    });
-  }
-
-  ngOnDestroy(): void {
-    if (this.clickListener) {
-      this.clickListener();
     }
+  );
+ 
+}
+ loadBranches(): void {
+    this.reportService.getBranches().subscribe({
+        next: (response: any) => {
+          this.branches = response;
+        },
+        error: (error) => {
+          console.error(error);
+          this.alertService.show(
+            'error',
+            'Failed to load branches.'
+          );
+        }
+      });
   }
+ngOnDestroy(): void {
 
+  if (this.clickListener) {
+    this.clickListener();
+  }
+}
   togglePicker(): void {
     this.isPickerOpen = !this.isPickerOpen;
     if (this.isPickerOpen) {
@@ -100,5 +146,74 @@ export class FeedbackStatusReport implements OnInit, OnDestroy {
     this.selectedYear = null;
     this.isPickerOpen = false;
   }
+
+   onReset(){
+    this.feedbackForm.reset();
+  }
+
+  onDownload(): void {
+  const data = this.feedbackForm.value;
+  const payload = {
+    branchCode: data.branchCode,
+    month: data.month,
+    year: data.year,
+    userRole: data.userRole,
+    loggedInBranch: data.loggedInBranch
+  };
+ this.reportService.downloadData(payload).subscribe({
+    next: (res: Blob) => {
+      const blob = new Blob(
+        [res],
+        {
+          type:
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download =
+        `FeedbackReport_${new Date().getTime()}.xlsx`;
+      link.click();
+      window.URL.revokeObjectURL(url);
+      this.alertService.show(
+        'success',
+        'Excel downloaded successfully.');
+    },
+    error: (err) => {
+      this.alertService.show(
+        'error',
+        'Failed to download Excel file.');
+      console.error(err);
+    }
+  });
+}
+  searchfeedbackreport(): void {
+  const data = this.feedbackForm.value;
+  const payload = {
+    branchCode: data.branchCode,
+    month: data.month,
+    year: data.year,
+    userRole: data.userRole,
+    loggedInBranch: data.loggedInBranch
+  };
+  this.reportService.searchfeedbackreport(payload)
+    .subscribe({
+      next: (response: any) => {
+        this.feedbackData = response.data;
+        this.totalCount = response.totalCount;
+        this.alertService.show(
+          'success',
+          'Data loaded successfully.'
+        );
+      },
+      error: (error) => {
+        console.error(error);
+        this.alertService.show(
+          'error',
+          'Failed to load feedback report.'
+        );
+      }
+    });
+}
 }
 

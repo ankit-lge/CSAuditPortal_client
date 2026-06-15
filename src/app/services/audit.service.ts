@@ -50,9 +50,9 @@ export class AuditService {
   }
   
   
-   SearchAuditMoniter(payload: any){
-    return this.http.post(`${this.apiUrl}AuditMonitoring/SearchAuditData`, payload);
-  }
+  //  SearchAuditMoniter(payload: any){
+  //   return this.http.post(`${this.apiUrl}AuditMonitoring/SearchAuditData`, payload);
+  // }
 
   SaveStatus(payload: any) {
     return this.http.post(`${this.apiUrl}Audit/save-status`, payload);

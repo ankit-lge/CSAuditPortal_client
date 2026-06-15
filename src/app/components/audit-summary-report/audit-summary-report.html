@@ -22,19 +22,20 @@
         </div>
 
         <div class="card-body">
-            <form>
+            <form [formGroup]="summaryform">
                 <div class="row g-3">
 
-                    <!-- Audit Type -->
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-                        <div class="form-floating">
-                            <select class="form-select" id="auditType">
-                                <option selected>Select Branch</option>
-
+                   <div class="col-lg-3 col-md-6 col-sm-12">
+                           <div class="form-floating">
+                          <select class="form-select"   id="branchCode" formControlName="branchCode">
+                          <option value="">Select Branch</option>
+                          <option   *ngFor="let branch of branches"  [value]="branch.branchCode">
+                             {{ branch.branchName }}
+                            </option>
                             </select>
-                            <label for="auditType">Branch</label>
-                        </div>
+                           <label for="branchCode">Branch</label>
                     </div>
+                </div>
 
                     <!-- Date -->
                     <div class="col-lg-3 col-md-6 col-sm-6">
@@ -97,17 +98,16 @@
 
                 <!-- Buttons -->
                 <div class="d-flex gap-2">
-                    <button type="reset" class="btn btn-danger mb-2">
+                    <button type="button" class="btn btn-danger mb-2"(click)="searchsummaryreport()">
                         Find
                     </button>
 
-                    <button type="submit" class="btn btn-danger mb-2">
+                    <button type="submit" class="btn btn-danger mb-2" (click)="downloadExcelData()">
                         Export to Excel
                     </button>
 
-                    <button type="button" class="btn btn-danger mb-2">
-                        Reset
-                    </button>
+                  <button  type="button"  class="btn btn-danger mb-2"  (click)="onReset()">Reset</button>
+
                 </div>
 
             </form>
