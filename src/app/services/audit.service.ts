@@ -14,6 +14,13 @@ export class AuditService {
     return this.http.get<any[]>(`${this.apiUrl}Audit/GetAuditDropdownList`);
   }
 
+  downloadAuditTemplate(auditTypeId:number){
+    return this.http.post(`${this.apiUrl}Audit/DownloadTemplate?auditType=${auditTypeId}`,{},{
+      responseType: 'blob',
+      observe: 'response'
+    })
+  }
+
   uploadData(data: any, templateId: any) {
     const payload = {
       records: data,

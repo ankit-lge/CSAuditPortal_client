@@ -34,7 +34,7 @@ export class AuditClaimUpload implements OnInit {
   rejectReason: string = '';
   auditTypes$!: Observable<auditType[]>;
   selectAll: boolean = false;
-  sessionId: string = '12';
+  sessionId: string = '170275';
   verifyAuditData: VerifyAuditData[] = [];
   constructor(
     private router: Router,
@@ -95,58 +95,37 @@ export class AuditClaimUpload implements OnInit {
     const selectedAuditType = this.auditClaimUpload.get('auditType')?.value;
 
     if (!selectedAuditType) {
-      this.openModal('Error', 'Please select audit type', 'error');
+      this.alertservice.show('error', 'Please select audit type');
 
       return;
     }
+    this.auditService.downloadAuditTemplate(selectedAuditType).subscribe({
+      next: (res: any)=>{
+        const blob = res.body;
+        const contentDisposition = res.headers.get("content-disposition");
+        let filename = "";
 
-    const templateFiles: any = {
-      1: 'AMC_Incentive_Hold.xlsx',
-      2: 'Beyond_AMC_Policy.xlsx',
-      3: 'Claims_Self_Registration.xlsx',
-      4: 'Data_Audit.xlsx',
-      5: 'Gas_Overcharging.xlsx',
-      6: 'Duplicate_Data.xlsx',
-      7: 'Estimate_OW_AMC.xlsx',
-      8: 'Extra_Filter_AMC.xlsx',
-      9: 'Inside_Filters_IW_Wty.xlsx',
-      10: 'Model_Change.xlsx',
-      11: 'OOW_Claims.xlsx',
-      12: 'Part_in_Labour.xlsx',
-      13: 'Post_AMC_30_Days.xlsx',
-      14: 'RF_Special_Model.xlsx',
-      15: 'Suspicious_AMC.xlsx',
-      16: 'Wrong_Part_Consumption.xlsx',
-      17: 'Multiple_closure_same_day_same.xlsx',
-      18: 'LGC_Part_Rejection.xlsx',
-      19: 'LGC_Non_Part_Rejection.xlsx',
-      20: 'Cancellation_Claim_Recovery.xlsx',
-      21: 'Multiple_Bracket.xlsx',
-    };
+        if(contentDisposition){
+          const matches = /filename="?([^"]+)"?/.exec(contentDisposition);
 
-    const fileName = templateFiles[selectedAuditType];
+          if(matches && matches[1]){
+            filename = matches[1];
+          }
+        }
 
-    if (!fileName) {
-      this.openModal('Error', 'Template not found', 'error');
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;   // Uses filename from API
 
-      return;
-    }
+        a.click();
 
-    const filePath = `assets/templates/${fileName}`;
-
-    console.log(filePath);
-
-    const link = document.createElement('a');
-
-    link.href = filePath;
-
-    link.download = fileName;
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      },
+      error:(err:any) =>{
+        this.alertservice.show("error", err);
+      }
+    })
   }
 
   UploadFile(event: any): void {
@@ -175,6 +154,7 @@ export class AuditClaimUpload implements OnInit {
     formData.append("fromDate", auditDate);
     this.auditService.ProcessUploadData(formData).subscribe({
         next: (res) => {
+          this.sessionId = res.sessionId;
            this.resetForm();
             this.openModal('Success', res.data || 'Data uploaded successfully.', 'success');
         },
