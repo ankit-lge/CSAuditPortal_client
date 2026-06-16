@@ -147,6 +147,7 @@ previousPage() {
     this.loadData(this.currentPage - 1);
   }
 }
+
    ngAfterViewInit(): void {
     const currentYear = new Date().getFullYear();
     const startYear = currentYear - 10;

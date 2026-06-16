@@ -205,7 +205,7 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let item of filteredData">
-                      <td>{{item.GSFS_RECEIPT_NO}}</td>
+                      <td><a class="text-primary underline" routerLink="/evaluation" [queryParams]="{gsfsNo: item.GSFS_RECEIPT_NO, auditType: searchingForm.value.auditType}">{{item.GSFS_RECEIPT_NO}}</a></td>
                       <td>{{item.DATE_MONTH}}</td>
                       <td>{{item.FINAL_FEEDBACK_STATUS }}</td>
                       <td>{{item.AGING }}</td>

@@ -103,13 +103,20 @@ export class AuditClaimUpload implements OnInit {
       next: (res: any)=>{
         const blob = res.body;
         const contentDisposition = res.headers.get("content-disposition");
-        let filename = "";
+        let filename = 'download.xlsx';
 
-        if(contentDisposition){
-          const matches = /filename="?([^"]+)"?/.exec(contentDisposition);
+        if (contentDisposition) {
+          // Prefer filename*
+          let match = contentDisposition.match(/filename\*=UTF-8''([^;]+)/i);
 
-          if(matches && matches[1]){
-            filename = matches[1];
+          if (match?.[1]) {
+            filename = decodeURIComponent(match[1]);
+          } else {
+            match = contentDisposition.match(/filename="?([^";]+)"?/i);
+
+            if (match?.[1]) {
+              filename = match[1];
+            }
           }
         }
 
