@@ -6,6 +6,8 @@ import { ReportService } from '../../services/report-service';
 import { AlertService } from '../../services/alert-service';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { FeedBackData } from '../../core/interfaces/feedback-status-data';
+import { Branch } from '../../core/interfaces/branch-data';
 
 @Component({
   selector: 'app-feedback-status-report',
@@ -18,22 +20,26 @@ export class FeedbackStatusReport implements OnInit, OnDestroy {
   @ViewChild('pickerContainer') pickerContainer!: ElementRef;
    private reportService = inject(ReportService);
    private alertService = inject(AlertService);
-  branches: any[] = [];
+   branches: Branch[] = [];
   displayValue: string = '';
   nativeValue: string = '';
-  feedbackData: any[] = [];
+searchData: FeedBackData[] = [];
+filterData: FeedBackData[] = [];
+searchText: string = '';
   totalCount: number = 0;
   selectedMonth: number | null = null;
   selectedYear: number | null = null;
   pickerYear: number = new Date().getFullYear();
   isPickerOpen: boolean = false;
   feedbackForm!: FormGroup;
+  feedBackData:any;
   readonly months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   readonly today = new Date();
   readonly currentYear = this.today.getFullYear();
   readonly startYear = this.currentYear - 10;
   private fb = inject(FormBuilder);
   private clickListener!: () => void;
+  
 
   constructor(
     private renderer: Renderer2,
@@ -73,19 +79,15 @@ export class FeedbackStatusReport implements OnInit, OnDestroy {
  
 }
  loadBranches(): void {
-    this.reportService.getBranches().subscribe({
-        next: (response: any) => {
-          this.branches = response;
-        },
-        error: (error) => {
-          console.error(error);
-          this.alertService.show(
-            'error',
-            'Failed to load branches.'
-          );
-        }
-      });
-  }
+  this.reportService.getBranches().subscribe({
+    next: (response: Branch[]) => {
+      this.branches = response;
+    },
+    error: (error) => {
+      console.error(error);
+    }
+  });
+}
 ngOnDestroy(): void {
 
   if (this.clickListener) {
@@ -147,9 +149,10 @@ ngOnDestroy(): void {
     this.isPickerOpen = false;
   }
 
-   onReset(){
-    this.feedbackForm.reset();
-  }
+  onReset(): void {
+  this.feedbackForm.reset();
+  this.resetForm();
+}
 
   onDownload(): void {
   const data = this.feedbackForm.value;
@@ -187,8 +190,10 @@ ngOnDestroy(): void {
     }
   });
 }
-  searchfeedbackreport(): void {
+searchfeedbackreport(): void {
+
   const data = this.feedbackForm.value;
+
   const payload = {
     branchCode: data.branchCode,
     month: data.month,
@@ -196,18 +201,29 @@ ngOnDestroy(): void {
     userRole: data.userRole,
     loggedInBranch: data.loggedInBranch
   };
-  this.reportService.searchfeedbackreport(payload)
+
+  this.reportService
+    .searchfeedbackreport(payload)
     .subscribe({
+
       next: (response: any) => {
-        this.feedbackData = response.data;
+
+        this.feedBackData = response.data;
+
+        this.filterData = [...this.feedBackData];
+
         this.totalCount = response.totalCount;
+
         this.alertService.show(
           'success',
           'Data loaded successfully.'
         );
       },
+
       error: (error) => {
+
         console.error(error);
+
         this.alertService.show(
           'error',
           'Failed to load feedback report.'
@@ -215,5 +231,32 @@ ngOnDestroy(): void {
       }
     });
 }
+onSearch(): void {
+
+  const search =
+    this.searchText
+      .trim()
+      .toLowerCase();
+
+  if (!search) {
+
+    this.filterData = [
+      ...this.searchData
+    ];
+
+    return;
+  }
+
+  this.filterData =
+  this.searchData.filter(item =>
+
+    Object.values(item).some(value =>
+
+      String(value ?? '')
+        .toLowerCase()
+        .includes(search)
+    )
+);
 }
 
+}

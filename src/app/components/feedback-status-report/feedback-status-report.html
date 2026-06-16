@@ -99,17 +99,9 @@
 
                 <!-- Buttons -->
                 <div class="d-flex gap-2">
-                    <button type="reset" class="btn btn-danger mb-2"(click)="searchfeedbackreport()">
-                        Find
-                    </button>
-
-                    <button type="submit" class="btn btn-danger mb-2" (click)="onDownload()">
-                        Export to Excel
-                    </button>
-
-                    <button type="button" class="btn btn-danger mb-2"(click)="onReset()">
-                        Reset
-                    </button>
+                  <button type="button" class="btn btn-danger mb-2" (click)="searchfeedbackreport()"> Find</button>
+                   <button type="button"  class="btn btn-danger mb-2" (click)="onDownload()">Export to Excel</button>
+                   <button  type="button"  class="btn btn-danger mb-2" (click)="onReset()"> Reset</button>
                 </div>
 
             </form>
@@ -119,15 +111,12 @@
 
     <!-- Verify Data Table -->
     <div class="card card-grid mt-3">
-
         <div class="card-body">
-
             <div class="table-responsive">
                 <table class="table table-bordered align-middle">
-
-                    <thead>
-                        <tr>
-                            <th>Total Count</th>
+                   <thead>
+                    <tr>
+                      <th>Total Count</th>
                             <th>Feedback Recived</th>
                             <th>Accepted</th>
                             <th>Rejected</th>
@@ -135,20 +124,27 @@
                             <th>Pending</th>
                             <th>% Feedback Awaited</th>
                             <th>Grand Total</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            <td colspan="9" class="text-center">
-                                No Data Found
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngIf="filterData.length === 0">
+                           <td colspan="8" class="text-center">
+                                                           No records found.
                             </td>
-                        </tr>
-                    </tbody>
-
+                    </tr>
+                    <tr *ngFor="let item of filterData">
+                        <td>{{item.TotalCount}}</td>
+                      <td>{{item.FeedBack_Received}}</td>
+                      <td>{{item.Accepted}}</td>
+                      <td>{{item.Rejected }}</td>
+                      <td>{{item.In_Process_At_HO }}</td>
+                      <td>{{item.Pending }}</td>
+                      <td>{{item.Percent_Feedback_awaited }}</td>
+                      <td>{{item.Grand_Total}}</td>
+                    </tr>
+                  </tbody>
                 </table>
             </div>
         </div>
     </div>
-
 </div>

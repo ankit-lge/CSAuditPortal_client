@@ -5,6 +5,8 @@ import { ReportService } from '../../services/report-service';
 import { AlertService } from '../../services/alert-service';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { SummaryData } from '../../core/interfaces/summary-status-data';
+import { Branch } from '../../core/interfaces/branch-data';
 
 
 @Component({
@@ -28,9 +30,11 @@ export class AuditSummaryReport implements OnInit, OnDestroy {
   isPickerOpen: boolean = false;
   summaryform!: FormGroup;
   selectedIds: string[] = [];
-  summaryData: any[] = [];
+  summaryData: SummaryData[] = [];
+  findData: SummaryData[] = [];
+  fillData: SummaryData[] = [];
   totalCount = 0;
-  branches: any[] = [];
+    branches: Branch[] = [];
   private clickListener!: () => void;
 
   readonly months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -76,19 +80,15 @@ export class AuditSummaryReport implements OnInit, OnDestroy {
     }
   }
   loadBranches(): void {
-    this.reportService.getBranches().subscribe({
-      next: (response: any) => {
-        this.branches = response;
-      },
-      error: (error) => {
-        console.error(error);
-        this.alertService.show(
-          'error',
-          'Failed to load branches.'
-        );
-      }
-    });
-  }
+  this.reportService.getBranches().subscribe({
+    next: (response: Branch[]) => {
+      this.branches = response;
+    },
+    error: (error) => {
+      console.error(error);
+    }
+  });
+}
   togglePicker(): void {
     this.isPickerOpen = !this.isPickerOpen;
     if (this.isPickerOpen) {
@@ -109,29 +109,12 @@ export class AuditSummaryReport implements OnInit, OnDestroy {
       (this.pickerYear === this.currentYear && monthIndex > this.today.getMonth())
     );
   }
-
   isSelected(monthIndex: number): boolean {
     return this.selectedYear === this.pickerYear && this.selectedMonth === monthIndex;
   }
-
-  // selectMonth(monthIndex: number): void {
-  //   this.selectedMonth = monthIndex;
-  //   this.selectedYear = this.pickerYear;
-
-  //   const monthName = new Date(this.pickerYear, monthIndex)
-  //     .toLocaleString('default', { month: 'long' });
-  //   this.displayValue = `${monthName} ${this.pickerYear}`;
-
-  //   const mm = String(monthIndex + 1).padStart(2, '0');
-  //   this.nativeValue = `${this.pickerYear}-${mm}-01`;
-
-  //   this.isPickerOpen = false;
-  // }
   selectMonth(monthIndex: number): void {
-
     this.selectedMonth = monthIndex;
     this.selectedYear = this.pickerYear;
-
     const monthName = new Date(
       this.pickerYear,
       monthIndex
@@ -165,40 +148,75 @@ export class AuditSummaryReport implements OnInit, OnDestroy {
     this.isPickerOpen = false;
   }
   onReset(): void {
-    this.summaryform.reset();
-    this.resetForm();
-  }
+  this.summaryform.reset();
+  this.resetForm();
+  this.summaryData = [];
+  this.findData = [];
+  this.fillData = [];
+  this.totalCount = 0;
+}
 
-  searchsummaryreport(): void {
-    const data = this.summaryform.value;
-    const payload = {
-      branchCode: data.branchCode,
-      month: data.month,
-      year: data.year,
-      userRole: data.userRole,
-      loggedInBranch: data.loggedInBranch
-    };
-    this.reportService.searchSummaryReport(payload)
-      .subscribe({
-        next: (response: any) => {
-          this.summaryData = response.data;
-          this.totalCount = response.totalCount;
+ searchsummaryreport(): void {
+  if (this.summaryform.invalid) {
+    this.summaryform.markAllAsTouched();
+    return;
+  }
+  const data = this.summaryform.value;
+  const payload = {
+    branchCode: data.branchCode,
+    month: data.month,
+    year: data.year,
+    userRole: data.userRole,
+    loggedInBranch: data.loggedInBranch
+  };
+  this.reportService.searchSummaryReport(payload)
+    .subscribe({
+      next: (response: any) => {
+        console.log('API Response:', response);
+        this.summaryData = response.data || [];
+        // Bind data to table
+        this.fillData = [...this.summaryData];
+        this.findData = [...this.summaryData]; 
+        this.totalCount = response.totalCount || this.fillData.length;
+        if (this.fillData.length > 0) {
           this.alertService.show(
             'success',
-            // response.message
             'Data loaded successfully.'
           );
-        },
-        error: (error) => {
-          console.error(error);
+        } else {
           this.alertService.show(
-            'error',
-            'Failed to load summary report.'
+            'warning',
+            'No records found.'
           );
         }
-      });
+      },
+      error: (error) => {
+        console.error(error);
+        this.fillData = [];
+        this.summaryData = [];
+        this.totalCount = 0;
+        this.alertService.show(
+          'error',
+          'Failed to load summary report.'
+        );
+      }
+    });
+}
+searchData(searchText: string): void {
+
+  if (!searchText) {
+    this.fillData = [...this.findData];
+    return;
   }
 
+  const value = searchText.toLowerCase();
+
+  this.fillData = this.findData.filter(item =>
+    Object.values(item).some(field =>
+      field?.toString().toLowerCase().includes(value)
+    )
+  );
+}
   downloadExcelData(): void {
     if (this.selectedIds.length === 0) {
       this.alertService.show(
