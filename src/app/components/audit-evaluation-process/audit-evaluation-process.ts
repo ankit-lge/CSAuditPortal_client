@@ -15,12 +15,8 @@ export class AuditEvaluationProcess {
   evaluationData !: EvaluationProcessData;
   ngOnInit(){
     this.route.queryParams.subscribe(params =>{
-      console.log(params);
       const gsfsNo = params['gsfsNo']
       const auditTypeId = params['auditType']
-
-      alert(gsfsNo + " " + auditTypeId);
-
       if(gsfsNo && auditTypeId){
         this.ev_service.getEvaluationProcessData(gsfsNo, auditTypeId).subscribe({
           next: res =>{
