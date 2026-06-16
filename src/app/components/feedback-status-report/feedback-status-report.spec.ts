@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FeedbackStatus } from './feedback-status';
+import { FeedbackStatusReport } from './feedback-status-report';
 
-describe('FeedbackStatus', () => {
-  let component: FeedbackStatus;
-  let fixture: ComponentFixture<FeedbackStatus>;
+describe('FeedbackStatusReport', () => {
+  let component: FeedbackStatusReport;
+  let fixture: ComponentFixture<FeedbackStatusReport>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FeedbackStatus],
+      declarations: [FeedbackStatusReport],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(FeedbackStatus);
+    fixture = TestBed.createComponent(FeedbackStatusReport);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

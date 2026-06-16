@@ -7,7 +7,7 @@ import { EvaluationProcessData } from '../../core/interfaces/evaluation-process-
   selector: 'app-audit-evaluation-process',
   standalone: false,
   templateUrl: './audit-evaluation-process.html',
-  styleUrl: './audit-evaluation-process.css',
+  styleUrls: ['./audit-evaluation-process.css']
 })
 export class AuditEvaluationProcess {
   private readonly route = inject(ActivatedRoute);

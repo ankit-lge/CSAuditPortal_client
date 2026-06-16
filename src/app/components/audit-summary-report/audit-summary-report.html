@@ -22,19 +22,20 @@
         </div>
 
         <div class="card-body">
-            <form>
+            <form [formGroup]="summaryform">
                 <div class="row g-3">
 
-                    <!-- Audit Type -->
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-                        <div class="form-floating">
-                            <select class="form-select" id="auditType">
-                                <option selected>Select Branch</option>
-
+                   <div class="col-lg-3 col-md-6 col-sm-12">
+                           <div class="form-floating">
+                          <select class="form-select"   id="branchCode" formControlName="branchCode">
+                          <option value="">Select Branch</option>
+                          <option   *ngFor="let branch of branches"  [value]="branch.branchCode">
+                             {{ branch.branchName }}
+                            </option>
                             </select>
-                            <label for="auditType">Branch</label>
-                        </div>
+                           <label for="branchCode">Branch</label>
                     </div>
+                </div>
 
                     <!-- Date -->
                     <div class="col-lg-3 col-md-6 col-sm-6">
@@ -91,23 +92,12 @@
 
                         </div>
                     </div>
-
-
                 </div>
-
                 <!-- Buttons -->
                 <div class="d-flex gap-2">
-                    <button type="reset" class="btn btn-danger mb-2">
-                        Find
-                    </button>
-
-                    <button type="submit" class="btn btn-danger mb-2">
-                        Export to Excel
-                    </button>
-
-                    <button type="button" class="btn btn-danger mb-2">
-                        Reset
-                    </button>
+                  <button type="button" class="btn btn-danger mb-2" (click)="searchsummaryreport()"> Find</button>
+                   <button type="button"  class="btn btn-danger mb-2" (click)="downloadExcelData()">Export to Excel</button>
+                   <button  type="button"  class="btn btn-danger mb-2" (click)="onReset()"> Reset</button>
                 </div>
 
             </form>
@@ -126,7 +116,7 @@
                             <th>Beyond AMC Policy</th>
                             <th>Claim Self Registration</th>
                             <th>Data Audit</th>
-                            <th>Data Audit (Gas Overcharging)</th>
+                            <th>Gas Overcharging</th>
                             <th>Duplicate Data</th>
                             <th>Estimate OOW (AMC)</th>
                             <th>Extra Filter AMC</th>
@@ -143,16 +133,42 @@
                             <th>LGC Non-Part Rejection</th>
                             <th>Cancellation Claim Recovery</th>
                             <th>Multiple Brackets</th>
+                             <th>Grand Total</th>
                         </tr>
+                      
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td colspan="21" class="text-center">
-                                No Data Found
+                      <tr *ngIf="fillData.length === 0">
+                           <td colspan="22" class="text-center">
+                                 No records found.
                             </td>
-                        </tr>
-                    </tbody>
+                    </tr>
+                    <tr *ngFor="let item of fillData">
+                        <td>{{item.AMC_Incentive_Hold}}</td>
+                      <td>{{item.Beyond_AMC_Policy}}</td>
+                      <td>{{item.Claim_Self_Registration}}</td>
+                      <td>{{item.Data_Audit }}</td>
+                      <td>{{item.Gas_Overcharging }}</td>
+                      <td>{{item.Duplicate_Data }}</td>
+                      <td>{{item.Estimate_OOW_AMC}}</td>
+                      <td>{{item.Extra_filter_AMC }}</td>
+                      <td>{{item.Inside_filter_IW_Warranty}}</td>
+                       <td>{{item.Model_Charge}}</td>
+                      <td>{{item.OOW_Claims}}</td>
+                      <td>{{item.Part_in_Labor}}</td>
+                      <td>{{item.Post_AMC_thirty_Days}}</td>
+                      <td>{{item.RF_Special_Model_Non_PCB}}</td>
+                      <td>{{item.Suspicious_AMC}}</td>
+                      <td>{{item.Wrong_Part_Consumption}}</td>
+                      <td>{{item.Multiple_Closer_Same_Day}}</td>
+                      <td>{{item.LGC_Part_Rejection}}</td>
+                      <td>{{item.LGC_Non_Part_Rejection}}</td>
+                      <td>{{item.Cancellation_Claim_Recovery}}</td>
+                      <td>{{item.Multiple_Brackets}}</td>
+                      <td>{{item.Grand_Total}}</td>
+                    </tr>
+                  </tbody>
 
                 </table>
             </div>

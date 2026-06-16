@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
+// import { DownloadTemplateResponse } from './download-template-response';
 @Injectable({
   providedIn: 'root',
 })
@@ -56,9 +57,9 @@ export class AuditService {
   }
   
   
-   SearchAuditMoniter(payload: any){
-    return this.http.post(`${this.apiUrl}AuditMonitoring/SearchAuditData`, payload);
-  }
+  //  SearchAuditMoniter(payload: any){
+  //   return this.http.post(`${this.apiUrl}AuditMonitoring/SearchAuditData`, payload);
+  // }
 
   SaveStatus(payload: any) {
     return this.http.post(`${this.apiUrl}Audit/save-status`, payload);

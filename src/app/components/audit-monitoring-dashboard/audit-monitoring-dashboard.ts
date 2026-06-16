@@ -29,6 +29,7 @@ export class AuditMonitoringDashboard implements OnInit {
   pageSizes: number[] = [10, 25, 50, 100];
   selectedRows: any[] = [];
   showTable: boolean = false;
+  sessionId: string = '12';
 
   constructor(
     private router: Router,
@@ -63,6 +64,7 @@ export class AuditMonitoringDashboard implements OnInit {
   const formData = this.monitoring.value;
 
   const payload = {
+    sessionId : this.sessionId,
     auditStatus: formData.status,
     auditTypeId: formData.auditType,
     fromDate: formData.fromDate.replace(/\//g, ''),
