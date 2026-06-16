@@ -1,10 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as XLSX from 'xlsx';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuditService } from '../../services/audit.service';
 import { Observable } from 'rxjs';
-import { ViewChild, ElementRef } from '@angular/core';
 import { AlertService } from '../../services/alert-service';
 import { VerifyAuditData } from '../../core/interfaces/verify-audit-data';
 declare var $: any;
@@ -34,7 +32,7 @@ export class AuditClaimUpload implements OnInit {
   rejectReason: string = '';
   auditTypes$!: Observable<auditType[]>;
   selectAll: boolean = false;
-  sessionId: string = '170275';
+  sessionId: string = '';
   verifyAuditData: VerifyAuditData[] = [];
   constructor(
     private router: Router,
