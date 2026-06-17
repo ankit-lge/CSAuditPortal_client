@@ -25,48 +25,48 @@
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control"  placeholder="CHCS Code">
+                            <input readonly type="text" class="form-control" [value]="evaluationData?.CH_CS_CODE"  placeholder="CHCS Code">
                             <label for="claimId" class="mt-3">CHCS Code</label>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="number" class="form-control"  placeholder="Product 1 Code">
+                            <input readonly type="text" class="form-control" [value]="evaluationData?.PRODUCT1_CODE" placeholder="Product 1 Code">
                             <label for="claimId" class="mt-3">Product 1 Code</label>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="number" class="form-control"  placeholder="Model Suffix Code">
+                            <input readonly type="text"class="form-control" [value]="evaluationData?.MODEL_SUFFIX_CODE" placeholder="Model Suffix Code">
                             <label for="claimId" class="mt-3">Model Suffix Code</label>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" id="claimId" placeholder="Repair End Date">
+                            <input readonly type="text" class="form-control" [value]="evaluationData?.REPAIR_END_DATE_YYYYMMDD" placeholder="Repair End Date">
                             <label for="claimId" class="form-label required">Repair End Date</label>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control"  placeholder="Disposition">
+                            <input readonly type="text" class="form-control" [value]="evaluationData?.DISPOSITION" placeholder="Disposition">
                             <label for="claimId" class="mt-3">Disposition</label>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control"  placeholder="Duration">
+                            <input readonly type="text" class="form-control" [value]="evaluationData?.DURATION" placeholder="Duration">
                             <label for="claimId" class="mt-3">Duration</label>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control"  placeholder="Warranty Flag">
+                            <input readonly type="text" class="form-control" [value]="evaluationData?.WARRANTY_FLAG" placeholder="Warranty Flag">
                             <label for="claimId" class="mt-3">Warranty Flag</label>
                         </div>
                     </div>
@@ -74,29 +74,29 @@
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" id="claimId"
+                            <input readonly type="text" class="form-control"
                                 placeholder="SVC Status">
-                            <label for="claimId" class="mt-3">SVC Statuss</label>
+                            <label for="claimId" class="mt-3">SVC Status</label>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control"  placeholder="SVC Type Code">
+                            <input readonly type="text" class="form-control" [value]="evaluationData?.SVC_TYPE_CODE" placeholder="SVC Type Code">
                             <label for="claimId" class="mt-3">SVC Type Code</label>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control"  placeholder="SVC Data from Code">
+                            <input readonly type="text" class="form-control" [value]="evaluationData?.SVC_DATA_FROM_CODE" placeholder="SVC Data from Code">
                             <label for="claimId" class="mt-3">SVC Data from Code</label>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control"  placeholder="Ship to Code">
+                            <input readonly type="text" class="form-control" [value]="evaluationData?.SHIP_TO_CODE"  placeholder="Ship to Code">
                             <label for="claimId" class="mt-3">Ship to Code</label>
                         </div>
                     </div>
@@ -104,42 +104,42 @@
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control"  placeholder="Status">
+                            <input readonly type="text" class="form-control" [value]="evaluationData?.STATUS" placeholder="Status">
                             <label for="claimId" class="mt-3">Status</label>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control"  placeholder="Serial NO.">
+                            <input readonly type="text" class="form-control" [value]="evaluationData?.SERIAL_NO" placeholder="Serial NO.">
                             <label for="claimId" class="mt-3">Serial NO.</label>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" [value]="evaluationData?.LAW_INVOICE_NO" placeholder="SVC Dept Name">
+                            <input readonly type="text" class="form-control" [value]="evaluationData?.SVC_DEPARTMENT_NAME" placeholder="SVC Dept Name">
                             <label for="claimId" class="mt-3">SVC Dept Name</label>
                         </div>
                     </div>
                   
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" [value]="evaluationData?.WARRANTY_EXTENSION_CARD_NO" placeholder="Call Receipt Date">
+                            <input readonly type="text" class="form-control" [value]="evaluationData?.CALL_RECEIPT_DATE" placeholder="Call Receipt Date">
                             <label for="claimId" class="mt-3">Call Receipt Date</label>
                         </div>
                     </div>
                   
                        <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input type="text" class="form-control" [value]="evaluationData?.REASON_FOR_DATA_AUDIT" placeholder="TCR/Law Invoice No.">
+                            <input type="text" class="form-control" [value]="evaluationData?.LAW_INVOICE_NO" placeholder="TCR/Law Invoice No.">
                             <label for="claimId" class="mt-3">TCR/Law Invoice No.</label>
                         </div>
                     </div>
 
                      <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input type="text" class="form-control" [value]="evaluationData?.REASON_FOR_DATA_AUDIT" placeholder="AMC Form_No./ WArranty Card No">
+                            <input type="text" class="form-control" [value]="evaluationData?.AMC_FORM_NO + '/' + evaluationData?.WARRANTY_EXTENSION_CARD_NO" placeholder="AMC Form_No./ WArranty Card No">
                             <label for="claimId" class="mt-3">AMC Form_No./ WArranty Card No</label>
                         </div>
                     </div>
@@ -151,26 +151,29 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-8 col-md-12 col-sm-">
+                    <div class="col-md-12 col-sm-">
                         <div class="card">
                             <div class="card-header">
                                 <h2 class="page-title">Feedback of ESC/LGC </h2>
                             </div>
 
                             <div class="card-body">
+                                <form [formGroup]="saveESCLGCForm">
+
+                                
                                 <div class="row">
-                                    <div class="col-lg-5 col-md-6 col-sm-6">
+                                    <div class="col-lg-4 col-md-4 col-sm-4">
                                                 <div class="form-floating custom-floating">
-                                                    <input type="text" class="form-control" 
+                                                    <input readonly type="text" class="form-control"  [value]="evaluationData?.FINAL_FEEDBACK_STATUS"
                                                         placeholder="Final Feedback Status">
                                                     <label for="claimId" class="mt-3">Final Feedback Status</label>
                                                 </div>
                                             </div>
 
-                                    <div class="col-lg-8 col-md-6 col-sm-6" style="margin-top: -5px">
+                                    <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: -5px">
                                         <div
                                             class="mb-3 m-1 disp-flex flex-align-center flex-justify-start form-floating">
-                                            <textarea class="form-control" placeholder="Remarks" id="schemeCode"
+                                            <textarea class="form-control" placeholder="Remarks" id="schemeCode" formControlName="remark"
                                                 required></textarea>
                                             <label for="schemeCode" class="form-label required">Remarks</label>
                                         </div>
@@ -178,18 +181,19 @@
 
                                     <div class="col-lg-4 col-md-6 col-sm-6">
                                         <div class="form-floating">
-                                            <select class="form-select table-header-fix " id="statesSelect">
-                                                <option>Select Received Feedback</option>
-                                                <option>Accept</option>
-                                                <option>Reject</option>
+                                            <select class="form-select table-header-fix" formControlName="status" id="statesSelect">
+                                                <option value="">Select Received Feedback</option>
+                                                <option value="ACCEPTED">Accept</option>
+                                                <option value="REJECTED">Reject</option>
                                             </select>
                                             <label for="statesSelect">Received Feedback</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="p-1 mb-2">
-                                    <button class="btn btn-danger">Save</button>
+                                    <button class="btn btn-danger" [disabled]="saveESCLGCForm.invalid" (click)="saveESC_LGC_Feedback()">Save</button>
                                 </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -290,11 +294,11 @@
                 </div>
 
                 <div class="modal-body">
-
+                    <form [formGroup]="saveHOForm"></form>
                     <div class="row">
                         <div class="col-md-6">
                             <label class="text-dark">GSFS Receipt No</label>
-                            <input type="text" class="form-control" value="RNP260408025778" readonly>
+                            <input type="text" class="form-control" [value]="evaluationData?.GSFS_RECEIPT_NO" readonly>
                         </div>
 
                         <div class="col-md-6">
@@ -306,16 +310,16 @@
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <label class="text-dark">Revised Feedback</label>
-                            <select class="form-select">
-                                <option>Select</option>
-                                <option>Fake</option>
-                                <option>No Fake</option>
+                            <select class="form-select" formControlName="status">
+                                <option value="">Select</option>
+                                <option value="REJECTED">Reject</option>
+                                <option value="ACCEPTED">Accept</option>
                             </select>
                         </div>
 
                         <div class="col-md-6">
                             <label class="text-dark">Revised Remark</label>
-                            <textarea class="form-control"></textarea>
+                            <textarea class="form-control" formControlName="remark"></textarea>
                         </div>
                     </div>
 
@@ -326,7 +330,7 @@
                         </div>
 
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-danger">
+                            <button type="button" class="btn btn-danger" [disabled]="saveHOForm.invalid" (click)="save_HO_Feedback()">
                                 Submit
                             </button>
                         </div>
