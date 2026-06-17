@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EvaluationProcessService } from '../../services/evaluation_process.service';
 import { EvaluationProcessData, FeedbackDetail } from '../../core/interfaces/evaluation-process-data';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-audit-evaluation-process',
@@ -12,10 +13,15 @@ import { EvaluationProcessData, FeedbackDetail } from '../../core/interfaces/eva
 export class AuditEvaluationProcess {
   private readonly route = inject(ActivatedRoute);
   private readonly ev_service = inject(EvaluationProcessService);
+  private readonly _fb = inject(FormBuilder);
   evaluationData !: EvaluationProcessData;
+
+  saveESCLGCForm!: FormGroup;
+  saveHOForm !: FormGroup;
 
   esc_lgcFeedbackDetails!: FeedbackDetail[];
   hoFeedBackDetails !: FeedbackDetail[];
+
   ngOnInit(){
     this.route.queryParams.subscribe(params =>{
       const gsfsNo = params['gsfsNo']
@@ -36,7 +42,21 @@ export class AuditEvaluationProcess {
         })
       }
     });
+
+    this.saveESCLGCForm = this._fb.group({
+      remark : [Validators.required],
+      status: [Validators.required]
+    })
+
+    this.saveHOForm = this._fb.group({
+      remark : [Validators.required],
+      status: [Validators.required]
+    });
   }
 
+
+  saveESC_LGC_Feedback(){
+
+  }
 
 }
