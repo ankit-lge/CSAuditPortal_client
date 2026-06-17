@@ -15,6 +15,10 @@ interface auditType {
   VALUE: string;
 }
 
+// export interface DownloadTemplateResponse {
+//   templatePath: string;
+//   message: string;
+// }
 @Component({
   selector: 'app-audit-claim-upload',
   standalone: false,
@@ -207,71 +211,173 @@ export class AuditClaimUpload implements OnInit {
 
   // FileSaver.saveAs(blob, 'DownloadClaimUploadExcel.csv');
 
+  
   UploadFile(event: any) {
-    this.isFileUploaded = false;
-    this.FileUploadedData = [];
-    const file = event.target.files[0];
 
-    if (!file) {
-      return;
-    }
-    this.uploadedFileName = file.name;
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
+
+  this.isFileUploaded = false;
+  this.FileUploadedData = [];
+
+  const file = event.target.files[0];
+
+  if (!file) {
+    this.openModal('Error', 'Please select a file.', 'error');
+    return;
+  }
+
+  // Validate Audit Type
+  const auditType = this.auditClaimUpload.get('auditType')?.value;
+
+  if (!auditType) {
+    this.openModal('Error', 'Please select audit type.', 'error');
+    return;
+  }
+
+  // Validate Audit Date
+  const auditDate = this.auditClaimUpload.get('fromDate')?.value;
+
+  if (!auditDate) {
+    this.openModal('Error', 'Please select audit date.', 'error');
+    return;
+  }
+
+  this.uploadedFileName = file.name;
+
+  const reader = new FileReader();
+
+  reader.onload = (e: any) => {
+    try {
+
       const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
+
+      const workbook = XLSX.read(data, {
+        type: 'array'
+      });
 
       const sheetName = workbook.SheetNames[0];
+
+      if (!sheetName) {
+        this.openModal('Error', 'No worksheet found.', 'error');
+        return;
+      }
+
       const sheet = workbook.Sheets[sheetName];
-      // Convert sheet to JSON array
+
       const jsonDataF = XLSX.utils.sheet_to_json(sheet, {
         header: 1,
         defval: '',
       }) as any[][];
 
       console.log('Excel Raw Data', jsonDataF);
+
       if (jsonDataF.length === 0) {
-        this.openModal('Error', 'Excel file is empty', 'error');
+        this.openModal('Error', 'Excel file is empty.', 'error');
         return;
       }
-      // Headers
+
       const headers = jsonDataF[0];
-      // Rows
+
       const rows = jsonDataF.slice(1);
-      // Convert rows into objects
+
       this.FileUploadedData = rows
         .map((row: any[]) => {
+
           const obj: any = {};
+
           headers.forEach((key: string, index: number) => {
             obj[key] = row[index];
           });
-          return obj;
-        })
-        .filter((obj: any) => {
-          return Object.values(obj).some((val) => val !== null && val !== undefined && val !== '');
-        });
-      // this.openModal(
-      //   'Success',
-      //   'Excel file uploaded successfully',
-      //   'success'
-      // );
-    };
-    reader.readAsArrayBuffer(file);
 
-    this.auditService
-      .UploadAuditFile(file, this.auditClaimUpload.get('auditType')?.value)
-      .subscribe({
-        next: (res) => {
-          console.log('Upload File response', res);
-          this.uploadFileFullPath = res.fullPath;
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-  }
+          return obj;
+
+        })
+        .filter((obj: any) =>
+          Object.values(obj).some(
+            val => val !== null &&
+                   val !== undefined &&
+                   val !== ''
+          )
+        );
+
+      console.log('Parsed Excel Data:', this.FileUploadedData);
+
+      // Call upload API AFTER successful parsing
+      this.auditService
+        .UploadAuditFile(file, auditType)
+        .subscribe({
+
+          next: (res) => {
+
+            console.log('Upload File Response', res);
+
+            this.uploadFileFullPath = res.fullPath;
+
+            this.isFileUploaded = true;
+
+            this.openModal(
+              'Success',
+              'Excel file uploaded successfully.',
+              'success'
+            );
+          },
+
+          error: (err) => {
+
+            console.error(err);
+
+            this.openModal(
+              'Error',
+              err?.error?.message || 'File upload failed.',
+              'error'
+            );
+          }
+        });
+
+    }
+    catch (error) {
+
+      console.error('Excel Parsing Error:', error);
+
+      this.openModal(
+        'Error',
+        'Invalid Excel file format.',
+        'error'
+      );
+    }
+  };
+
+  reader.onerror = () => {
+
+    this.openModal(
+      'Error',
+      'Unable to read the file.',
+      'error'
+    );
+  };
+
+  reader.readAsArrayBuffer(file);
+}
 
   ProcessUploadData() {
+    debugger;
+    console.log('uploadFileFullPath:',
+    this.uploadFileFullPath);
+
+  console.log('auditType:',
+    this.auditClaimUpload.get('auditType')?.value);
+
+  console.log('fromDate:',
+    this.auditClaimUpload.get('fromDate')?.value);
+
+  console.log('uploadedData:',
+    this.auditClaimUpload.get('uploadedData')?.value);
+
+  console.log('Form Values:',
+    this.auditClaimUpload.value);
+
+  console.log('Form Valid:',
+    this.auditClaimUpload.valid);
+
     if (!this.uploadFileFullPath || !this.auditClaimUpload.get('auditType')?.value) {
       this.openModal(
         'Validation',
@@ -356,40 +462,98 @@ export class AuditClaimUpload implements OnInit {
   // =====================================
 
 
-  formatDate(date: any): string {
-    if (!date) {
-      return '';
-    }
+  // formatDate(date: any): string {
+  //   if (!date) {
+  //     return '';
+  //   }
 
-    const d = new Date(date);
+  //   const d = new Date(date);
 
-    const year = d.getFullYear();
+  //   const year = d.getFullYear();
 
-    const month = String(d.getMonth() + 1).padStart(2, '0');
+  //   const month = String(d.getMonth() + 1).padStart(2, '0');
 
-    const day = String(d.getDate()).padStart(2, '0');
+  //   const day = String(d.getDate()).padStart(2, '0');
 
-    return `${year}-${month}-${day}`;
-  }
+  //   return `${year}-${month}-${day}`;
+  // }
 
   trackById(index: number, item: auditType) {
     return item.ID;
   }
 
-   ngAfterViewInit(): void {
-    const currentYear = new Date().getFullYear();
-    const startYear = currentYear - 10;
-    $('.datepicker').datepicker({
-      dateFormat: 'yy/mm/dd',
-      changeMonth: true,
-      changeYear: true,
-      yearRange: startYear + ':' + currentYear,
-      maxDate: 0
-    });
-    $('.calendar-icon').on('click', (event: any) => {
-      $(event.currentTarget)
-        .siblings('input.datepicker')
-        .datepicker('show');
-    });
+  //  ngAfterViewInit(): void {
+  //   const currentYear = new Date().getFullYear();
+  //   const startYear = currentYear - 10;
+  //   $('.datepicker').datepicker({
+  //     dateFormat: 'yy/mm/dd',
+  //     changeMonth: true,
+  //     changeYear: true,
+  //     yearRange: startYear + ':' + currentYear,
+  //     maxDate: 0
+  //   });
+  //   $('.calendar-icon').on('click', (event: any) => {
+  //     $(event.currentTarget)
+  //       .siblings('input.datepicker')
+  //       .datepicker('show');
+  //   });
+  // }
+
+  ngAfterViewInit(): void {
+  const currentYear = new Date().getFullYear();
+  const startYear = currentYear - 10;
+
+  $('.datepicker').datepicker({
+    dateFormat: 'yy/mm/dd',
+    changeMonth: true,
+    changeYear: true,
+    yearRange: startYear + ':' + currentYear,
+    maxDate: 0,
+
+    onSelect: (dateText: string) => {
+
+      this.auditClaimUpload.patchValue({
+        fromDate: dateText
+      });
+
+      this.auditClaimUpload.get('fromDate')?.markAsTouched();
+
+      this.auditClaimUpload.get('fromDate')?.updateValueAndValidity();
+
+      console.log(
+        'Selected Date:',
+        this.auditClaimUpload.get('fromDate')?.value
+      );
+    }
+  });
+
+  $('.calendar-icon').on('click', (event: any) => {
+    $(event.currentTarget)
+      .siblings('input.datepicker')
+      .datepicker('show');
+  });
+}
+  formatDate(date: any): string {
+
+  if (!date) {
+    return '';
   }
+
+  if (typeof date === 'string') {
+
+    return date.replace(/\//g, '-');
+  }
+
+  const d = new Date(date);
+
+  const year = d.getFullYear();
+
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+
+  const day = String(d.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
+
 }

@@ -1,17 +1,19 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+
+import {Component, OnInit, OnDestroy,ViewChild, ElementRef,Renderer2} from '@angular/core';
 
 @Component({
-  selector: 'app-audit-summary-report',
+  selector: 'app-feedback-status-report',
   standalone: false,
-  templateUrl: './audit-summary-report.html',
-  styleUrl: './audit-summary-report.css',
+  templateUrl: './feedback-status-report.html',
+  styleUrls: ['./feedback-status-report.css']
 })
-export class AuditSummaryReport implements OnInit, OnDestroy {
+export class FeedbackStatusReport implements OnInit, OnDestroy {
 
   @ViewChild('pickerContainer') pickerContainer!: ElementRef;
 
   displayValue: string = '';
   nativeValue: string = '';
+  
   selectedMonth: number | null = null;
   selectedYear: number | null = null;
   pickerYear: number = new Date().getFullYear();
@@ -69,19 +71,27 @@ export class AuditSummaryReport implements OnInit, OnDestroy {
     return this.selectedYear === this.pickerYear && this.selectedMonth === monthIndex;
   }
 
-  selectMonth(monthIndex: number): void {
-    this.selectedMonth = monthIndex;
-    this.selectedYear = this.pickerYear;
+ selectMonth(monthIndex: number): void {
 
-    const monthName = new Date(this.pickerYear, monthIndex)
-      .toLocaleString('default', { month: 'long' });
-    this.displayValue = `${monthName} ${this.pickerYear}`;
+  this.selectedMonth = monthIndex;
+  this.selectedYear = this.pickerYear;
 
-    const mm = String(monthIndex + 1).padStart(2, '0');
-    this.nativeValue = `${this.pickerYear}-${mm}-01`;
+  const monthName = new Date(
+    this.pickerYear,
+    monthIndex
+  ).toLocaleString(
+    'default',
+    { month: 'long' }
+  );
 
-    this.isPickerOpen = false;
-  }
+  this.displayValue = `${monthName} ${this.pickerYear}`;
+
+  const mm = String(monthIndex + 1).padStart(2, '0');
+
+  this.nativeValue = `${this.pickerYear}-${mm}-01`;
+
+  this.isPickerOpen = false;
+}
 
   resetForm(): void {
     this.displayValue = '';
@@ -91,3 +101,4 @@ export class AuditSummaryReport implements OnInit, OnDestroy {
     this.isPickerOpen = false;
   }
 }
+
