@@ -14,4 +14,8 @@ export class EvaluationProcessService{
     getEvaluationProcessData(receiptNo: string, auditTypeId: number){
         return this.http.get<any>(`${this.baseUrl}EvaluationProcess/Get_Evaluation_Process_Data?receiptNo=${receiptNo}&audit_typeId=${auditTypeId}`)
     }
+
+    updateFeedback(payload: any){
+        return this.http.post(`${this.baseUrl}EvaluationProcess/save-feedback`, payload);
+    }
 }
