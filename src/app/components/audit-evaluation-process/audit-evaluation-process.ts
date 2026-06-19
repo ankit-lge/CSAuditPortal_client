@@ -18,7 +18,8 @@ export class AuditEvaluationProcess {
   private readonly alert = inject(AlertService);
 
   private gsfsNo: string | null = null;
-  private auditTypeId: string | null = null;
+  // private auditTypeId: string | null = null;
+   private auditTypeId: number | null= null;
   evaluationData !: EvaluationProcessData;
 
   saveESCLGCForm!: FormGroup;
@@ -50,7 +51,7 @@ export class AuditEvaluationProcess {
   }
 
   getDataOnPlageLoad() {
-    this.ev_service.getEvaluationProcessData(this.gsfsNo, this.auditTypeId).subscribe({
+    this.ev_service.getEvaluationProcessData(this.gsfsNo!, this.auditTypeId!).subscribe({
       next: res => {
         const reviewData = res.data;
         this.evaluationData = res.data;
