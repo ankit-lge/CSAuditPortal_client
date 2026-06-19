@@ -341,9 +341,9 @@ body {
 .table-header-fix {
     max-height: 400px;
     /* Set a max height for scrolling */
-    overflow-y: auto;
+    overflow-y: scroll;
     /* Enable vertical scrolling */
-    overflow-x: auto;
+    overflow-x: scroll;
 }
 
 
@@ -515,4 +515,21 @@ body {
     color: #fff;
     padding: 2px 10px !important;
 
+}
+
+.auto-width-table {
+    width: max-content;
+    min-width: 100%;
+    table-layout: auto;
+}
+
+.auto-width-table th,
+.auto-width-table td {
+    white-space: nowrap;
+}
+
+.auto-width-table td {
+    max-width: 250px;
+    white-space: normal;
+    overflow-wrap: break-word;
 }

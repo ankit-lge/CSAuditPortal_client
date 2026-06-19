@@ -1,17 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuditMonitoringDAshboard } from './audit-monitoring-dashboard';
+import { AuditMonitoringDashboard } from './audit-monitoring-dashboard';
+import { ReactiveFormsModule } from '@angular/forms';
 
-describe('AuditMonitoringDAshboard', () => {
-  let component: AuditMonitoringDAshboard;
-  let fixture: ComponentFixture<AuditMonitoringDAshboard>;
+describe('AuditMonitoringDashboard', () => {
+  let component: AuditMonitoringDashboard;
+  let fixture: ComponentFixture<AuditMonitoringDashboard>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AuditMonitoringDAshboard],
+      declarations: [AuditMonitoringDashboard],
+      imports: [ReactiveFormsModule]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AuditMonitoringDAshboard);
+    fixture = TestBed.createComponent(AuditMonitoringDashboard);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

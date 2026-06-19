@@ -1,103 +1,250 @@
 <div class="content w-100">
-
-    <!-- Page Title -->
-    <div class="container-fluid mt-3">
-        <div class="d-flex justify-content-between align-items-center mb-1">
-            <h6 class="text-dark">CS Audit Portal</h6>
-            <div class="header-right">
-                <div class="user-info">
-                    <span>USER <strong style="color: #a50034;">CS Audit Portal</strong>
-                        <strong style="color: gray;">/Claim Search</strong></span>
-                </div>
-            </div>
+  <!-- Page Title -->
+  <div class="container-fluid mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-1">
+      <h6 class="text-dark">CS Audit Portal</h6>
+      <div class="header-right">
+        <div class="user-info">
+          <span>USER <strong style="color: #a50034">CS Audit Portal</strong>
+            <strong style="color: gray">/Claim Search</strong></span>
         </div>
-
-        <div class="card">
-            <div class="card-header">
-                <h2 class="page-title">Audit Monitoring Dashboard</h2>
-            </div>
-            <div class="card-body">
-                <form [formGroup]="monitoring" (ngSubmit)="auditMonitoringForm()">
-                    <div class="search-date">
-                        <input type="checkbox" class="checkbox" (change)="onSearchByDate($event)" checked>
-                        <h6 class="text-dark">Search By Date</h6>
-                    </div>
-                   
-                    <div class="row">
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="form-floating">
-                                <select formControlName="status" class="form-select table-header-fix" id="statesSelect"
-                                [(ngModel)]="selectedStatus">
-                                    <option value="">Select Status</option>
-                                    <option value="pending">Pending Data</option>
-                                    <option value="process">Process Data</option>
-
-                                </select>
-                                <label for="statesSelect">Status</label>
-                            </div>
-                        </div>
-                             <div class="col-lg-3 col-md-6 col-sm-12">
-
-                        <div class="form-floating">
-                            <select
-                                class="form-select table-header-fix"
-                                id="statesSelect"
-                                formControlName="auditType">
-                                <option value="">
-                                    Select Audit Type
-                                </option>
-                                @for (item of auditTypes$ | async; track item.ID) {
-                                    <option [value]="item.ID">
-                                        {{ item.VALUE }}
-                                    </option>
-                                }
-                            </select>
-                            <label for="statesSelect">
-                                Audit Type
-                            </label>
-                        </div>
-                       
-                    </div> 
-                       
-                       
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="form-floating mandatory">
-                                <input formControlName="fromDate" type="date" class="form-control" id="auditDate">
-                                <label for="auditDate">From Audit Date</label>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="form-floating mandatory">
-                                <input formControlName="toDate" type="date" class="form-control" id="auditDate">
-                                <label for="auditDate">To Audit Date</label>
-                            </div>
-                        </div>
-                    </div>
-                    
-
-                    <div class="p-1 d-flex gap-2">
-
-                        @if(selectedStatus === 'pending'){
-                         <button type="button" class="btn btn-danger" (click)="resetForm()"> Reset</button>
-                         <button type="submit" class="btn btn-danger">Search</button>
-                         <button type="button" class="btn btn-success" (click)="downloadData()"> Download</button>
-                         <button type="button" class="btn btn-success"> Submit To Branch</button>
-                        <button class="btn btn-success" (click)="rejectRequest()">Reject</button>
-
-                        }
-                        @else{
-                            <button type="button" class="btn btn-danger" (click)="resetForm()"> Reset</button>
-                            <button type="submit" class="btn btn-danger">Search</button>
-                            <button type="submit" class="btn btn-success">Submit To Branch</button>
-                            <button type="button" class="btn btn-danger" (click)="deleteData()">Delete </button>
-
-                        }
-
-                    </div>
-                </form>
-            </div>
-
-        </div>
+      </div>
     </div>
 
+    <div class="card">
+      <div class="card-header">
+        <h2 class="page-title">Audit Monitoring Dashboard</h2>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="monitoring">
+          <div class="search-date">
+            <input type="checkbox" class="checkbox" (change)="onSearchByDate($event)" checked />
+            <h6 class="text-dark">Search By Date</h6>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="form-floating">
+                <select formControlName="status" class="form-select table-header-fix" id="statesSelect"
+                  [(ngModel)]="selectedStatus">
+                  <option value="">Select Status</option>
+                  <option value="PENDING">Pending Data</option>
+                  <option value="PROCESSED">Process Data</option>
+                </select>
+                <label for="statesSelect">Status</label>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+              <div class="form-floating">
+                <select class="form-select table-header-fix" id="statesSelect" formControlName="auditType">
+                  <option value="">Select Audit Type</option>
+                  @for (item of auditTypes$ | async; track item.ID) {
+                  <option [value]="item.ID">
+                    {{ item.VALUE }}
+                  </option>
+                  }
+                </select>
+                <label for="statesSelect"> Audit Type </label>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-6">
+              <div class="form-floating input-group mb-3 mandatory">
+                <input type="text" class="form-control datepicker" id="fromAuditDate" formControlName="fromDate"
+                  placeholder="From Audit Date" />
+                <label for="fromAuditDate" class="z-index-10"> From Audit Date </label>
+                <span class="input-group-text calendar-icon">
+                  <i class="fa-solid fa-calendar-days"></i>
+                </span>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-6">
+              <div class="form-floating input-group mb-3 mandatory">
+                <input type="text" class="form-control datepicker" id="toAuditDate" formControlName="toDate"
+                  placeholder="To Audit Date" />
+                <label for="toAuditDate" class="z-index-10"> To Audit Date </label>
+                <span class="input-group-text calendar-icon">
+                  <i class="fa-solid fa-calendar-days"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-1 d-flex gap-2">
+            <!-- Default: Select Status -->
+            @if (!selectedStatus) {
+            <button type="button" class="btn btn-danger" (click)="resetForm()">Reset</button>
+
+            <button type="button" class="btn btn-danger" (click)="auditMonitoringForm()">
+              Search
+            </button>
+
+            <button type="button" class="btn btn-success" (click)="DownloadExcel()">
+              Download
+            </button>
+            }
+
+            <!-- Pending -->
+            @else if (selectedStatus === 'PENDING') {
+            <button type="button" class="btn btn-danger" (click)="resetForm()">Reset</button>
+
+            <button type="button" class="btn btn-danger" (click)="auditMonitoringForm()">
+              Search
+            </button>
+
+            <button type="button" class="btn btn-success" (click)="DownloadExcel()">
+              Download
+            </button>
+
+            <button type="button" class="btn btn-success" (click)="submitToBranch()">Submit To Branch</button>
+
+            <button type="button" class="btn btn-success" (click)="rejectRequest()">
+              Reject
+            </button>
+            }
+
+            <!-- Process -->
+            @else if (selectedStatus === 'PROCESSED') {
+            <button type="button" class="btn btn-danger" (click)="resetForm()">Reset</button>
+
+            <button type="button" class="btn btn-danger" (click)="auditMonitoringForm()">
+              Search
+            </button>
+
+            <button type="button" class="btn btn-success" (click)="DownloadExcel()">
+              Download
+            </button>
+
+            <button type="button" class="btn btn-success">Submit To Branch</button>
+            }
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="card card-grid" *ngIf="showTable">
+    <div class="card-body">
+      <!-- Show Entries + Search -->
+      <div class="row p-1">
+        <div class="col-lg-6 col-md-6 col-sm-12 d-flex align-items-center gap-2">
+          <div class="text-center">
+            <label class="me-2">Show</label>
+
+            <select class="form-select d-inline-block w-auto" [(ngModel)]="pageSize" (change)="changePageSize()">
+              <option [value]="10">10</option>
+              <option [value]="25">25</option>
+              <option [value]="50">50</option>
+              <option [value]="100">100</option>
+            </select>
+
+            <span class="ms-2">entries</span>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-12">
+          <div class="search-container">
+
+            <label for="searchBox" class="search-label">
+              Search:
+            </label>
+
+            <div class="search-input-wrapper">
+              <i class="fa fa-search search-icon"></i>
+
+              <input id="searchBox" type="search" class="form-control search-input" placeholder="Search records..."
+                [(ngModel)]="searchText" (keyup)="onSearch()">
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-header-fix bank-tenure-rate-table">
+        <div class="table-scroll-wrapper equal-table">
+          <table class="table table-bordered align-middle no-mb" id="auditTable">
+            <thead>
+              <tr>
+                <th>
+                  <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleAllSelection()" />
+                  Select All
+                </th>
+
+                <th>Audit Type</th>
+                <th>CH_CS_CODE</th>
+                <th>RSM</th>
+                <th>Evaluation Group</th>
+                <th>SVC Data From Code</th>
+                <th>CAPTIVE CHANNEL MAPPING ORIG</th>
+                <th>SHIP TO CODE</th>
+                <th>SVC Department Name</th>
+                <th>Receipt User ID</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let item of filteredData">
+                <td>
+                  <input type="checkbox" [(ngModel)]="item.selected" (change)="updateAllMonitoringState()" />
+                </td>
+                <td>{{ item?.['AUDIT TYPE'] }}</td>
+                <td>{{ item.CH_CS_CODE }}</td>
+                <td>{{ item.RSM }}</td>
+                <td>{{ item.EVALUATION_GROUP }}</td>
+                <td>{{ item.SVC_DATA_FROM_CODE }}</td>
+                <td>{{ item.CAPTIVE_CHANNEL_MAPPING_ORIG }}</td>
+                <td>{{ item.SHIP_TO_CODE }}</td>
+                <td>{{ item.SVC_DEPARTMENT_NAME }}</td>
+                <td>{{ item.RECIEPT_USER_ID }}</td>
+              </tr>
+
+              <tr *ngIf="verifyMoniotringData.length === 0">
+                <td colspan="10" class="text-center">No Records Found</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination Footer -->
+    <div class="card-footer custom-footer">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+
+        <!-- Records Info -->
+        <div class="records-info">
+          Showing {{ ((currentPage - 1) * pageSize) + 1 }}
+          -
+          {{ Math.min(currentPage * pageSize, totalRecords) }}
+          of {{ totalRecords }} records
+        </div>
+
+        <!-- Pagination -->
+        <ul class="pagination custom-pagination mb-0">
+
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link" (click)="previousPage()">
+              <i class="fa fa-chevron-left me-1"></i>
+              Previous
+            </button>
+          </li>
+
+          <li class="page-item active-page">
+            <span class="page-link">
+              Page {{ currentPage }} of {{ totalPages }}
+            </span>
+          </li>
+
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <button class="page-link" (click)="nextPage()">
+              Next
+              <i class="fa fa-chevron-right ms-1"></i>
+            </button>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AuditClaimUpload } from './audit-claim-upload';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('AuditClaimUpload', () => {
   let component: AuditClaimUpload;
@@ -9,6 +10,7 @@ describe('AuditClaimUpload', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AuditClaimUpload],
+      imports: [ReactiveFormsModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AuditClaimUpload);

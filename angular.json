@@ -2,7 +2,8 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": false
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -48,15 +49,18 @@
               "public/assets/css/styles.css",
               "node_modules/jquery-ui-dist/jquery-ui.min.css",
               "node_modules/owl.carousel/dist/assets/owl.carousel.css",
-              "node_modules/owl.carousel/dist/assets/owl.theme.default.css"
+              "node_modules/owl.carousel/dist/assets/owl.theme.default.css",
+              "node_modules/jquery-ui-dist/jquery-ui.css",
+              "node_modules/datatables.net-dt/css/dataTables.dataTables.min.css"
             ],
 
             "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/jquery-ui-dist/jquery-ui.min.js",
+               "node_modules/jquery/dist/jquery.min.js",
+  "node_modules/jquery-ui-dist/jquery-ui.min.js",
               "public/assets/js/bootstrap.bundle.min.js",
               "public/assets/js/custom.js",
-              "node_modules/owl.carousel/dist/owl.carousel.min.js"
+              "node_modules/owl.carousel/dist/owl.carousel.min.js",
+              "node_modules/datatables.net/js/dataTables.min.js"
             ]
           },
           "configurations": {
@@ -76,9 +80,9 @@
               "outputHashing": "all"
             },
             "development": {
-              "optimization": true,
-              "extractLicenses": true,
-              "sourceMap": false,
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -90,9 +94,9 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "options": {
-            "allowedHosts": ["nursing-outrage-ammonia.ngrok-free.dev"]
-          },
+           "options": {
+      "allowedHosts": ["nursing-outrage-ammonia.ngrok-free.dev"]
+    },
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
@@ -110,4 +114,4 @@
       }
     }
   }
-}
+} 

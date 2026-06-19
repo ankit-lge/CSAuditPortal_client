@@ -1,0 +1,10 @@
+<div
+  class="route-loader-overlay"
+  *ngIf="loading$ | async">
+
+  <div
+    class="route-progress"
+    [style.width.%]="progress$ | async">
+  </div>
+
+</div>
