@@ -219,7 +219,7 @@ previousPage() {
 
     this.auditService.submitToBranch(request).subscribe({
       next: (res: any) => {
-        this.alertService.show('success', 'Rejected successfully.');
+        this.alertService.show('success', 'Submitted successfully.');
         setTimeout(() => {
           this.auditMonitoringForm();
         }, 100);

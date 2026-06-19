@@ -11,7 +11,7 @@ export class EvaluationProcessService{
     private readonly baseUrl = environment.apiUrl;
     private readonly http = inject(HttpClient);
 
-    getEvaluationProcessData(receiptNo: string, auditTypeId: number){
+    getEvaluationProcessData(receiptNo: any, auditTypeId: any){
         return this.http.get<any>(`${this.baseUrl}EvaluationProcess/Get_Evaluation_Process_Data?receiptNo=${receiptNo}&audit_typeId=${auditTypeId}`)
     }
 }
