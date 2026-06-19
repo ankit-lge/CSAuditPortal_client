@@ -35,14 +35,9 @@
                   class="form-select table-header-fix"
                   id="statesSelect"
                   formControlName="auditType"
-                  [(ngModel)]="selectedAuditTypeId"
                 >
-                  <option value="" selected>Select Audit Type</option>
-                  @for (item of auditTypes$ | async; track item.ID) {
-                    <option [value]="item.ID">
-                      {{ item.VALUE }}
-                    </option>
-                  }
+                  <option value="">Select Audit Type</option>
+                  <option *ngFor="let item of auditTypeList" [value]="item.ID">{{ item.VALUE }}</option>
                 </select>
                 <label for="statesSelect"> Audit Type </label>
 
@@ -88,8 +83,8 @@
             <div class="col-lg-3 col-md-6 col-sm-12">
               <input
                 type="file"
-                class="form-control file-width"
                 formControlName="uploadedData"
+                class="form-control file-width"
                 (change)="UploadFile($event)"
               />
               <small
@@ -114,7 +109,7 @@
           <!-- Buttons -->
           <div class="p-1 d-flex gap-2 mt-4">
             <button type="button" class="btn btn-danger" (click)="resetForm()">Reset</button>
-            <button type="button" class="btn btn-success" (click)="ProcessUploadData()" >
+            <button type="button" class="btn btn-success" [disabled]="auditClaimUpload.invalid" (click)="ProcessUploadData()" >
               Upload
             </button>
           </div>

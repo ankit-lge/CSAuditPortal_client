@@ -294,7 +294,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <form [formGroup]="saveHOForm"></form>
+                    <form [formGroup]="saveHOForm">
                     <div class="row">
                         <div class="col-md-6">
                             <label class="text-dark">GSFS Receipt No</label>
@@ -326,7 +326,7 @@
                     <div class="row mt-3 align-items-end">
                         <div class="col-md-6">
                             <label class="text-dark">Attachment</label>
-                            <input type="file" class="form-control">
+                            <input type="file" formControlName="attachment" (change)="selectAttachement($event)" class="form-control">
                         </div>
 
                         <div class="col-md-4">
@@ -336,6 +336,7 @@
                         </div>
 
                     </div>
+                    </form>
 
                 </div>
 

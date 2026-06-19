@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuditService } from '../../services/audit.service';
@@ -25,51 +25,58 @@ export class AuditClaimUpload implements OnInit {
   isFileUploaded: boolean = false;
   selectedFile: File | null = null;
   FileUploadedData: any[] = [];
-  selectedAuditTypeId: any = '';
   verifyExcelUpload: boolean = false;
   auditTypes: auditType[] = [];
   status: string = '';
   rejectReason: string = '';
-  auditTypes$!: Observable<auditType[]>;
+  auditTypeList : AuditType[] = [];
   selectAll: boolean = false;
   sessionId: string = '';
   verifyAuditData: VerifyAuditData[] = [];
+
+  modalTitle: string = '';
+  modalMessage: string = '';
+  modalType: string = '';
+
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private auditService: AuditService,
     private alertservice: AlertService,
-  ) {
-    this.auditTypes$ = this.auditService.getAuditDropdown();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.auditClaimUpload = this.fb.group({
       auditType: ['', Validators.required],
-      fromDate: ['', Validators.required]
+      fromDate: ['', Validators.required],
+      uploadedData :[null, Validators.required]
     });
+
+    this.auditService.getAuditDropdown().subscribe({
+      next: (res:any)=>{
+        this.auditTypeList = res
+      },
+      error : err =>{
+        this.alertservice.show("error",  "Some error found while fetchind audit type.");
+      }
+    })
   }
 
   resetForm(): void {
     // RESET REACTIVE FORM
     this.auditClaimUpload.reset();
-    this.auditClaimUpload.markAsPristine();
-    this.auditClaimUpload.markAsUntouched();
     // RESET VARIABLES
     this.FileUploadedData = [];
     this.selectedFile = null;
     this.isFileUploaded = false;
-
+    this.fileInput.nativeElement.value = '';
   }
   onSearchByDate(event: any) {
     if (event.target.checked) {
       this.router.navigate(['/audit-monitoring-dashboard']);
     }
   }
-
-  modalTitle: string = '';
-  modalMessage: string = '';
-  modalType: string = '';
 
   openModal(title: string, message: string, type: string) {
     this.modalTitle = title;
@@ -94,7 +101,6 @@ export class AuditClaimUpload implements OnInit {
 
     if (!selectedAuditType) {
       this.alertservice.show('error', 'Please select audit type');
-
       return;
     }
     this.auditService.downloadAuditTemplate(selectedAuditType).subscribe({
@@ -138,6 +144,11 @@ export class AuditClaimUpload implements OnInit {
 
   if (file) {
     this.selectedFile = file;
+    this.auditClaimUpload.patchValue({
+      uploadedData: file.name
+    });
+
+    this.auditClaimUpload.get('uploadedData')?.updateValueAndValidity();
   }
 }
 

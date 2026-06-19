@@ -17,8 +17,11 @@ export class AuditEvaluationProcess {
   private readonly _fb = inject(FormBuilder);
   private readonly alert = inject(AlertService);
 
-  private gsfsNo : string | null = null;
-  private auditTypeId: string | null = null;
+  private gsfsNo : string = "";
+  private auditTypeId: number = 0;
+
+  selectedAttachement!: File;
+
   evaluationData !: EvaluationProcessData;
 
   saveESCLGCForm!: FormGroup;
@@ -34,7 +37,70 @@ export class AuditEvaluationProcess {
       if(gsfsNo && auditTypeId){
         this.gsfsNo = gsfsNo;
         this.auditTypeId = auditTypeId;
-        this.ev_service.getEvaluationProcessData(gsfsNo, auditTypeId).subscribe({
+        this.loadAuditEvaluation();
+      }
+    });
+
+    this.saveESCLGCForm = this._fb.group({
+      remark : ['', Validators.required],
+      status: ['',Validators.required]
+    })
+
+    this.saveHOForm = this._fb.group({
+      remark : ['', Validators.required],
+      status: ['',Validators.required],
+      attachment: [null, Validators.required]
+    });
+  }
+
+  selectAttachement(event:any):void{
+    const file = event.target.files?.[0];
+    if(file){
+      this.selectedAttachement = file;
+      this.saveHOForm.patchValue({attachment : file.name})
+    }
+  }
+
+  saveESC_LGC_Feedback(){
+    if(this.saveESCLGCForm.invalid){
+      this.saveESCLGCForm.markAsUntouched();
+      return;
+    }
+
+    const data = this.saveESCLGCForm.value;
+
+    const payload = new FormData();
+    payload.append("gsfS_ReceiptNo", this.gsfsNo);
+    payload.append("auditTypeId", this.auditTypeId.toString());
+    payload.append("status", data.status);
+    payload.append("remark", data.remark);
+    payload.append("actionBy", "ESC/LGC");
+   
+    this.saveData(payload);
+  }
+
+  save_HO_Feedback(){
+    if(this.saveHOForm.invalid){
+      this.saveHOForm.markAsUntouched();
+      return;
+    }
+
+    const data = this.saveHOForm.value;
+
+    const payload = new FormData();
+
+    payload.append("gsfS_ReceiptNo", this.gsfsNo);
+    payload.append("auditTypeId", this.auditTypeId.toString());
+    payload.append("status", data.status);
+    payload.append("remark", data.remark);
+    payload.append("Attachement", this.selectedAttachement);
+    payload.append("actionBy", "HO");
+   
+    this.saveData(payload);
+  }
+
+  private loadAuditEvaluation(){
+    this.ev_service.getEvaluationProcessData(this.gsfsNo, this.auditTypeId).subscribe({
           next: res =>{
             const reviewData = res.data;
             this.evaluationData = res.data;
@@ -47,62 +113,14 @@ export class AuditEvaluationProcess {
             this.alert.show("error", "Internal issue found. Please try after sometime.")
           }
         })
-      }
-    });
-
-    this.saveESCLGCForm = this._fb.group({
-      remark : ['', Validators.required],
-      status: ['',Validators.required]
-    })
-
-    this.saveHOForm = this._fb.group({
-      remark : ['', Validators.required],
-      status: ['',Validators.required]
-    });
   }
-
-
-  saveESC_LGC_Feedback(){
-    if(this.saveESCLGCForm.invalid){
-      this.saveESCLGCForm.markAsUntouched();
-      return;
-    }
-
-    const data = this.saveESCLGCForm.value;
-    const payload = {
-      gsfS_ReceiptNo : this.gsfsNo,
-      auditTypeId : this.auditTypeId,
-      status : data.status,
-      remark : data.remark,
-      actionBy : "ESC/LGC"
-    }
-
-    this.saveData(payload);
-  }
-
-  save_HO_Feedback(){
-    if(this.saveHOForm.invalid){
-      this.saveHOForm.markAsUntouched();
-      return;
-    }
-
-    const data = this.saveHOForm.value;
-    const payload = {
-      gsfS_ReceiptNo : this.gsfsNo,
-      auditTypeId : this.auditTypeId,
-      status : data.status,
-      remark : data.remark,
-      actionBy : "HO"
-    }
-    this.saveData(payload);
-  }
-
 
 
   private saveData(payload:any){
     this.ev_service.updateFeedback(payload).subscribe({
       next: (res: any) =>{
-        this.alert.show("success", "Success")
+        this.alert.show("success", res.response)
+        this.loadAuditEvaluation();
       },
       error: (err: any) =>{
         this.alert.show("error", "Internal issue occured. Please try after sometime.")
