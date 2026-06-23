@@ -15,8 +15,8 @@ export class AuditService {
     return this.http.get<any[]>(`${this.apiUrl}Audit/GetAuditDropdownList`);
   }
 
-  downloadAuditTemplate(auditTypeId:number){
-    return this.http.post(`${this.apiUrl}Audit/DownloadTemplate?auditType=${auditTypeId}`,{},{
+  downloadAuditTemplate(auditTypeId: number) {
+    return this.http.post(`${this.apiUrl}Audit/DownloadTemplate?auditType=${auditTypeId}`, {}, {
       responseType: 'blob',
       observe: 'response'
     })
@@ -55,8 +55,8 @@ export class AuditService {
   searchAuditData(payload: any) {
     return this.http.post<any>(`${this.apiUrl}Audit/search-audit`, payload)
   }
-  
-  
+
+
   //  SearchAuditMoniter(payload: any){
   //   return this.http.post(`${this.apiUrl}AuditMonitoring/SearchAuditData`, payload);
   // }
@@ -66,32 +66,40 @@ export class AuditService {
   }
 
 
-  DeleteUploadedData(payload: any){
+  DeleteUploadedData(payload: any) {
     return this.http.post(`${this.apiUrl}Audit/reject-status`, payload);
   }
 
   // Audit Monitoring Dashboard.
   RejectStatus(
-  payload: any): Observable<any> {
-    return this.http.post<any>( `${this.apiUrl}AuditMonitoring/Reject`, payload
-  );
-}
+    payload: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}AuditMonitoring/Reject`, payload
+    );
+  }
 
-submitToBranch(payload: any){
-  return this.http.post(`${this.apiUrl}AuditMonitoring/SubmitToBranch`, payload);
-}
+  submitToBranch(payload: any) {
+    return this.http.post(`${this.apiUrl}AuditMonitoring/SubmitToBranch`, payload);
+  }
 
 
-downloadExcel(request: any): Observable<Blob> {
-  return this.http.post(
-    `${this.apiUrl}AuditMonitoring/Download`,
-    request,
-    {
-      responseType: 'blob'
+  downloadExcel(request: any): Observable<Blob> {
+    return this.http.post(
+      `${this.apiUrl}AuditMonitoring/Download`,
+      request,
+      {
+        responseType: 'blob'
+      }
+    );
+  }
+
+  // login api on the redirection
+  loginProcessOnRedirection(UserId: any, Password: any) {
+    let payload = {
+      userId: UserId,
+      password: Password
     }
-  );
-}
-  
+    return this.http.post(`${this.apiUrl}AuditMonitoring/LoginProcessOnRedirection`, payload);
+  }
 
 
   private handleError(error: HttpErrorResponse) {

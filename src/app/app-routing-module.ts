@@ -6,6 +6,7 @@ import { AuditReviewProcess } from './components/audit-review-process/audit-revi
 import { AuditEvaluationProcess } from './components/audit-evaluation-process/audit-evaluation-process';
 import { FeedbackStatusReport } from './components/feedback-status-report/feedback-status-report';
 import { AuditSummaryReport } from './components/audit-summary-report/audit-summary-report';
+import { LandingPage } from './pages/landing-page/landing-page/landing-page';
 
 const routes: Routes = [
   { path: 'audit-claim-upload', component: AuditClaimUpload },
@@ -14,6 +15,8 @@ const routes: Routes = [
   { path: 'evaluation', component: AuditEvaluationProcess },
   { path: 'feedback-status-report',component: FeedbackStatusReport },
   { path: 'audit-summary-report', component: AuditSummaryReport },
+  { path: 'landing-page', component: LandingPage },
+  { path: 'landing-page/:userId/:password', component: LandingPage },
   { path: '', redirectTo: '/audit-claim-upload', pathMatch: 'full' }
 ];
 

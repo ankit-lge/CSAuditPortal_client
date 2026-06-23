@@ -21,6 +21,7 @@ import { ApiLoader } from './core/loader/api-loader/api-loader';
 import { apiLoaderInterceptor } from './core/interceptor/api-loader-interceptor';
 import { FeedbackStatusReport } from './components/feedback-status-report/feedback-status-report';
 import { AuditSummaryReport } from './components/audit-summary-report/audit-summary-report';
+import { LandingPage } from './pages/landing-page/landing-page/landing-page';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { AuditSummaryReport } from './components/audit-summary-report/audit-summ
     AlertModal,
     RouteLoader,
     FeedbackStatusReport,
-    AuditSummaryReport
+    AuditSummaryReport,
+    LandingPage,
   ],
   imports: [
     BrowserModule,
