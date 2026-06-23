@@ -1,0 +1,28 @@
+<div class="loader-overlay">
+
+    <div class="loader-card">
+
+        <div class="loader-circle">
+            <i class="fa fa-cloud-upload"></i>
+        </div>
+
+        <h2>Bulk Upload</h2>
+
+        <div class="percentage">
+            {{progress}}%
+        </div>
+
+        <div class="progress-wrapper">
+            <div
+                class="progress-fill"
+                [style.width.%]="progress">
+            </div>
+        </div>
+
+        <div class="message">
+            {{message}}
+        </div>
+
+    </div>
+
+</div>

@@ -1,8 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuditService } from '../../services/audit.service';
-import { Observable } from 'rxjs';
 import { AlertService } from '../../services/alert-service';
 import { VerifyAuditData } from '../../core/interfaces/verify-audit-data';
 declare var $: any;
@@ -33,6 +32,10 @@ export class AuditClaimUpload implements OnInit {
   selectAll: boolean = false;
   sessionId: string = '';
   verifyAuditData: VerifyAuditData[] = [];
+
+  isUploading : boolean = false;
+  progress = signal(0);
+  statusMessage = signal("");
 
   modalTitle: string = '';
   modalMessage: string = '';
@@ -168,13 +171,39 @@ export class AuditClaimUpload implements OnInit {
     formData.append("file", this.selectedFile);
     formData.append("auditTypeId", value.auditType);
     formData.append("fromDate", auditDate);
+
+    this.isUploading = true;
+    const timer = setInterval(() =>{
+      if (this.progress() < 95) {
+
+      this.progress.set(this.progress()+1);
+
+      if(this.progress() < 25)
+        this.statusMessage.set('Reading Excel file...');
+
+      else if(this.progress() < 50)
+        this.statusMessage.set('Validating records...');
+
+      else if(this.progress() < 80)
+        this.statusMessage.set('Uploading data...');
+
+      else
+        this.statusMessage.set('Processing records...');
+    }
+    }, 100)
+
     this.auditService.ProcessUploadData(formData).subscribe({
         next: (res) => {
+          clearInterval(timer);
+          this.progress.set(100);
+          this.isUploading = false;
           this.sessionId = res.sessionId;
-           this.resetForm();
-            this.openModal('Success', res.data || 'Data uploaded successfully.', 'success');
+          this.openModal('Success', res.data || 'Data uploaded successfully.', 'success');
         },
         error: (err) => {
+          clearInterval(timer);
+          this.isUploading = false;
+          this.progress.set(0);
           this.openModal('Error', err?.error?.message || 'Failed to upload data.', 'error');
         },
       });

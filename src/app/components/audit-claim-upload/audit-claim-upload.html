@@ -234,3 +234,9 @@
     </div>
   </div>
 </div>
+
+<app-bulk-loader
+*ngIf="isUploading"
+[progress]="progress()"
+[message]="statusMessage()"
+></app-bulk-loader>
