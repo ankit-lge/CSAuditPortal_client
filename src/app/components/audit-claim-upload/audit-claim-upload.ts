@@ -186,7 +186,7 @@ export class AuditClaimUpload implements OnInit {
         this.alertservice.show("error", err);
 
         if(err.status == 404){
-          this.alertservice.show("erros", "File not found.")
+          this.alertservice.show("erros", "No data found for excel download.")
         }
       }
     })
