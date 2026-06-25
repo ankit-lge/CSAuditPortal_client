@@ -29,7 +29,7 @@ export class AuditClaimUpload implements OnInit {
   rejectReason: string = '';
   auditTypeList : AuditType[] = [];
   selectAll: boolean = false;
-  sessionId: string = '171160';
+  sessionId: string = '';
   errorCount: number = 0;
   verifyAuditData: VerifyAuditData[] = [];
 
@@ -254,6 +254,7 @@ export class AuditClaimUpload implements OnInit {
           this.openModal('Success', data.message || 'Data uploaded successfully.', 'success');
         },
         error: (err) => {
+          debugger
           clearInterval(timer);
           this.isUploading = false;
           this.progress.set(0);
