@@ -182,11 +182,11 @@ export class AuditClaimUpload implements OnInit {
         window.URL.revokeObjectURL(url);
       },
       error:(err:any) =>{
-        debugger
-        this.alertservice.show("error", err);
-
         if(err.status == 404){
           this.alertservice.show("erros", "No data found for excel download.")
+        }
+        else{
+          this.alertservice.show("error", err);
         }
       }
     })
