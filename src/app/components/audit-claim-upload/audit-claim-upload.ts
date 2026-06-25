@@ -5,7 +5,6 @@ import { AuditService } from '../../services/audit.service';
 import { AlertService } from '../../services/alert-service';
 import { VerifyAuditData } from '../../core/interfaces/verify-audit-data';
 declare var $: any;
-
 declare var bootstrap: any;
 
 interface auditType {
@@ -30,7 +29,8 @@ export class AuditClaimUpload implements OnInit {
   rejectReason: string = '';
   auditTypeList : AuditType[] = [];
   selectAll: boolean = false;
-  sessionId: string = '';
+  sessionId: string = '171160';
+  errorCount: number = 0;
   verifyAuditData: VerifyAuditData[] = [];
 
   isUploading : boolean = false;
@@ -142,6 +142,51 @@ export class AuditClaimUpload implements OnInit {
     })
   }
 
+  downloadErrorFile() {
+    const selectedAuditType = this.auditClaimUpload.get('auditType')?.value;
+
+    if (!selectedAuditType) {
+      this.alertservice.show('error', 'Please select audit type');
+      return;
+    }
+
+    const sessionId = parseInt(this.sessionId || "0", 10);
+    this.auditService.downloadErrorData(selectedAuditType, sessionId).subscribe({
+      next: (res: any)=>{
+        const blob = res.body;
+        const contentDisposition = res.headers.get("content-disposition");
+        let filename = 'download.xlsx';
+
+        if (contentDisposition) {
+          // Prefer filename*
+          let match = contentDisposition.match(/filename\*=UTF-8''([^;]+)/i);
+
+          if (match?.[1]) {
+            filename = decodeURIComponent(match[1]);
+          } else {
+            match = contentDisposition.match(/filename="?([^";]+)"?/i);
+
+            if (match?.[1]) {
+              filename = match[1];
+            }
+          }
+        }
+
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;   // Uses filename from API
+
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+      },
+      error:(err:any) =>{
+        this.alertservice.show("error", err);
+      }
+    })
+  }
+
   UploadFile(event: any): void {
   const file = event.target.files?.[0];
 
@@ -194,11 +239,14 @@ export class AuditClaimUpload implements OnInit {
 
     this.auditService.ProcessUploadData(formData).subscribe({
         next: (res) => {
+          const data = res.data;
+
           clearInterval(timer);
           this.progress.set(100);
           this.isUploading = false;
-          this.sessionId = res.sessionId;
-          this.openModal('Success', res.data || 'Data uploaded successfully.', 'success');
+          this.sessionId = data.sessionId;
+          this.errorCount = data.error;
+          this.openModal('Success', data.message || 'Data uploaded successfully.', 'success');
         },
         error: (err) => {
           clearInterval(timer);
