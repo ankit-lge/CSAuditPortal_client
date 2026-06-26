@@ -1,0 +1,11 @@
+.modern-design-button-group{
+    position: absolute;
+    bottom: -10%;
+    right: 6%;
+}
+
+@media (max-width: 576px) {
+    .modern-design-button-group{
+        bottom: -3.5%;
+    }
+}

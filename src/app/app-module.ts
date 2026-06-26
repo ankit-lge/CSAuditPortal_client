@@ -21,6 +21,7 @@ import { ApiLoader } from './core/loader/api-loader/api-loader';
 import { apiLoaderInterceptor } from './core/interceptor/api-loader-interceptor';
 import { FeedbackStatusReport } from './components/feedback-status-report/feedback-status-report';
 import { AuditSummaryReport } from './components/audit-summary-report/audit-summary-report';
+import { BulkLoader } from './core/loader/bulk-loader/bulk-loader';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { AuditSummaryReport } from './components/audit-summary-report/audit-summ
     AlertModal,
     RouteLoader,
     FeedbackStatusReport,
-    AuditSummaryReport
+    AuditSummaryReport,
+    BulkLoader,
   ],
   imports: [
     BrowserModule,

@@ -22,6 +22,16 @@ export class AuditService {
     })
   }
 
+  downloadErrorData(templateId: number, sessionId: number){
+    return this.http.post(`${this.apiUrl}Audit/DownloadExcelErrorRow?templateId=${templateId}&sessionId=${sessionId}`,
+      {},
+      {
+        responseType: 'blob',
+        observe: 'response'
+      }
+    )
+  }
+
   uploadData(data: any, templateId: any) {
     const payload = {
       records: data,

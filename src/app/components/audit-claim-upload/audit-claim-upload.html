@@ -13,7 +13,7 @@
       </div>
     </div>
   </div>
-  <ng-container *ngIf="!verifyExcelUpload; else verifyData">
+  <ng-container>
     <div class="card shadow-sm">
       <div class="card-header">
         <h2 class="page-title">Audit Claim Upload</h2>
@@ -107,27 +107,34 @@
           </div>
 
           <!-- Buttons -->
-          <div class="p-1 d-flex gap-2 mt-4">
+          <div class="p-1 d-flex gap-2">
             <button type="button" class="btn btn-danger" (click)="resetForm()">Reset</button>
             <button type="button" class="btn btn-success" [disabled]="auditClaimUpload.invalid" (click)="ProcessUploadData()" >
               Upload
             </button>
           </div>
-          <button
+          <div class="modern-design-button-group" *ngIf="sessionId && sessionId !== null && sessionId !== ''">
+            <button
             type="button"
             class="btn btn-danger m-1"
             (click)="getUpdatedData()"
-            *ngIf="sessionId && sessionId !== null && sessionId !== ''"
           >
             Verify Uploaded Excel Data
           </button>
+
+          <button 
+            class="btn btn-danger" 
+            type="button"
+            *ngIf="errorCount > 0"
+            (click)="downloadErrorFile()">Error Logs</button>
+          </div>
+          
         </form>
       </div>
     </div>
   </ng-container>
 
-  <ng-template #verifyData>
-    <div class="card card-grid">
+<div class="card card-grid" *ngIf="sessionId && sessionId !== null && sessionId !== ''">
       <div class="card-body">
         <div class="table-header-fix bank-tenure-rate-table">
           <div class="table-scroll-wrapper equal-table">
@@ -178,8 +185,8 @@
           </div>
         </div>
 
-        <div class="w-25 pb-3">
-          <div class="form-group">
+        <div class="pb-3">
+          <div class="">
             <label for="status"
               >Status <sup class="text-danger"><small>*</small></sup></label
             >
@@ -207,7 +214,6 @@
         </div>
       </div>
     </div>
-  </ng-template>
 </div>
 
 <!-- Modal -->
@@ -234,3 +240,9 @@
     </div>
   </div>
 </div>
+
+<app-bulk-loader
+*ngIf="isUploading"
+[progress]="progress()"
+[message]="statusMessage()"
+></app-bulk-loader>
