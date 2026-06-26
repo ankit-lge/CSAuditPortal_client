@@ -7,10 +7,7 @@ import { VerifyAuditData } from '../../core/interfaces/verify-audit-data';
 declare var $: any;
 declare var bootstrap: any;
 
-interface auditType {
-  ID: Number;
-  VALUE: string;
-}
+
 
 @Component({
   selector: 'app-audit-claim-upload',
@@ -24,7 +21,6 @@ export class AuditClaimUpload implements OnInit {
   selectedFile: File | null = null;
   FileUploadedData: any[] = [];
   verifyExcelUpload: boolean = false;
-  auditTypes: auditType[] = [];
   status: string = '';
   rejectReason: string = '';
   auditTypeList : AuditType[] = [];
@@ -254,7 +250,6 @@ export class AuditClaimUpload implements OnInit {
           this.openModal('Success', data.message || 'Data uploaded successfully.', 'success');
         },
         error: (err) => {
-          debugger
           clearInterval(timer);
           this.isUploading = false;
           this.progress.set(0);
@@ -402,7 +397,7 @@ export class AuditClaimUpload implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  trackById(index: number, item: auditType) {
+  trackById(index: number, item: AuditType) {
     return item.ID;
   }
   ngAfterViewInit(): void {
