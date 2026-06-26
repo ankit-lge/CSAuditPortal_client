@@ -29,7 +29,7 @@ export class AuditMonitoringDashboard implements OnInit {
   pageSizes: number[] = [10, 25, 50, 100];
   selectedRows: any[] = [];
   showTable: boolean = false;
-  sessionId: string = '12';
+ sessionId:string='';
 
   constructor(
     private router: Router,
@@ -229,6 +229,17 @@ previousPage() {
       },
     });
   }
+  // sendMail(receiptid:any){
+  //   this.auditService.sendMailToBranch(receiptid).subscribe({
+  //      next: (res: any) => {
+  //       this.alertService.show('success', 'ClaimPenality Pending.Data Sent To Branch ASM,BSM Successfully.Data ount');
+  //      },
+  //       error: (err) => {
+  //       this.alertService.show('error', err.error?.message || 'Mail sent failed.');
+  //     },
+  //   })
+  // }
+
   onSearchByDate(event: any) {
     if (!event.target.checked) {
       this.router.navigate(['/audit-claim-upload']);

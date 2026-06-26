@@ -81,6 +81,9 @@ export class AuditService {
     return this.http.post(`${this.apiUrl}AuditMonitoring/SubmitToBranch`, payload);
   }
 
+  // sendMailToBranch(payload: any) {
+  //   return this.http.post(`${this.apiUrl}AuditMonitoring/SendMail`, payload);
+  // }
 
   downloadExcel(request: any): Observable<Blob> {
     return this.http.post(

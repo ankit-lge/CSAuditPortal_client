@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuditService } from '../../../services/audit.service';
+import { environment } from '../../../../environments/environment';
+
 
 @Component({
   selector: 'app-landing-page',
@@ -11,6 +13,7 @@ import { AuditService } from '../../../services/audit.service';
 export class LandingPage {
   userId: any;
   password: any;
+  alertService: any;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -26,6 +29,7 @@ export class LandingPage {
     if (this.userId != '' && this.password != '') {
       localStorage.clear();
 
+      
       // login api call and on sucess redirect to the defualt page which is "audit-claim-upload"
 
       this.auditService.loginProcessOnRedirection(this.userId, this.password).subscribe({
@@ -36,12 +40,37 @@ export class LandingPage {
         },
         error: (err) => {
           localStorage.clear();
+          this.alertService.show(
+        'Authentication Failed',
+        'Unable to authenticate your account. You will be redirected to the Mail Application login page.',
+        () => {
+          // window.location.href = environment.mailApplicationUrl; // or your login URL
+        }
+      );
           // show the error msg using model popup and redirect to the main applicaiton url loging page.
+           localStorage.clear();
+
+  this.alertService.show(
+    'Login Required',
+    'Please log in to the Mail Application to continue.',
+    () => {
+      // window.location.href = environment.mailApplicationUrl; // or your login URL
+    }
+  );
         }
       })
     }
     else{
-      // redirec to the mail application login page and show the msg 
+       localStorage.clear();
+
+  this.alertService.show(
+    'Login Required',
+    'Please log in to the Mail Application to continue.',
+    () => {
+      window.location.href = 'https://your-mail-application-url/login';
+    }
+  );
+      
     }
   }
 }
