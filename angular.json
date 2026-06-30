@@ -56,7 +56,7 @@
 
             "scripts": [
                "node_modules/jquery/dist/jquery.min.js",
-  "node_modules/jquery-ui-dist/jquery-ui.min.js",
+               "node_modules/jquery-ui-dist/jquery-ui.min.js",
               "public/assets/js/bootstrap.bundle.min.js",
               "public/assets/js/custom.js",
               "node_modules/owl.carousel/dist/owl.carousel.min.js",
