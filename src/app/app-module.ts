@@ -21,6 +21,7 @@ import { ApiLoader } from './core/loader/api-loader/api-loader';
 import { apiLoaderInterceptor } from './core/interceptor/api-loader-interceptor';
 import { FeedbackStatusReport } from './components/feedback-status-report/feedback-status-report';
 import { AuditSummaryReport } from './components/audit-summary-report/audit-summary-report';
+import { BulkLoader } from './core/loader/bulk-loader/bulk-loader';
 import { LandingPage } from './pages/landing-page/landing-page/landing-page';
 
 @NgModule({
@@ -38,8 +39,8 @@ import { LandingPage } from './pages/landing-page/landing-page/landing-page';
     RouteLoader,
     FeedbackStatusReport,
     AuditSummaryReport,
-    LandingPage,
-  ],
+    BulkLoader,
+  LandingPage  ],
   imports: [
     BrowserModule,
     CommonModule,

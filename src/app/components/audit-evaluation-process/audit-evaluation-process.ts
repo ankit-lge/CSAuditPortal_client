@@ -17,9 +17,11 @@ export class AuditEvaluationProcess {
   private readonly _fb = inject(FormBuilder);
   private readonly alert = inject(AlertService);
 
-  private gsfsNo: string | null = null;
-  // private auditTypeId: string | null = null;
-   private auditTypeId: number | null= null;
+  private gsfsNo : string = "";
+  private auditTypeId: number = 0;
+
+  selectedAttachement!: File;
+
   evaluationData !: EvaluationProcessData;
 
   saveESCLGCForm!: FormGroup;
@@ -28,90 +30,99 @@ export class AuditEvaluationProcess {
   esc_lgcFeedbackDetails!: FeedbackDetail[];
   hoFeedBackDetails !: FeedbackDetail[];
 
-  ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+  ngOnInit(){
+    this.route.queryParams.subscribe(params =>{
       const gsfsNo = params['gsfsNo']
       const auditTypeId = params['auditType']
-      if (gsfsNo && auditTypeId) {
+      if(gsfsNo && auditTypeId){
         this.gsfsNo = gsfsNo;
         this.auditTypeId = auditTypeId;
-        this.getDataOnPlageLoad();
+        this.loadAuditEvaluation();
       }
     });
 
     this.saveESCLGCForm = this._fb.group({
-      remark: ['', Validators.required],
-      status: ['', Validators.required]
+      remark : ['', Validators.required],
+      status: ['',Validators.required]
     })
 
     this.saveHOForm = this._fb.group({
-      remark: ['', Validators.required],
-      status: ['', Validators.required]
+      remark : ['', Validators.required],
+      status: ['',Validators.required],
+      attachment: [null, Validators.required]
     });
   }
 
-  getDataOnPlageLoad() {
-    this.ev_service.getEvaluationProcessData(this.gsfsNo!, this.auditTypeId!).subscribe({
-      next: res => {
-        const reviewData = res.data;
-        this.evaluationData = res.data;
-
-        this.esc_lgcFeedbackDetails = JSON.parse(reviewData['ESC/LGC_CLAIM_DETAILS']);
-        this.hoFeedBackDetails = JSON.parse(reviewData.HO_FEEDBACK_DETAILS);
-      },
-      error: err => {
-        console.error(err);
-        this.alert.show("error", "Internal issue found. Please try after sometime.")
-      }
-    })
+  selectAttachement(event:any):void{
+    const file = event.target.files?.[0];
+    if(file){
+      this.selectedAttachement = file;
+      this.saveHOForm.patchValue({attachment : file.name})
+    }
   }
 
-
-
-  saveESC_LGC_Feedback() {
-    if (this.saveESCLGCForm.invalid) {
+  saveESC_LGC_Feedback(){
+    if(this.saveESCLGCForm.invalid){
       this.saveESCLGCForm.markAsUntouched();
       return;
     }
 
     const data = this.saveESCLGCForm.value;
-    const payload = {
-      gsfS_ReceiptNo: this.gsfsNo,
-      auditTypeId: this.auditTypeId,
-      status: data.status,
-      remark: data.remark,
-      actionBy: "ESC/LGC"
-    }
 
+    const payload = new FormData();
+    payload.append("gsfS_ReceiptNo", this.gsfsNo);
+    payload.append("auditTypeId", this.auditTypeId.toString());
+    payload.append("status", data.status);
+    payload.append("remark", data.remark);
+    payload.append("actionBy", "ESC/LGC");
+   
     this.saveData(payload);
   }
 
-  save_HO_Feedback() {
-    if (this.saveHOForm.invalid) {
+  save_HO_Feedback(){
+    if(this.saveHOForm.invalid){
       this.saveHOForm.markAsUntouched();
       return;
     }
 
     const data = this.saveHOForm.value;
-    const payload = {
-      gsfS_ReceiptNo: this.gsfsNo,
-      auditTypeId: this.auditTypeId,
-      status: data.status,
-      remark: data.remark,
-      actionBy: "HO"
-    }
+
+    const payload = new FormData();
+
+    payload.append("gsfS_ReceiptNo", this.gsfsNo);
+    payload.append("auditTypeId", this.auditTypeId.toString());
+    payload.append("status", data.status);
+    payload.append("remark", data.remark);
+    payload.append("Attachement", this.selectedAttachement);
+    payload.append("actionBy", "HO");
+   
     this.saveData(payload);
   }
 
+  private loadAuditEvaluation(){
+    this.ev_service.getEvaluationProcessData(this.gsfsNo, this.auditTypeId).subscribe({
+          next: res =>{
+            const reviewData = res.data;
+            this.evaluationData = res.data;
+
+            this.esc_lgcFeedbackDetails = JSON.parse(reviewData['ESC/LGC_CLAIM_DETAILS']);
+            this.hoFeedBackDetails = JSON.parse(reviewData.HO_FEEDBACK_DETAILS);
+          },
+          error : err =>{
+            console.error(err);
+            this.alert.show("error", "Internal issue found. Please try after sometime.")
+          }
+        })
+  }
 
 
-  private saveData(payload: any) {
+  private saveData(payload:any){
     this.ev_service.updateFeedback(payload).subscribe({
-      next: (res: any) => {
-        this.getDataOnPlageLoad();
-        this.alert.show("success", "Success")
+      next: (res: any) =>{
+        this.alert.show("success", res.response)
+        this.loadAuditEvaluation();
       },
-      error: (err: any) => {
+      error: (err: any) =>{
         this.alert.show("error", "Internal issue occured. Please try after sometime.")
       }
     })

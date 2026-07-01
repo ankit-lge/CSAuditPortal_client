@@ -18,5 +18,4 @@ export class EvaluationProcessService{
     updateFeedback(payload: any){
         return this.http.post(`${this.baseUrl}EvaluationProcess/save-feedback`, payload);
     }
-
 }

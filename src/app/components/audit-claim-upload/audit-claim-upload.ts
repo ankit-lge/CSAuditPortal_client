@@ -1,20 +1,13 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import * as XLSX from 'xlsx';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuditService } from '../../services/audit.service';
-import { Observable } from 'rxjs';
-import { ViewChild, ElementRef } from '@angular/core';
 import { AlertService } from '../../services/alert-service';
 import { VerifyAuditData } from '../../core/interfaces/verify-audit-data';
 declare var $: any;
-
 declare var bootstrap: any;
 
-interface auditType {
-  ID: Number;
-  VALUE: string;
-}
+
 
 @Component({
   selector: 'app-audit-claim-upload',
@@ -27,51 +20,62 @@ export class AuditClaimUpload implements OnInit {
   isFileUploaded: boolean = false;
   selectedFile: File | null = null;
   FileUploadedData: any[] = [];
-  selectedAuditTypeId: any = '';
   verifyExcelUpload: boolean = false;
-  auditTypes: auditType[] = [];
   status: string = '';
   rejectReason: string = '';
-  auditTypes$!: Observable<auditType[]>;
+  auditTypeList : AuditType[] = [];
   selectAll: boolean = false;
-  sessionId: string = '170275';
+  sessionId: string = '';
+  errorCount: number = 0;
   verifyAuditData: VerifyAuditData[] = [];
+
+  isUploading : boolean = false;
+  progress = signal(0);
+  statusMessage = signal("");
+
+  modalTitle: string = '';
+  modalMessage: string = '';
+  modalType: string = '';
+
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private auditService: AuditService,
     private alertservice: AlertService,
-  ) {
-    this.auditTypes$ = this.auditService.getAuditDropdown();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.auditClaimUpload = this.fb.group({
       auditType: ['', Validators.required],
-      fromDate: ['', Validators.required]
+      fromDate: ['', Validators.required],
+      uploadedData :[null, Validators.required]
     });
+
+    this.auditService.getAuditDropdown().subscribe({
+      next: (res:any)=>{
+        this.auditTypeList = res
+      },
+      error : err =>{
+        this.alertservice.show("error",  "Some error found while fetchind audit type.");
+      }
+    })
   }
 
   resetForm(): void {
     // RESET REACTIVE FORM
     this.auditClaimUpload.reset();
-    this.auditClaimUpload.markAsPristine();
-    this.auditClaimUpload.markAsUntouched();
     // RESET VARIABLES
     this.FileUploadedData = [];
     this.selectedFile = null;
     this.isFileUploaded = false;
-
+    this.fileInput.nativeElement.value = '';
   }
   onSearchByDate(event: any) {
     if (event.target.checked) {
       this.router.navigate(['/audit-monitoring-dashboard']);
     }
   }
-
-  modalTitle: string = '';
-  modalMessage: string = '';
-  modalType: string = '';
 
   openModal(title: string, message: string, type: string) {
     this.modalTitle = title;
@@ -96,7 +100,6 @@ export class AuditClaimUpload implements OnInit {
 
     if (!selectedAuditType) {
       this.alertservice.show('error', 'Please select audit type');
-
       return;
     }
     this.auditService.downloadAuditTemplate(selectedAuditType).subscribe({
@@ -135,11 +138,66 @@ export class AuditClaimUpload implements OnInit {
     })
   }
 
+  downloadErrorFile() {
+    const selectedAuditType = this.auditClaimUpload.get('auditType')?.value;
+
+    if (!selectedAuditType) {
+      this.alertservice.show('error', 'Please select audit type');
+      return;
+    }
+
+    const sessionId = parseInt(this.sessionId || "0", 10);
+    this.auditService.downloadErrorData(selectedAuditType, sessionId).subscribe({
+      next: (res: any)=>{
+        const blob = res.body;
+        const contentDisposition = res.headers.get("content-disposition");
+        let filename = 'download.xlsx';
+
+        if (contentDisposition) {
+          // Prefer filename*
+          let match = contentDisposition.match(/filename\*=UTF-8''([^;]+)/i);
+
+          if (match?.[1]) {
+            filename = decodeURIComponent(match[1]);
+          } else {
+            match = contentDisposition.match(/filename="?([^";]+)"?/i);
+
+            if (match?.[1]) {
+              filename = match[1];
+            }
+          }
+        }
+
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;   // Uses filename from API
+
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+      },
+      error:(err:any) =>{
+        if(err.status == 404){
+          this.alertservice.show("erros", "No data found for excel download.")
+        }
+        else{
+          this.alertservice.show("error", err);
+        }
+      }
+    })
+  }
+
   UploadFile(event: any): void {
   const file = event.target.files?.[0];
 
   if (file) {
     this.selectedFile = file;
+    this.auditClaimUpload.patchValue({
+      uploadedData: file.name
+    });
+
+    this.auditClaimUpload.get('uploadedData')?.updateValueAndValidity();
   }
 }
 
@@ -159,13 +217,42 @@ export class AuditClaimUpload implements OnInit {
     formData.append("file", this.selectedFile);
     formData.append("auditTypeId", value.auditType);
     formData.append("fromDate", auditDate);
+
+    this.isUploading = true;
+    const timer = setInterval(() =>{
+      if (this.progress() < 95) {
+
+      this.progress.set(this.progress()+1);
+
+      if(this.progress() < 25)
+        this.statusMessage.set('Reading Excel file...');
+
+      else if(this.progress() < 50)
+        this.statusMessage.set('Validating records...');
+
+      else if(this.progress() < 80)
+        this.statusMessage.set('Uploading data...');
+
+      else
+        this.statusMessage.set('Processing records...');
+    }
+    }, 100)
+
     this.auditService.ProcessUploadData(formData).subscribe({
         next: (res) => {
-          this.sessionId = res.sessionId;
-           this.resetForm();
-            this.openModal('Success', res.data || 'Data uploaded successfully.', 'success');
+          const data = res.data;
+
+          clearInterval(timer);
+          this.progress.set(100);
+          this.isUploading = false;
+          this.sessionId = data.sessionId;
+          this.errorCount = data.error;
+          this.openModal('Success', data.message || 'Data uploaded successfully.', 'success');
         },
         error: (err) => {
+          clearInterval(timer);
+          this.isUploading = false;
+          this.progress.set(0);
           this.openModal('Error', err?.error?.message || 'Failed to upload data.', 'error');
         },
       });
@@ -310,7 +397,7 @@ export class AuditClaimUpload implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  trackById(index: number, item: auditType) {
+  trackById(index: number, item: AuditType) {
     return item.ID;
   }
   ngAfterViewInit(): void {
