@@ -9,7 +9,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
         <div class="card">
             <div class="card-header">
@@ -19,65 +18,58 @@
                 <div class="row ">
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" [value]="evaluationData?.GSFS_RECEIPT_NO" class="form-control"  placeholder="Enter GSFS Receipt No">
+                            <input readonly type="text" [value]="evaluationData.GSFS_RECEIPT_NO" class="form-control"  placeholder="Enter GSFS Receipt No">
                             <label for="claimId" class="mt-3">GSFS Receipt No</label>
                         </div>
                     </div>
-                </div>
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" [value]="evaluationData?.CH_CS_CODE"  placeholder="CHCS Code">
+                            <input readonly type="text" class="form-control" [value]="evaluationData.CH_CS_CODE"  placeholder="CHCS Code">
                             <label for="claimId" class="mt-3">CHCS Code</label>
                         </div>
                     </div>
-                </div>
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" [value]="evaluationData?.PRODUCT1_CODE" placeholder="Product 1 Code">
+                            <input readonly type="text" class="form-control" [value]="evaluationData.PRODUCT1_CODE" placeholder="Product 1 Code">
                             <label for="claimId" class="mt-3">Product 1 Code</label>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text"class="form-control" [value]="evaluationData?.MODEL_SUFFIX_CODE" placeholder="Model Suffix Code">
+                            <input readonly type="text"class="form-control" [value]="evaluationData.MODEL_SUFFIX_CODE" placeholder="Model Suffix Code">
                             <label for="claimId" class="mt-3">Model Suffix Code</label>
                         </div>
                     </div>
-                </div>
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" [value]="evaluationData?.REPAIR_END_DATE_YYYYMMDD" placeholder="Repair End Date">
+                            <input readonly type="text" class="form-control" [value]="evaluationData.REPAIR_END_DATE_YYYYMMDD" placeholder="Repair End Date">
                             <label for="claimId" class="form-label required">Repair End Date</label>
                         </div>
                     </div>
-                
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" [value]="evaluationData?.DISPOSITION" placeholder="Disposition">
+                            <input readonly type="text" class="form-control" [value]="evaluationData.DISPOSITION" placeholder="Disposition">
                             <label for="claimId" class="mt-3">Disposition</label>
                         </div>
                     </div>
-                
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" [value]="evaluationData?.DURATION" placeholder="Duration">
+                            <input readonly type="text" class="form-control" [value]="evaluationData.DURATION" placeholder="Duration">
                             <label for="claimId" class="mt-3">Duration</label>
                         </div>
                     </div>
-                
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" [value]="evaluationData?.WARRANTY_FLAG" placeholder="Warranty Flag">
+                            <input readonly type="text" class="form-control" [value]="evaluationData.WARRANTY_FLAG" placeholder="Warranty Flag">
                             <label for="claimId" class="mt-3">Warranty Flag</label>
                         </div>
                     </div>
-                
 
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
@@ -87,111 +79,77 @@
                             <label for="claimId" class="mt-3">SVC Status</label>
                         </div>
                     </div>
-                
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" [value]="evaluationData?.SVC_TYPE_CODE" placeholder="SVC Type Code">
+                            <input readonly type="text" class="form-control" [value]="evaluationData.SVC_TYPE_CODE" placeholder="SVC Type Code">
                             <label for="claimId" class="mt-3">SVC Type Code</label>
                         </div>
                     </div>
-             
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" [value]="evaluationData?.SVC_DATA_FROM_CODE" placeholder="SVC Data from Code">
+                            <input readonly type="text" class="form-control" [value]="evaluationData.SVC_DATA_FROM_CODE" placeholder="SVC Data from Code">
                             <label for="claimId" class="mt-3">SVC Data from Code</label>
                         </div>
                     </div>
-               
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" [value]="evaluationData?.SHIP_TO_CODE"  placeholder="Ship to Code">
+                            <input readonly type="text" class="form-control" [value]="evaluationData.SHIP_TO_CODE"  placeholder="Ship to Code">
                             <label for="claimId" class="mt-3">Ship to Code</label>
                         </div>
                     </div>
-            
 
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" [value]="evaluationData?.STATUS" placeholder="Status">
+                            <input readonly type="text" class="form-control" [value]="evaluationData.STATUS" placeholder="Status">
                             <label for="claimId" class="mt-3">Status</label>
                         </div>
                     </div>
-               
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" [value]="evaluationData?.SERIAL_NO" placeholder="Serial NO.">
+                            <input readonly type="text" class="form-control" [value]="evaluationData.SERIAL_NO" placeholder="Serial NO.">
                             <label for="claimId" class="mt-3">Serial NO.</label>
                         </div>
                     </div>
-              
 
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" [value]="evaluationData?.SVC_DEPARTMENT_NAME" placeholder="SVC Dept Name">
+                            <input readonly type="text" class="form-control" [value]="evaluationData.SVC_DEPARTMENT_NAME" placeholder="SVC Dept Name">
                             <label for="claimId" class="mt-3">SVC Dept Name</label>
                         </div>
                     </div>
                   
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input readonly type="text" class="form-control" [value]="evaluationData?.CALL_RECEIPT_DATE" placeholder="Call Receipt Date">
+                            <input readonly type="text" class="form-control" [value]="evaluationData.CALL_RECEIPT_DATE" placeholder="Call Receipt Date">
                             <label for="claimId" class="mt-3">Call Receipt Date</label>
                         </div>
                     </div>
-               
-
-                <div class="col-lg-4 col-md-6 col-sm-6">
-                    <div class="form-floating custom-floating">
-                        <input type="text" class="form-control" [value]="evaluationData.LAW_INVOICE_NO"
-                            placeholder="TCR/Law Invoice No.">
-                        <label for="claimId" class="mt-3">TCR/Law Invoice No.</label>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 col-sm-6">
-                    <div class="form-floating custom-floating">
-                        <input type="text" class="form-control"
-                            [value]="evaluationData.AMC_FORM_NO + '/' + evaluationData.WARRANTY_EXTENSION_CARD_NO"
-                            placeholder="AMC Form_No./ WArranty Card No">
-                        <label for="claimId" class="mt-3">AMC Form_No./ WArranty Card No</label>
-                    </div>
-                </div>
-
-                    <div class="col-lg-4 col-md-6 col-sm-6">
+                  
+                       <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input type="text" class="form-control" [value]="evaluationData?.LAW_INVOICE_NO" placeholder="TCR/Law Invoice No.">
+                            <input type="text" class="form-control" [value]="evaluationData.LAW_INVOICE_NO" placeholder="TCR/Law Invoice No.">
                             <label for="claimId" class="mt-3">TCR/Law Invoice No.</label>
                         </div>
                     </div>
 
                      <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input type="text" class="form-control" [value]="evaluationData?.AMC_FORM_NO + '/' + evaluationData?.WARRANTY_EXTENSION_CARD_NO" placeholder="AMC Form_No./ WArranty Card No">
+                            <input type="text" class="form-control" [value]="evaluationData.AMC_FORM_NO + '/' + evaluationData.WARRANTY_EXTENSION_CARD_NO" placeholder="AMC Form_No./ WArranty Card No">
                             <label for="claimId" class="mt-3">AMC Form_No./ WArranty Card No</label>
                         </div>
                     </div>
 
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="form-floating custom-floating">
-                            <input type="text" class="form-control" [value]="evaluationData?.REASON_FOR_DATA_AUDIT" placeholder="Reason For Data Audit">
+                            <input type="text" class="form-control" [value]="evaluationData.REASON_FOR_DATA_AUDIT" placeholder="Reason For Data Audit">
                             <label for="claimId" class="mt-3">Reason For Data Audit</label>
                         </div>
                     </div>
-               
-
-                <div class="col-md-12 col-sm-">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="page-title">Feedback of ESC/LGC </h2>
-                        </div>
-
-                        <div class="card-body">
-                            <form [formGroup]="saveESCLGCForm">
 
                     <div class="col-md-12 col-sm-">
                         <div class="card">
@@ -206,7 +164,7 @@
                                 <div class="row">
                                     <div class="col-lg-4 col-md-4 col-sm-4">
                                                 <div class="form-floating custom-floating">
-                                                    <input readonly type="text" class="form-control"  [value]="evaluationData?.FINAL_FEEDBACK_STATUS"
+                                                    <input readonly type="text" class="form-control"  [value]="evaluationData.FINAL_FEEDBACK_STATUS"
                                                         placeholder="Final Feedback Status">
                                                     <label for="claimId" class="mt-3">Final Feedback Status</label>
                                                 </div>
@@ -242,7 +200,7 @@
                 </div>
             </div>
         </div>
-    
+
 
         <div class="card card-grid">
             <div class="card-body">
@@ -323,49 +281,24 @@
             </div>
 
         </div>
-    <!-- </div> -->
+    </div>
 
 
-    <div class="card card-grid">
-        <div class="card-body">
-            <div class="table-header-fix bank-tenure-rate-table">
-                <div class="table-responsive table-scroll-wrapper equal-table">
-                    <table class="table table-bordered align-middle no-mb">
-                        <thead>
-                            <tr>
-                                <th colspan="7" class="th-1 text-center">ESC/LGC Claim Details</th>
-                            </tr>
-                            <tr>
-                                <th>Sr. No</th>
-                                <th>GSFS Recipt No.</th>
-                                <th>Feedback</th>
-                                <th>Remarks</th>
-                                <th>Attachments</th>
-                                <th>Expected Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of esc_lgcFeedbackDetails; let i = index">
-                                <td>{{i+1}}</td>
-                                <td>{{item.GSFS_RECEIPT_NO}}</td>
-                                <td>{{item.FEEDBACK}}</td>
-                                <td>{{item.REMARK}}</td>
-                                <td><a href="#">{{item.ATTACHEMENTS}}</a></td>
-                                <td>{{item.EXPECTED_DATE}}</td>
-                            </tr>
-
-                        </tbody>
-                    </table>
+    <div class="modal fade" id="feedbackModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Feedback correction of existing data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
                 </div>
-            </div>
-        </div>
 
                 <div class="modal-body">
                     <form [formGroup]="saveHOForm">
                     <div class="row">
                         <div class="col-md-6">
                             <label class="text-dark">GSFS Receipt No</label>
-                            <input type="text" class="form-control" [value]="evaluationData?.GSFS_RECEIPT_NO" readonly>
+                            <input type="text" class="form-control" [value]="evaluationData.GSFS_RECEIPT_NO" readonly>
                         </div>
 
                         <div class="col-md-6">
@@ -407,7 +340,6 @@
 
                 </div>
 
+            </div>
+        </div>
     </div>
-
-        
-    
