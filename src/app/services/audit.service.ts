@@ -22,7 +22,7 @@ export class AuditService {
     })
   }
 
-  downloadErrorData(templateId: number, sessionId: number){
+  downloadErrorData(templateId: number, sessionId: string){
     return this.http.post(`${this.apiUrl}Audit/DownloadExcelErrorRow?templateId=${templateId}&sessionId=${sessionId}`,
       {},
       {

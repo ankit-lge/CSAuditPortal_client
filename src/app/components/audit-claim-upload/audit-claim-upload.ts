@@ -17,7 +17,6 @@ declare var bootstrap: any;
 })
 export class AuditClaimUpload implements OnInit {
   auditClaimUpload!: FormGroup;
-  isFileUploaded: boolean = false;
   selectedFile: File | null = null;
   FileUploadedData: any[] = [];
   verifyExcelUpload: boolean = false;
@@ -68,7 +67,6 @@ export class AuditClaimUpload implements OnInit {
     // RESET VARIABLES
     this.FileUploadedData = [];
     this.selectedFile = null;
-    this.isFileUploaded = false;
     this.fileInput.nativeElement.value = '';
   }
   onSearchByDate(event: any) {
@@ -146,8 +144,7 @@ export class AuditClaimUpload implements OnInit {
       return;
     }
 
-    const sessionId = parseInt(this.sessionId || "0", 10);
-    this.auditService.downloadErrorData(selectedAuditType, sessionId).subscribe({
+    this.auditService.downloadErrorData(selectedAuditType, this.sessionId).subscribe({
       next: (res: any)=>{
         const blob = res.body;
         const contentDisposition = res.headers.get("content-disposition");
@@ -202,6 +199,7 @@ export class AuditClaimUpload implements OnInit {
 }
 
   ProcessUploadData() {
+    this.progress.set(0)
     if (this.auditClaimUpload.invalid || !this.selectedFile) {
       this.openModal(
         'Validation',
@@ -248,12 +246,21 @@ export class AuditClaimUpload implements OnInit {
           this.sessionId = data.sessionId;
           this.errorCount = data.error;
           this.openModal('Success', data.message || 'Data uploaded successfully.', 'success');
+          
         },
         error: (err) => {
           clearInterval(timer);
           this.isUploading = false;
           this.progress.set(0);
-          this.openModal('Error', err?.error?.message || 'Failed to upload data.', 'error');
+          if(err?.error?.data){
+            const data = err.error.data;
+            this.sessionId = data.sessionId
+            this.errorCount = data.error;
+            this.alertservice.show("warning", data.message);
+          }else{
+
+            this.openModal('Error', err?.error?.message || err?.error || 'Failed to upload data.', 'error');
+          }
         },
       });
   }
@@ -322,13 +329,15 @@ export class AuditClaimUpload implements OnInit {
       selectedIds: selectedIds,
     };
     this.auditService.SaveStatus(payload).subscribe({
-      next: (res) => {
-        this.alertservice.show('success', 'Successfully saved');
+      next: (res:any) => {
+        this.alertservice.show('success', res?.message);
         this.verifyExcelUpload = false;
         this.toggleAllSelection();
+        this.getUpdatedData()
       },
       error: (err) => {
         console.error('some error while saving data.', err);
+        this.alertservice.show("error", err.error?.message || "Internal server issue, Please try after sometime.");
       },
     });
   }
@@ -359,20 +368,21 @@ export class AuditClaimUpload implements OnInit {
     const payload = {
       sessionId: this.sessionId,
       auditTypeId: auditTypeId,
-      status: 'REJECT',
       reason: this.rejectReason,
       selectedIds: selectedIds,
     };
 
     this.auditService.DeleteUploadedData(payload).subscribe({
-      next: (res) => {
-        this.alertservice.show('success', 'Rejected successfully !');
+      next: (res:any) => {
+        this.alertservice.show('success', res?.message);
         this.toggleAllSelection();
         this.verifyExcelUpload = false;
         this.rejectReason = '';
+        this.getUpdatedData();
       },
       error: (err) => {
         console.error('Errro while rejecting', err);
+        this.alertservice.show("error", err.error.message);
       },
     });
   }

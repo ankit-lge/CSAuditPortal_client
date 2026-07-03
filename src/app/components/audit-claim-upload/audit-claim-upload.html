@@ -109,7 +109,7 @@
           <!-- Buttons -->
           <div class="p-1 d-flex gap-2">
             <button type="button" class="btn btn-danger" (click)="resetForm()">Reset</button>
-            <button type="button" class="btn btn-success" [disabled]="auditClaimUpload.invalid" (click)="ProcessUploadData()" >
+            <button type="button" class="btn btn-success" [disabled]="auditClaimUpload.invalid || isUploading" (click)="ProcessUploadData()" >
               Upload
             </button>
           </div>
@@ -126,7 +126,7 @@
             class="btn btn-danger" 
             type="button"
             *ngIf="errorCount > 0"
-            (click)="downloadErrorFile()">Error Logs</button>
+            (click)="downloadErrorFile()">Download {{errorCount}} Error</button>
           </div>
           
         </form>
@@ -134,7 +134,7 @@
     </div>
   </ng-container>
 
-<div class="card card-grid" *ngIf="sessionId && sessionId !== null && sessionId !== ''">
+<div class="card card-grid" *ngIf="verifyAuditData && verifyAuditData.length > 0">
       <div class="card-body">
         <div class="table-header-fix bank-tenure-rate-table">
           <div class="table-scroll-wrapper equal-table">
