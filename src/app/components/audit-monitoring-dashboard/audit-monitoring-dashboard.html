@@ -73,51 +73,13 @@
 
           <div class="p-1 d-flex gap-2">
             <!-- Default: Select Status -->
-            @if (!selectedStatus) {
             <button type="button" class="btn btn-danger" (click)="resetForm()">Reset</button>
+            <button type="button" class="btn btn-danger" (click)="auditMonitoringForm()">Search</button>
 
-            <button type="button" class="btn btn-danger" (click)="auditMonitoringForm()">
-              Search
-            </button>
-
-            <button type="button" class="btn btn-success" (click)="DownloadExcel()">
-              Download
-            </button>
-            }
-
-            <!-- Pending -->
-            @else if (selectedStatus === 'PENDING') {
-            <button type="button" class="btn btn-danger" (click)="resetForm()">Reset</button>
-
-            <button type="button" class="btn btn-danger" (click)="auditMonitoringForm()">
-              Search
-            </button>
-
-            <button type="button" class="btn btn-success" (click)="DownloadExcel()">
-              Download
-            </button>
-
-            <button type="button" class="btn btn-success" (click)="submitToBranch()">Submit To Branch</button>
-
-            <button type="button" class="btn btn-success" (click)="rejectRequest()">
-              Reject
-            </button>
-            }
-
-            <!-- Process -->
-            @else if (selectedStatus === 'PROCESSED') {
-            <button type="button" class="btn btn-danger" (click)="resetForm()">Reset</button>
-
-            <button type="button" class="btn btn-danger" (click)="auditMonitoringForm()">
-              Search
-            </button>
-
-            <button type="button" class="btn btn-success" (click)="DownloadExcel()">
-              Download
-            </button>
-
-            <button type="button" class="btn btn-success">Submit To Branch</button>
-            }
+            <button type="button" *ngIf="['PENDING', 'PROCESSED'].includes(selectedStatus) && filteredData.length > 0" class="btn btn-success" (click)="DownloadExcel()">Download</button>
+            <button type="button" *ngIf="['PENDING'].includes(selectedStatus) && filteredData.length > 0" class="btn btn-success" (click)="submitToBranch()">Submit To Branch</button>
+            <button type="button" *ngIf="['PENDING'].includes(selectedStatus) && filteredData.length > 0" class="btn btn-success" (click)="rejectRequest()">Reject</button>
+           
           </div>
         </form>
       </div>

@@ -66,6 +66,7 @@
                   <select class="form-select table-header-fix" formControlName="suspicious">
                     <option value="">Select</option>
                     <option value="all">All</option>
+                    <option value="processed">Processed</option>
                     <option value="accepted">Accepted</option>
                     <option value="rejected">Rejected</option>
                   </select>
@@ -206,12 +207,12 @@
                   <tbody>
                     <tr *ngFor="let item of filteredData">
                       <td><a class="text-primary underline" routerLink="/evaluation" [queryParams]="{gsfsNo: item.GSFS_RECEIPT_NO, auditType: searchingForm.value.auditType}">{{item.GSFS_RECEIPT_NO}}</a></td>
-                      <td>{{item.DATE_MONTH}}</td>
+                      <td>{{item.DATA_MONTH}}</td>
                       <td>{{item.FINAL_FEEDBACK_STATUS }}</td>
                       <td>{{item.AGING }}</td>
                       <td>{{item.CUSTOMER_FEEDBACK_DATE }}</td>
                       <td>{{item.AUDIT_DATE }}</td>
-                      <td></td>
+                      <td>{{item.AUDIT_TYPE}}</td>
                       <td>{{item.ESC_LGC_DATE}}</td>
                       <td>{{item.SALE_NAME}}</td>
                     </tr>

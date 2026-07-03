@@ -127,6 +127,7 @@ previousPage() {
     this.verifyMoniotringData.forEach((item: any) => {
       item.selected = this.selectAll;
     });
+    this.updateAllMonitoringState();
   }
   // RESET FORM
   resetForm() {
