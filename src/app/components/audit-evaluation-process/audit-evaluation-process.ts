@@ -49,7 +49,7 @@ export class AuditEvaluationProcess {
     this.saveHOForm = this._fb.group({
       remark : ['', Validators.required],
       status: ['',Validators.required],
-      attachment: [null, Validators.required]
+      attachment: [null]
     });
   }
 
@@ -104,8 +104,8 @@ export class AuditEvaluationProcess {
           next: res =>{
             const reviewData = res.data;
             this.evaluationData = res.data;
-
-            this.esc_lgcFeedbackDetails = JSON.parse(reviewData['ESC/LGC_CLAIM_DETAILS']);
+            debugger;
+            this.esc_lgcFeedbackDetails = JSON.parse(reviewData.ESC_LGC_CLAIM_DETAILS);
             this.hoFeedBackDetails = JSON.parse(reviewData.HO_FEEDBACK_DETAILS);
           },
           error : err =>{
