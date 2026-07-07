@@ -17,7 +17,7 @@ export class ReportService {
 
   getBranches(): Observable<Branch[]> {
   return this.http.get<Branch[]>(
-    `${environment.apiUrl}/branches`
+    `${this.baseUrl}Report/branches`
   );
 }
   searchfeedbackreport(payload: any): Observable<any> {
