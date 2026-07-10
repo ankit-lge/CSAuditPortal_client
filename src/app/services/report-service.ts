@@ -27,12 +27,13 @@ export class ReportService {
     );
   }
 
-  downloadData(payload: any): Observable<Blob> {
+  downloadFeedbackReport(payload: any){
     return this.http.post(
       `${this.baseUrl}Report/DownloadFeedbackReport`,
       payload,
       {
-        responseType: 'blob'
+        responseType: 'blob',
+        observe: 'response'
       }
     );
   }
