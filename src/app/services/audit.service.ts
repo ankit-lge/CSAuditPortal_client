@@ -65,11 +65,19 @@ export class AuditService {
   searchAuditData(payload: any) {
     return this.http.post<any>(`${this.apiUrl}Audit/search-audit`, payload)
   }
+<<<<<<< Updated upstream
 
 
   //  SearchAuditMoniter(payload: any){
   //   return this.http.post(`${this.apiUrl}AuditMonitoring/SearchAuditData`, payload);
   // }
+=======
+  
+  
+   SearchAuditMoniter(payload: any){
+    return this.http.post(`${this.apiUrl}AuditMonitoring/SearchAuditData`, payload);
+  }
+>>>>>>> Stashed changes
 
   SaveStatus(payload: any) {
     return this.http.post(`${this.apiUrl}Audit/save-status`, payload);

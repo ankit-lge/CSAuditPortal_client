@@ -28,6 +28,7 @@ export class AuditClaimUpload implements OnInit {
   sessionId: string = '';
   errorCount: number = 0;
   verifyAuditData: VerifyAuditData[] = [];
+<<<<<<< Updated upstream
 
   isUploading : boolean = false;
   progress = signal(0);
@@ -38,18 +39,32 @@ export class AuditClaimUpload implements OnInit {
   modalType: string = '';
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+=======
+    isSubmitted = false;
+>>>>>>> Stashed changes
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private auditService: AuditService,
     private alertservice: AlertService,
+<<<<<<< Updated upstream
   ) {}
+=======
+  
+  ) {
+    this.auditTypes$ = this.auditService.getAuditDropdown();
+  }
+>>>>>>> Stashed changes
 
   ngOnInit(): void {
     this.auditClaimUpload = this.fb.group({
       auditType: ['', Validators.required],
       fromDate: ['', Validators.required],
+<<<<<<< Updated upstream
       uploadedData :[null, Validators.required]
+=======
+  
+>>>>>>> Stashed changes
     });
 
     this.auditService.getAuditDropdown().subscribe({
@@ -63,6 +78,7 @@ export class AuditClaimUpload implements OnInit {
   }
 
   resetForm(): void {
+<<<<<<< Updated upstream
     // RESET REACTIVE FORM
     this.auditClaimUpload.reset();
     // RESET VARIABLES
@@ -71,6 +87,17 @@ export class AuditClaimUpload implements OnInit {
     this.isFileUploaded = false;
     this.fileInput.nativeElement.value = '';
   }
+=======
+  this.auditClaimUpload.reset();
+
+  this.auditClaimUpload.markAsPristine();
+  this.auditClaimUpload.markAsUntouched();
+
+  this.FileUploadedData = [];
+  this.selectedFile = null;
+  this.isFileUploaded = false;
+}
+>>>>>>> Stashed changes
   onSearchByDate(event: any) {
     if (event.target.checked) {
       this.router.navigate(['/audit-monitoring-dashboard']);
@@ -138,6 +165,7 @@ export class AuditClaimUpload implements OnInit {
     })
   }
 
+<<<<<<< Updated upstream
   downloadErrorFile() {
     const selectedAuditType = this.auditClaimUpload.get('auditType')?.value;
 
@@ -189,18 +217,29 @@ export class AuditClaimUpload implements OnInit {
   }
 
   UploadFile(event: any): void {
+=======
+ UploadFile(event: any): void {
+
+>>>>>>> Stashed changes
   const file = event.target.files?.[0];
 
   if (file) {
     this.selectedFile = file;
+<<<<<<< Updated upstream
     this.auditClaimUpload.patchValue({
       uploadedData: file.name
     });
 
     this.auditClaimUpload.get('uploadedData')?.updateValueAndValidity();
+=======
+  } else {
+    this.selectedFile = null;
+>>>>>>> Stashed changes
   }
 }
+ ProcessUploadData() {
 
+<<<<<<< Updated upstream
   ProcessUploadData() {
     if (this.auditClaimUpload.invalid || !this.selectedFile) {
       this.openModal(
@@ -256,8 +295,68 @@ export class AuditClaimUpload implements OnInit {
           this.openModal('Error', err?.error?.message || 'Failed to upload data.', 'error');
         },
       });
+=======
+  this.isSubmitted = true;
+
+  if (this.auditClaimUpload.invalid) {
+
+    this.auditClaimUpload.markAllAsTouched();
+
+    this.openModal(
+      'Validation',
+      'Please select Audit Type and Audit Date.',
+      'warning'
+    );
+
+    return;
+>>>>>>> Stashed changes
   }
 
+  if (!this.selectedFile) {
+
+    this.openModal(
+      'Validation',
+      'Please upload an Excel file.',
+      'warning'
+    );
+
+    return;
+  }
+
+  const value = this.auditClaimUpload.value;
+
+  const auditDate = this.formatDate(value.fromDate);
+
+  const formData = new FormData();
+
+  formData.append('file', this.selectedFile);
+  formData.append('auditTypeId', value.auditType);
+  formData.append('fromDate', auditDate);
+
+  this.auditService.ProcessUploadData(formData)
+    .subscribe({
+      next: (res) => {
+
+        this.sessionId = res.sessionId;
+
+        this.openModal(
+          'Success',
+          res.data || 'Data uploaded successfully.',
+          'success'
+        );
+
+      },
+      error: (err) => {
+
+        this.openModal(
+          'Error',
+          err?.error?.message ||
+          'Failed to upload data.',
+          'error'
+        );
+      }
+    });
+}
   getUpdatedData() {
     const auditTypeId = this.auditClaimUpload.value?.auditType;
     if (!auditTypeId || auditTypeId == null || auditTypeId == '') {

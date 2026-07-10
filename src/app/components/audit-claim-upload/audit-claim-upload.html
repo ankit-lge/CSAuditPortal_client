@@ -80,23 +80,18 @@
             </div>
 
             <!-- File Upload -->
-            <div class="col-lg-3 col-md-6 col-sm-12">
-              <input
-                type="file"
-                formControlName="uploadedData"
-                class="form-control file-width"
-                (change)="UploadFile($event)"
-              />
-              <small
-                class="text-danger"
-                *ngIf="
-                  auditClaimUpload.get('uploadedData')?.touched &&
-                  auditClaimUpload.get('uploadedData')?.hasError('required')
-                "
-              >
-                Please upload an Excel file.
-              </small>
-            </div>
+           <input
+  type="file"
+  class="form-control file-width"
+  (change)="UploadFile($event)"
+/>
+
+<small
+  class="text-danger"
+  *ngIf="isSubmitted && !selectedFile"
+>
+  Please upload an Excel file.
+</small>
 
             <!-- Download Button -->
             <div class="col-lg-4 col-md-6 col-sm-12">

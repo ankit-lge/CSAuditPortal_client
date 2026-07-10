@@ -29,6 +29,10 @@ export class AuditMonitoringDashboard implements OnInit {
   pageSizes: number[] = [10, 25, 50, 100];
   selectedRows: any[] = [];
   showTable: boolean = false;
+<<<<<<< Updated upstream
+=======
+  sessionId: string = '300832';
+>>>>>>> Stashed changes
 
   constructor(
     private router: Router,
@@ -217,7 +221,11 @@ previousPage() {
 
     this.auditService.submitToBranch(request).subscribe({
       next: (res: any) => {
+<<<<<<< Updated upstream
         this.alertService.show('success', 'Submited to branch successfully.');
+=======
+        this.alertService.show('success', 'Submitted to branch successfully.');
+>>>>>>> Stashed changes
         setTimeout(() => {
           this.auditMonitoringForm();
         }, 100);
