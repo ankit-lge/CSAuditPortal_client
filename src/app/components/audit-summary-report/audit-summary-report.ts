@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReportService } from '../../services/report-service';
 import { AlertService } from '../../services/alert-service';
 import { Branch } from '../../core/interfaces/branch-data';
+import { AuditSummaryReportModel } from '../../core/interfaces/audit-summary-report';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class AuditSummaryReport implements OnInit {
 
   summaryform!: FormGroup;
   branches: Branch[] = [];
-  filterData: any;
+  filterData: AuditSummaryReportModel[] = [];
 
   ngOnInit(): void {
       const today = new Date();
@@ -58,6 +59,7 @@ const payload = {
     .subscribe({
       next: (response: any) => {
         this.filterData = response?.data
+        console.log(this.filterData);
       },
       error: (error:any) => this.handleError(error)
     });

@@ -44,12 +44,13 @@ export class ReportService {
   );
 }
 
-downloadSummaryReport(payload: any): Observable<Blob> {
+downloadSummaryReport(payload: any){
   return this.http.post(
     `${this.baseUrl}Report/DownloadSummaryStatusReport`,
     payload,
     {
-      responseType: 'blob'
+      responseType: 'blob',
+      observe: 'response'
     }
   );
 }
