@@ -77,6 +77,12 @@ export class AuditReviewProcess {
           this.totalPages = Math.ceil(
             this.totalRecords / this.pageSize
           );
+
+
+          console.log("Filtered DAta", this.filteredData);
+          console.log("Search Data", this.searchedData);
+          
+          
         }
       }
     });

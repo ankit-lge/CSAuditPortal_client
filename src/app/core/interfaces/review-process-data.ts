@@ -1,10 +1,11 @@
 export interface ReviewProcessData {
-  GSFS_RECEIPT_NO: string;
-  DATE_MONTH: string;
-  FINAL_FEEDBACK_STATUS: string;
-  AGING: string;
-  CUSTOMER_FEEDBACK_DATE: string | null;
-  AUDIT_DATE: string;
-  ESC_LGC_DATE: string | null;
-  SALE_NAME: string | null;
+  aging: string;
+  audiT_DATE: string;
+  audiT_TYPE: string;
+  customeR_FEEDBACK_DATE: string;
+  datA_MONTH: string | null;
+  esC_LGC_DATE: string;
+  finaL_FEEDBACK_STATUS: string;
+  gsfS_RECEIPT_NO: string | null;
+  salE_NAME: string | null;
 }

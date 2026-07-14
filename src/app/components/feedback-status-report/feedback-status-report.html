@@ -30,8 +30,8 @@
                            <div class="form-floating">
                           <select class="form-select"   id="branchCode" formControlName="branchCode">
                           <option value="">Select Branch</option>
-                          <option   *ngFor="let branch of branches"  [value]="branch.branchCode">
-                             {{ branch.branchName }}
+                          <option   *ngFor="let branch of branches"  [value]="branch.id">
+                             {{ branch.branchCode }}
                             </option>
                             </select>
                            <label for="branchCode">Branch</label>

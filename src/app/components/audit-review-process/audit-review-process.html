@@ -51,11 +51,9 @@
                 <select
                   class="form-select table-header-fix"
                   id="statesSelect"
-                  formControlName="auditType"
-                >
+                  formControlName="auditType">
                   <option value="">Select Audit Type</option>
                   <option [value]="item.ID" *ngFor="let item of auditTypes$">{{item.VALUE}}</option>
-                  
                 </select>
                 <label for="statesSelect"> Audit Type </label>
               </div>
@@ -66,6 +64,7 @@
                   <select class="form-select table-header-fix" formControlName="suspicious">
                     <option value="">Select</option>
                     <option value="all">All</option>
+                    <option value="processed">Processed</option>
                     <option value="accepted">Accepted</option>
                     <option value="rejected">Rejected</option>
                   </select>
@@ -205,15 +204,15 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let item of filteredData">
-                      <td><a class="text-primary underline" routerLink="/evaluation" [queryParams]="{gsfsNo: item.GSFS_RECEIPT_NO, auditType: searchingForm.value.auditType}">{{item.GSFS_RECEIPT_NO}}</a></td>
-                      <td>{{item.DATE_MONTH}}</td>
-                      <td>{{item.FINAL_FEEDBACK_STATUS }}</td>
-                      <td>{{item.AGING }}</td>
-                      <td>{{item.CUSTOMER_FEEDBACK_DATE }}</td>
-                      <td>{{item.AUDIT_DATE }}</td>
-                      <td></td>
-                      <td>{{item.ESC_LGC_DATE}}</td>
-                      <td>{{item.SALE_NAME}}</td>
+                      <td><a class="text-primary underline" routerLink="/evaluation" [queryParams]="{gsfsNo: item.gsfS_RECEIPT_NO, auditType: searchingForm.value.auditType}">{{item.gsfS_RECEIPT_NO}}</a></td>
+                      <td>{{item.datA_MONTH}}</td>
+                      <td>{{item.finaL_FEEDBACK_STATUS }}</td>
+                      <td>{{item.aging }}</td>
+                      <td>{{item.customeR_FEEDBACK_DATE }}</td>
+                      <td>{{item.audiT_DATE }}</td>
+                      <td>{{item.audiT_TYPE}}</td>
+                      <td>{{item.esC_LGC_DATE}}</td>
+                      <td>{{item.salE_NAME}}</td>
                     </tr>
                   </tbody>
                 </table>
