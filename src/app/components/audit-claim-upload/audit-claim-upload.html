@@ -162,7 +162,11 @@
               </thead>
 
               <tbody>
-                
+                  <tr *ngIf="verifyAuditData.length == 0">
+                    <td colspan="10">
+                      <span class="text-center">No data found.</span>
+                    </td>
+                  </tr>
                 <tr *ngFor="let item of verifyAuditData">
                   <td>
                     <input

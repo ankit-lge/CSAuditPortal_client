@@ -23,6 +23,7 @@ export class AuditSummaryReport implements OnInit {
   branches: Branch[] = [];
   filterData: AuditSummaryReportModel[] = [];
 
+  maxMonth = "";
   ngOnInit(): void {
       const today = new Date();
 const currentMonth =
@@ -32,6 +33,7 @@ const currentMonth =
       branchCode: [''],
       fromAuditDate: [currentMonth, Validators.required]
     });
+    this.maxMonth = currentMonth;
     this.loadBranches();
   }
   loadBranches(): void {

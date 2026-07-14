@@ -42,7 +42,8 @@
                                     type="month"
                                     class="form-control"
                                     id="fromAuditDate"
-                                    formControlName="fromAuditDate">
+                                    formControlName="fromAuditDate"
+                                    [max]="maxMonth">
                                 <label for="fromAuditDate">From Audit Month</label>
                             </div>
                         </div>
@@ -88,39 +89,41 @@
                             <th>LGC Non-Part Rejection</th>
                             <th>Cancellation Claim Recovery</th>
                             <th>Multiple Brackets</th>
-                             <th>Grand Total</th>
+                            <th>Grand Total</th>
                         </tr>
-                      
                     </thead>
-
                     <tbody>
-                     <tr *ngFor="let item of filterData">
-                      <td>{{item.branch}}</td>
-                      <td>{{item.amC_INCENTIVE_HOLD}}</td>
-                      <td>{{item.beyonD_AMC_POLICY}}</td>
-                      <td>{{item.claimS_SELF_REGISTRATION}}</td>
-                      <td>{{item.datA_AUDIT }}</td>
-                      <td>{{item.gaS_OVERCHARGING }}</td>
-                      <td>{{item.duplicatE_DATA }}</td>
-                      <td>{{item.estimatE_OW_AMC}}</td>
-                      <td>{{item.extrA_FILTER_AMC }}</td>
-                      <td>{{item.insidE_FILTERS_IW_WTY}}</td>
-                      <td>{{item.modeL_CHANGE}}</td>
-                      <td>{{item.ooW_CLAIMS}}</td>
-                      <td>{{item.parT_IN_LABOR}}</td>
-                      <td>{{item.posT_AMC_30_DAYS}}</td>
-                      <td>{{item.rF_SPECIAL_MODEL}}</td>
-                      <td>{{item.suspiciouS_AMC}}</td>
-                      <td>{{item.wronG_PART_CONSUMPTION}}</td>
-                      <td>{{item.multiplE_CLOSURE_SAME_DAY}}</td>
-                      <td>{{item.lgC_PART_REJECTION}}</td>
-                      <td>{{item.lgC_NON_PART_REJECTION}}</td>
-                      <td>{{item.cancellatioN_CLAIM_RECOVERY}}</td>
-                      <td>{{item.multiplE_BRACKET}}</td>
-                      <td>{{item.granD_TOTAL}}</td>
-                    </tr>
-                  </tbody>
-
+                        <tr *ngIf="filterData.length == 0">
+                            <td colspan="23">
+                                <span>No data found.</span>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let item of filterData">
+                        <td>{{item.branch}}</td>
+                        <td>{{item.amC_INCENTIVE_HOLD}}</td>
+                        <td>{{item.beyonD_AMC_POLICY}}</td>
+                        <td>{{item.claimS_SELF_REGISTRATION}}</td>
+                        <td>{{item.datA_AUDIT }}</td>
+                        <td>{{item.gaS_OVERCHARGING }}</td>
+                        <td>{{item.duplicatE_DATA }}</td>
+                        <td>{{item.estimatE_OW_AMC}}</td>
+                        <td>{{item.extrA_FILTER_AMC }}</td>
+                        <td>{{item.insidE_FILTERS_IW_WTY}}</td>
+                        <td>{{item.modeL_CHANGE}}</td>
+                        <td>{{item.ooW_CLAIMS}}</td>
+                        <td>{{item.parT_IN_LABOR}}</td>
+                        <td>{{item.posT_AMC_30_DAYS}}</td>
+                        <td>{{item.rF_SPECIAL_MODEL}}</td>
+                        <td>{{item.suspiciouS_AMC}}</td>
+                        <td>{{item.wronG_PART_CONSUMPTION}}</td>
+                        <td>{{item.multiplE_CLOSURE_SAME_DAY}}</td>
+                        <td>{{item.lgC_PART_REJECTION}}</td>
+                        <td>{{item.lgC_NON_PART_REJECTION}}</td>
+                        <td>{{item.cancellatioN_CLAIM_RECOVERY}}</td>
+                        <td>{{item.multiplE_BRACKET}}</td>
+                        <td>{{item.granD_TOTAL}}</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
