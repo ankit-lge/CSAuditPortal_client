@@ -66,6 +66,7 @@
                 <table class="table table-bordered align-middle auto-width-table">
                     <thead>
                         <tr>
+                            <th>Branch</th>
                             <th>AMC Incentive Hold</th>
                             <th>Beyond AMC Policy</th>
                             <th>Claim Self Registration</th>
@@ -75,7 +76,7 @@
                             <th>Estimate OOW (AMC)</th>
                             <th>Extra Filter AMC</th>
                             <th>Inside Filters IW Warranty</th>
-                            <th>Model Charge</th>
+                            <th>Model Change</th>
                             <th>OOW Claims</th>
                             <th>Part in Labor</th>
                             <th>Post AMC 30 Days</th>
@@ -93,34 +94,30 @@
                     </thead>
 
                     <tbody>
-                      <!-- <tr *ngIf="filterData.length === 0">
-                           <td colspan="22" class="text-center">
-                                 No records found.
-                            </td>
-                    </tr> -->
-                    <tr *ngFor="let item of filterData">
-                        <td>{{item.AMC_Incentive_Hold}}</td>
-                      <td>{{item.Beyond_AMC_Policy}}</td>
-                      <td>{{item.Claim_Self_Registration}}</td>
-                      <td>{{item.Data_Audit }}</td>
-                      <td>{{item.Gas_Overcharging }}</td>
-                      <td>{{item.Duplicate_Data }}</td>
-                      <td>{{item.Estimate_OOW_AMC}}</td>
-                      <td>{{item.Extra_filter_AMC }}</td>
-                      <td>{{item.Inside_filter_IW_Warranty}}</td>
-                       <td>{{item.Model_Charge}}</td>
-                      <td>{{item.OOW_Claims}}</td>
-                      <td>{{item.Part_in_Labor}}</td>
-                      <td>{{item.Post_AMC_thirty_Days}}</td>
-                      <td>{{item.RF_Special_Model_Non_PCB}}</td>
-                      <td>{{item.Suspicious_AMC}}</td>
-                      <td>{{item.Wrong_Part_Consumption}}</td>
-                      <td>{{item.Multiple_Closer_Same_Day}}</td>
-                      <td>{{item.LGC_Part_Rejection}}</td>
-                      <td>{{item.LGC_Non_Part_Rejection}}</td>
-                      <td>{{item.Cancellation_Claim_Recovery}}</td>
-                      <td>{{item.Multiple_Brackets}}</td>
-                      <td>{{item.Grand_Total}}</td>
+                     <tr *ngFor="let item of filterData">
+                      <td>{{item.branch}}</td>
+                      <td>{{item.amC_INCENTIVE_HOLD}}</td>
+                      <td>{{item.beyonD_AMC_POLICY}}</td>
+                      <td>{{item.claimS_SELF_REGISTRATION}}</td>
+                      <td>{{item.datA_AUDIT }}</td>
+                      <td>{{item.gaS_OVERCHARGING }}</td>
+                      <td>{{item.duplicatE_DATA }}</td>
+                      <td>{{item.estimatE_OW_AMC}}</td>
+                      <td>{{item.extrA_FILTER_AMC }}</td>
+                      <td>{{item.insidE_FILTERS_IW_WTY}}</td>
+                      <td>{{item.modeL_CHANGE}}</td>
+                      <td>{{item.ooW_CLAIMS}}</td>
+                      <td>{{item.parT_IN_LABOR}}</td>
+                      <td>{{item.posT_AMC_30_DAYS}}</td>
+                      <td>{{item.rF_SPECIAL_MODEL}}</td>
+                      <td>{{item.suspiciouS_AMC}}</td>
+                      <td>{{item.wronG_PART_CONSUMPTION}}</td>
+                      <td>{{item.multiplE_CLOSURE_SAME_DAY}}</td>
+                      <td>{{item.lgC_PART_REJECTION}}</td>
+                      <td>{{item.lgC_NON_PART_REJECTION}}</td>
+                      <td>{{item.cancellatioN_CLAIM_RECOVERY}}</td>
+                      <td>{{item.multiplE_BRACKET}}</td>
+                      <td>{{item.granD_TOTAL}}</td>
                     </tr>
                   </tbody>
 

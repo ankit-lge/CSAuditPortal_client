@@ -16,10 +16,11 @@ export class ReportService {
  
 
   getBranches(): Observable<Branch[]> {
-  return this.http.get<Branch[]>(
-    `${this.baseUrl}Report/branches`
-  );
-}
+    return this.http.get<Branch[]>(
+      `${this.baseUrl}Report/branches`
+    );
+  }
+  
   searchfeedbackreport(payload: any): Observable<any> {
     return this.http.post(
       `${this.baseUrl}Report/SearchFeedbackStatus`,
@@ -38,20 +39,21 @@ export class ReportService {
     );
   }
   searchSummaryReport(payload: any) {
-  return this.http.post(
-    `${this.baseUrl}Report/SearchSummaryStatus`,
-    payload
-  );
-}
+    return this.http.post(
+      `${this.baseUrl}Report/SearchSummaryStatus`,
+      payload
+    );
+  }
 
-downloadSummaryReport(payload: any): Observable<Blob> {
-  return this.http.post(
-    `${this.baseUrl}Report/DownloadSummaryStatusReport`,
-    payload,
-    {
-      responseType: 'blob'
-    }
-  );
-}
+  downloadSummaryReport(payload: any){
+    return this.http.post(
+      `${this.baseUrl}Report/DownloadSummaryStatusReport`,
+      payload,
+      {
+        responseType: 'blob',
+        observe: 'response'
+      }
+    );
+  }
 }
     
