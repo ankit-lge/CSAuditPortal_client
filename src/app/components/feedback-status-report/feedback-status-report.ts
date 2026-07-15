@@ -18,6 +18,7 @@ export class FeedbackStatusReport implements OnInit {
   searchData: FeedbackStatusReportModel[] = [];
   filterData: FeedbackStatusReportModel[] = [];
   feedbackForm!: FormGroup;
+  maxMonth = "";
   private fb = inject(FormBuilder);
 
 
@@ -25,7 +26,7 @@ export class FeedbackStatusReport implements OnInit {
   const today = new Date();
 const currentMonth =
   `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
-
+this.maxMonth = currentMonth;
 this.feedbackForm = this.fb.group({
   branchCode: [''],
   fromAuditDate: [currentMonth, Validators.required]
