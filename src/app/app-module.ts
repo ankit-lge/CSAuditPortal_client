@@ -10,7 +10,7 @@ import { AuditMonitoringDashboard } from './components/audit-monitoring-dashboar
 import { AuditReviewProcess } from './components/audit-review-process/audit-review-process';
 import { AuditEvaluationProcess } from './components/audit-evaluation-process/audit-evaluation-process';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuditClaimUpload } from './components/audit-claim-upload/audit-claim-upload';
 import { CommonModule } from '@angular/common';
 import { Modalpopup } from './common/modalpopup/modalpopup';
@@ -23,6 +23,8 @@ import { FeedbackStatusReport } from './components/feedback-status-report/feedba
 import { AuditSummaryReport } from './components/audit-summary-report/audit-summary-report';
 import { BulkLoader } from './core/loader/bulk-loader/bulk-loader';
 import { UnAuthorise } from './pages/un-authorise/un-authorise';
+import { CredentialsInterceptor } from './core/interceptor/credentials-interceptor';
+import { RefreshInterceptor } from './core/interceptor/refresh-interceptor';
 
 @NgModule({
   declarations: [
@@ -52,12 +54,21 @@ import { UnAuthorise } from './pages/un-authorise/un-authorise';
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideHttpClient(),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: apiLoaderInterceptor,
       multi: true,
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CredentialsInterceptor,
+      multi: true
+    },
+    {
+      provide :HTTP_INTERCEPTORS,
+      useClass: RefreshInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [App],
 })
