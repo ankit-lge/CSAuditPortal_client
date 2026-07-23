@@ -22,6 +22,7 @@ import { apiLoaderInterceptor } from './core/interceptor/api-loader-interceptor'
 import { FeedbackStatusReport } from './components/feedback-status-report/feedback-status-report';
 import { AuditSummaryReport } from './components/audit-summary-report/audit-summary-report';
 import { BulkLoader } from './core/loader/bulk-loader/bulk-loader';
+import { UnAuthorise } from './pages/un-authorise/un-authorise';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { BulkLoader } from './core/loader/bulk-loader/bulk-loader';
     FeedbackStatusReport,
     AuditSummaryReport,
     BulkLoader,
+    UnAuthorise,
   ],
   imports: [
     BrowserModule,
