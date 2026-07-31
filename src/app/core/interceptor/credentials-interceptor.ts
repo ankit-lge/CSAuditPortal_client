@@ -4,8 +4,6 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class CredentialsInterceptor implements HttpInterceptor {
-  constructor() {}
-
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const clonedReq = req.clone({
       withCredentials: true

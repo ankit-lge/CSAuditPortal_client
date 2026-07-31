@@ -29,7 +29,7 @@ export class RefreshInterceptor implements HttpInterceptor {
       this.isRreshing = true;
       this.refreshTokenSubject.next(null);
 
-      return this.http.post(`${this.baseUrl}/api/auth/refreshToken`, {}, {
+      return this.http.post(`${this.baseUrl}auth/refresh-token`, {}, {
         withCredentials:true
       }).pipe(
         switchMap(() =>{

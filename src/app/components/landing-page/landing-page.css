@@ -1,0 +1,244 @@
+/* =========================
+   AUTH PAGE
+========================= */
+
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: #07111f;
+    padding: 30px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.auth-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.30),
+        0 0 40px rgba(165,0,52,.25);
+}
+
+/* =========================
+   BACKGROUND GLOW
+========================= */
+
+.bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: 0;
+}
+
+.bg-glow-1 {
+    width: 400px;
+    height: 400px;
+    background: #a50034;
+    top: -100px;
+    left: -100px;
+}
+
+.bg-glow-2 {
+    width: 350px;
+    height: 350px;
+    background: #730026;
+    bottom: -80px;
+    right: -80px;
+}
+
+/* =========================
+   LEFT PANEL
+========================= */
+
+.brand-section {
+    height: 100%;
+    padding: 60px;
+    background: linear-gradient(135deg, #a50034, #730026);
+    color: #fff;
+}
+
+.logo-wrapper {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    margin-bottom: 25px;
+}
+
+.brand-section h1 {
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.tagline {
+    opacity: .9;
+    margin-bottom: 40px;
+}
+
+.security-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.badge-item {
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.15);
+    padding: 12px 18px;
+    border-radius: 12px;
+}
+
+/* =========================
+   RIGHT PANEL
+========================= */
+
+.loading-section {
+    padding: 60px;
+}
+
+.status-badge {
+    display: inline-block;
+    background: #e9f7ef;
+    color: #198754;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.loading-header h2 {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* =========================
+   LOADER
+========================= */
+
+.loader-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.loader-ring {
+    width: 140px;
+    height: 140px;
+    border: 6px solid #e9ecef;
+    border-top: 6px solid #a50034;
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-core {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #a50034, #730026);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+}
+
+.rotating {
+    animation: spin 1.5s linear infinite;
+}
+
+/* =========================
+   PROGRESS BAR
+========================= */
+.modern-progress {
+    height: 10px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* =========================
+   STEPS
+========================= */
+
+.steps {
+    margin-top: 30px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    background: #f8f9fa;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.step.completed {
+    background: #edfdf3;
+    color: #198754;
+}
+
+.step.active {
+    background: #edf4ff;
+    color: #a50034;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer-text {
+    text-align: center;
+    color: rgba(255,255,255,.7);
+    margin-top: 25px;
+    font-size: 14px;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 991px) {
+
+    .brand-section,
+    .loading-section {
+        padding: 40px;
+    }
+
+    .brand-section {
+        text-align: center;
+    }
+
+    .logo-wrapper {
+        margin: 0 auto 25px;
+    }
+}

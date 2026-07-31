@@ -1,4 +1,18 @@
-<header class="custom-header">
+
+<div class="layout-wrapper"
+[class.mobile-layout]="isMobile()">
+<app-route-loader></app-route-loader>
+    <!-- Sidebar -->
+    <app-nav-bar
+        [isCollapsed]="isCollapsed()"
+        [class.mobile-sidebar]="isMobile()">
+    </app-nav-bar>
+
+    <!-- Main Content Area -->
+    <div class="main-layout">
+
+        <!-- Header -->
+        <header class="custom-header">
 
     <!-- Left -->
     <div class="header-left">
@@ -48,3 +62,31 @@
     </div>
 
 </header>
+
+        <!-- Page Content -->
+        <div class="page-content">
+
+            <router-outlet>
+                <app-api-loader></app-api-loader>
+            </router-outlet>
+
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            Copyright &copy; 2026 LG Electronics India Limited.
+            All Rights Reserved
+        </footer>
+
+    </div>
+
+</div>
+
+<!-- Global Modal -->
+<app-alert-modal
+    [type]="modalType"
+    [message]="modalMessage"
+    [isOpen]="isModalOpen"
+    (close)="handleModalClose()">
+</app-alert-modal>
+

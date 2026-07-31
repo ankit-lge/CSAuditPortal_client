@@ -25,6 +25,7 @@ import { BulkLoader } from './core/loader/bulk-loader/bulk-loader';
 import { UnAuthorise } from './pages/un-authorise/un-authorise';
 import { CredentialsInterceptor } from './core/interceptor/credentials-interceptor';
 import { RefreshInterceptor } from './core/interceptor/refresh-interceptor';
+import { LandingPage } from './components/landing-page/landing-page';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { RefreshInterceptor } from './core/interceptor/refresh-interceptor';
     AuditSummaryReport,
     BulkLoader,
     UnAuthorise,
+    LandingPage,
   ],
   imports: [
     BrowserModule,
@@ -62,13 +64,13 @@ import { RefreshInterceptor } from './core/interceptor/refresh-interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: CredentialsInterceptor,
-      multi: true
+      multi: true,
     },
     {
-      provide :HTTP_INTERCEPTORS,
+      provide: HTTP_INTERCEPTORS,
       useClass: RefreshInterceptor,
-      multi: true
-    }
+      multi: true,
+    },
   ],
   bootstrap: [App],
 })
