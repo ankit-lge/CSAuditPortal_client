@@ -16,7 +16,7 @@ export class RefreshInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((error:HttpErrorResponse) => {
-        if(error.status == 401 && !request.url.includes("/login") && !request.url.includes("/refreshToken")){
+        if(error.status == 401 && !request.url.includes("/login") && !request.url.includes("/refresh-token")){
           return this.handle401Error(request, next);
         }
         return throwError(() => error);
@@ -40,9 +40,9 @@ export class RefreshInterceptor implements HttpInterceptor {
         }),
         catchError((refreshError) =>{
           this.isRreshing = false;
-          this.authService.logOut();
+          this.authService.logOut().subscribe();
           console.error('Session expired completely. Redirecting to login...', refreshError);
-          this.route.navigate(['/login']);
+          this.route.navigate(['/landing']);
           return throwError(() => refreshError);
         })
       )

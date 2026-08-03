@@ -2,6 +2,7 @@ import { Component, EventEmitter, HostListener, Output, signal } from '@angular/
 import { AlertService } from '../../services/alert-service';
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { RouteLoaderService } from '../../core/services/routeLoader/route-loader';
+import { AuthService } from '../../core/services/auth/auth-service';
 
 @Component({
   selector: 'app-header',
@@ -11,14 +12,12 @@ import { RouteLoaderService } from '../../core/services/routeLoader/route-loader
 })
 export class Header {
 protected readonly title = signal('CallAuditPortal');
-  modalType: any;
-  modalMessage: string = '';
-  isModalOpen: boolean = false;
   isCollapsed  = signal(false);
   isMobile = signal(false);
   constructor(private alertService: AlertService,
     private router: Router,
-    private routeLoader: RouteLoaderService
+    private routeLoader: RouteLoaderService,
+    private authService: AuthService
   ) {
 
   }
@@ -47,11 +46,6 @@ this.router.events.subscribe(event => {
  this.routeLoader.hide();
   }
 });
-    this.alertService.alertState$.subscribe(res => {
-      this.modalType = res.type;
-      this.modalMessage = res.message;
-      this.isModalOpen = res.isOpen;
-    });
 
     this.checkScreenSize();
   }
@@ -65,9 +59,7 @@ onResize() {
   handleSidebar(value: boolean){
     this.isCollapsed.set(value);
   }
-  handleModalClose() {
-    this.isModalOpen = false;
-  }
+
 
     checkScreenSize() {
 
@@ -94,5 +86,17 @@ onResize() {
 
   }
 
+}
+
+logout(){
+  this.authService.logOut().subscribe({
+    next : (res:any) =>{
+      this.alertService.show("success", res.message);
+      this.router.navigate(["/landing"])
+    },
+    error : (err : any) =>{
+      console.error(err);
+    }
+  })
 }
 }

@@ -27,7 +27,8 @@ export class AuthService {
       password : authToken
     })
   }
-  logOut():void{
+  logOut(){
     localStorage.removeItem(this.loggedInKey);
+    return this.http.post(`${this.baseUrl}Auth/logout`,{})
   }
 }

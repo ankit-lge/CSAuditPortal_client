@@ -9,18 +9,56 @@ import { AuditSummaryReport } from './components/audit-summary-report/audit-summ
 import { UnAuthorise } from './pages/un-authorise/un-authorise';
 import { LandingPage } from './components/landing-page/landing-page';
 import { Header } from './pages/header/header';
+import { roleGuard } from './core/guards/role-guard';
 
 const routes: Routes = [
   {
     path : '',
     component : Header,
     children : [
-      { path: 'audit-claim-upload', component: AuditClaimUpload },
-      { path: 'audit-monitoring-dashboard', component: AuditMonitoringDashboard },
-      { path: 'review', component: AuditReviewProcess },
-      { path: 'evaluation', component: AuditEvaluationProcess },
-      { path: 'feedback-status-report',component: FeedbackStatusReport },
-      { path: 'audit-summary-report', component: AuditSummaryReport },
+      {
+        path : '',
+        redirectTo: 'audit-claim-upload',
+        pathMatch: 'full'
+      },
+      { path: 'audit-claim-upload', 
+        component: AuditClaimUpload,
+        canActivate : [roleGuard],
+        data : {
+          roles : ['Admin']
+        }
+      },
+      { path: 'audit-monitoring-dashboard', 
+        component: AuditMonitoringDashboard,
+        canActivate : [roleGuard],
+        data : {
+          roles : ['Admin']
+        }
+      },
+      { path: 'review', component: AuditReviewProcess,
+        canActivate : [roleGuard],
+        data : {
+          roles : ['Admin']
+        }
+       },
+      { path: 'evaluation', component: AuditEvaluationProcess,
+        canActivate : [roleGuard],
+        data : {
+          roles : ['Admin']
+        }
+       },
+      { path: 'feedback-status-report',component: FeedbackStatusReport,
+        canActivate : [roleGuard],
+        data : {
+          roles : ['Admin']
+        }
+       },
+      { path: 'audit-summary-report', component: AuditSummaryReport,
+        canActivate : [roleGuard],
+        data : {
+          roles : ['admin']
+        }
+       },
     ]
   },
   {path: 'landing', component : LandingPage},
