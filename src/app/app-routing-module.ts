@@ -61,6 +61,10 @@ const routes: Routes = [
        },
     ]
   },
+  // {
+  //   path : "it-section",
+  //   loadChildren : import('./components/it-section').then(m => m.)
+  // },
   {path: 'landing', component : LandingPage},
   { path: 'unauthorise', component: UnAuthorise},
   { path: '', redirectTo: 'landing', pathMatch: 'full' },

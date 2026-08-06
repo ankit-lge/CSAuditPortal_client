@@ -43,7 +43,8 @@ export class AuditEvaluationProcess {
 
     this.saveESCLGCForm = this._fb.group({
       remark : ['', Validators.required],
-      status: ['',Validators.required]
+      status: ['',Validators.required],
+      attachment: [null]
     })
 
     this.saveHOForm = this._fb.group({
@@ -74,6 +75,7 @@ export class AuditEvaluationProcess {
     payload.append("auditTypeId", this.auditTypeId.toString());
     payload.append("status", data.status);
     payload.append("remark", data.remark);
+    payload.append("Attachement", this.selectedAttachement);
     payload.append("actionBy", "ESC/LGC");
    
     this.saveData(payload);
@@ -84,9 +86,7 @@ export class AuditEvaluationProcess {
       this.saveHOForm.markAsUntouched();
       return;
     }
-
     const data = this.saveHOForm.value;
-
     const payload = new FormData();
 
     payload.append("gsfS_ReceiptNo", this.gsfsNo);
@@ -104,7 +104,6 @@ export class AuditEvaluationProcess {
           next: res =>{
             const reviewData = res.data;
             this.evaluationData = res.data;
-            debugger;
             this.esc_lgcFeedbackDetails = JSON.parse(reviewData.ESC_LGC_CLAIM_DETAILS);
             this.hoFeedBackDetails = JSON.parse(reviewData.HO_FEEDBACK_DETAILS);
           },

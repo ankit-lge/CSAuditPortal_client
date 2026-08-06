@@ -43,8 +43,8 @@ export class AuditMonitoringDashboard implements OnInit {
     this.monitoring = this.fb.group({
       status: ['', Validators.required],
       auditType: ['', Validators.required],
-      fromDate: ['', Validators.required],
-      toDate: ['', Validators.required],
+      fromDate: [''],
+      toDate: [''],
     });
   }
 

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,9 +18,13 @@ export class AuthService {
     return localStorage.getItem(this.loggedInKey) === 'true';
   }
 
-  getUserRole(){
-    return this.http.get(`${this.baseUrl}Auth/me`)
-  }
+  async getUserRole(): Promise<string> {
+  const res: any = await firstValueFrom(
+    this.http.get(`${this.baseUrl}Auth/me`)
+  );
+
+  return res.role;
+}
 
   authorise(userId:string, authToken: string){
     return this.http.post(`${this.baseUrl}auth/login`, {

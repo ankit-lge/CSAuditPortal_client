@@ -32,11 +32,11 @@ export class AuditReviewProcess {
   searchText: string = '';
   ngOnInit(){
     this.searchingForm = this.fb.group({
-      receiptNo : ['', Validators.required],
-      suspicious : ['', Validators.required],
+      receiptNo : [''],
+      suspicious : [''],
       auditType: ['', Validators.required],
-      fromAuditDate: ['', Validators.required],
-      toAuditDate: ['', Validators.required]
+      fromAuditDate: [''],
+      toAuditDate: ['']
     });
 
     this.auditService.getAuditDropdown().subscribe({

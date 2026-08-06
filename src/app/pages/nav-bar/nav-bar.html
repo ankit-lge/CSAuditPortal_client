@@ -41,15 +41,15 @@
             <div class="submenu"
                  *ngIf="auditOpen && !isCollapsed">
 
-                <a routerLink="/audit-claim-upload"
+                <a *ngFor="let item of navbarMenu" [routerLink]="item.path"
                    routerLinkActive="active-link">
 
                     <i class="fa-regular fa-circle-dot"></i>
-                    <span>Audit Claim Upload</span>
+                    <span>{{item.name}}</span>
 
                 </a>
 
-
+<!-- 
                 <a routerLink="/review"
                    routerLinkActive="active-link">
 
@@ -72,7 +72,7 @@
                  <i class="fa-regular fa-circle-dot"></i>
                 <span>Audit Summary Report</span>
 
-                </a>
+                </a> -->
             </div>
 
         </div>

@@ -154,7 +154,7 @@
                     <div class="col-md-12 col-sm-">
                         <div class="card">
                             <div class="card-header">
-                                <h2 class="page-title">Feedback of ESC/LGC </h2>
+                                <h2 class="page-title">Update Feedback</h2>
                             </div>
 
                             <div class="card-body">
@@ -183,16 +183,25 @@
                                         <div class="form-floating">
                                             <select class="form-select table-header-fix" formControlName="status" id="statesSelect">
                                                 <option value="">Select Received Feedback</option>
-                                                <option value="ACCEPTED">Accept</option>
-                                                <option value="REJECTED">Reject</option>
+                                                <option value="ACCEPTED">No Fake</option>
+                                                <option value="REJECTED">Fake</option>
                                             </select>
                                             <label for="statesSelect">Received Feedback</label>
                                         </div>
                                     </div>
+
+                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                         <label class="text-dark">Attachment</label>
+                                            <input type="file" formControlName="attachment" (change)="selectAttachement($event)" class="form-control">
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                        <div class="p-1 mb-2">
+                                            <button class="btn btn-danger" [disabled]="saveESCLGCForm.invalid" (click)="saveESC_LGC_Feedback()">Save</button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="p-1 mb-2">
-                                    <button class="btn btn-danger" [disabled]="saveESCLGCForm.invalid" (click)="saveESC_LGC_Feedback()">Save</button>
-                                </div>
+                                
                                 </form>
                             </div>
                         </div>
@@ -273,18 +282,18 @@
                     </div>
                 </div>
             </div>
-            <div class="p-1 m-1">
+            <!-- <div class="p-1 m-1">
                 <button class="btn btn-danger">Back</button>
                     <button class="btn btn-danger m-2" data-bs-toggle="modal" data-bs-target="#feedbackModal">
                         Edit
                     </button>
-            </div>
+            </div> -->
 
         </div>
     </div>
 
 
-    <div class="modal fade" id="feedbackModal" tabindex="-1">
+    <!-- <div class="modal fade" id="feedbackModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -342,4 +351,4 @@
 
             </div>
         </div>
-    </div>
+    </div> -->
