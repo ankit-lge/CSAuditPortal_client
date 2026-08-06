@@ -56,7 +56,7 @@ const routes: Routes = [
       { path: 'audit-summary-report', component: AuditSummaryReport,
         canActivate : [roleGuard],
         data : {
-          roles : ['admin']
+          roles : ['Admin']
         }
        },
     ]
