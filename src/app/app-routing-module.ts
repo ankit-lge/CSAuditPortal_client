@@ -61,10 +61,10 @@ const routes: Routes = [
        },
     ]
   },
-  // {
-  //   path : "it-section",
-  //   loadChildren : import('./components/it-section').then(m => m.)
-  // },
+  {
+    path : "it-section",
+    loadChildren : () => import("./components/it-section/it-section-module").then(m => m.ITSectionModule)
+  },
   {path: 'landing', component : LandingPage},
   { path: 'unauthorise', component: UnAuthorise},
   { path: '', redirectTo: 'landing', pathMatch: 'full' },

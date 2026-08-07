@@ -26,6 +26,7 @@ import { UnAuthorise } from './pages/un-authorise/un-authorise';
 import { CredentialsInterceptor } from './core/interceptor/credentials-interceptor';
 import { RefreshInterceptor } from './core/interceptor/refresh-interceptor';
 import { LandingPage } from './components/landing-page/landing-page';
+import { ITSectionModule } from './components/it-section/it-section-module';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { LandingPage } from './components/landing-page/landing-page';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    ITSectionModule,
     HttpClientModule,
   ],
   providers: [

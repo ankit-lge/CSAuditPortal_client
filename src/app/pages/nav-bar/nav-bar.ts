@@ -46,6 +46,14 @@ export class NavBar {
         {
           path : "/audit-claim-upload",
           name : "Audit Claim Upload"
+        },
+        {
+          path : "/feedback-status-report",
+          name : "Feedback Status Report"
+        },
+        {
+          path : "/audit-summary-report",
+          name : "Audit Summary Report"
         }
       ]
     }
